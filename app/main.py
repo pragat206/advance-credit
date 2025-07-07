@@ -1,53 +1,30 @@
-print('DEBUG: VERY TOP OF MAIN.PY')
 from fastapi import FastAPI, Request, Form, Query, Depends
-print('DEBUG: Imported FastAPI, Request, Form, Query, Depends')
 from fastapi.responses import HTMLResponse, RedirectResponse, JSONResponse
-print('DEBUG: Imported HTMLResponse, RedirectResponse, JSONResponse')
 from fastapi.staticfiles import StaticFiles
-print('DEBUG: Imported StaticFiles')
 from fastapi.templating import Jinja2Templates
-print('DEBUG: Imported Jinja2Templates')
 from fastapi import status
-print('DEBUG: Imported status')
 import uvicorn
-print('DEBUG: Imported uvicorn')
 import json
-print('DEBUG: Imported json')
 from pathlib import Path
-print('DEBUG: Imported Path')
 import smtplib
-print('DEBUG: Imported smtplib')
 from email.message import EmailMessage
-print('DEBUG: Imported EmailMessage')
 import os
-print('DEBUG: Imported os')
 from app.scrapers.tata_scraper import fetch_tata_capital_loans
-print('DEBUG: Imported fetch_tata_capital_loans')
 from app.scrapers.axis_scraper import fetch_axis_bank_loans
-print('DEBUG: Imported fetch_axis_bank_loans')
 from app.scrapers.icici_scraper import fetch_icici_bank_loans
-print('DEBUG: Imported fetch_icici_bank_loans')
 import time
-print('DEBUG: Imported time')
 from starlette.middleware.sessions import SessionMiddleware
-print('DEBUG: Imported SessionMiddleware')
 from app.admin.routes import router as admin_router
-print('DEBUG: Imported admin_router')
 from app.db import get_db, CRM_SessionLocal, SessionLocal
 from app.models import FAQ, Lead, Partner, Product, BankLoan
 from sqlalchemy.orm import Session
 
 app = FastAPI()
-print('DEBUG: Created FastAPI app')
-app.add_middleware(SessionMiddleware, secret_key="super-secret-key-change-this")
-print('DEBUG: Added SessionMiddleware')
+app.add_middleware(SessionMiddleware, secret_key=os.getenv("SECRET_KEY", "super-secret-key-change-this"))
 app.include_router(admin_router)
-print('DEBUG: Included admin_router')
 
 app.mount("/static", StaticFiles(directory="app/static"), name="static")
-print('DEBUG: Mounted static files')
 templates = Jinja2Templates(directory="app/templates")
-print('DEBUG: Set up Jinja2Templates')
 
 # Email Configuration
 EMAIL_CONFIG = {
