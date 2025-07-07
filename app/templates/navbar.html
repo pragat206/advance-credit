@@ -1,15 +1,15 @@
-<!-- navbar.html: Reusable Navbar Partial -->
-<nav class="navbar navbar-expand-lg navbar-light shadow-sm">
+<!-- navbar.html: Responsive Navbar Partial -->
+<nav class="navbar navbar-expand-lg navbar-light shadow-sm py-2">
   <div class="container-fluid">
-    <a href="/" class="d-flex align-items-center" style="margin-right: 18px; text-decoration: none;">
-      <img src="/static/ac-logo-1.svg" alt="Advance Credit Logo" style="width: 48px; height: 48px; background: var(--light-blue); margin-right: 10px; padding: 2px; object-fit: contain; border-radius: 50%; border: 2px solid var(--primary-blue);">
-      <span style="color: var(--primary-blue); font-weight: 700; font-size: 1.7rem; letter-spacing: 1px; font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;">Advance Credit</span>
+    <a href="/" class="d-flex align-items-center brand-link flex-shrink-0 me-2" style="text-decoration: none;">
+      <img src="/static/ac-logo-1.svg" alt="Advance Credit Logo" class="brand-logo">
+      <span class="brand-title">Advance Credit</span>
     </a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav ms-auto">
+      <ul class="navbar-nav ms-auto align-items-lg-center">
         <li class="nav-item">
           <a class="nav-link {% if request.url.path == '/products' %}active{% endif %}" href="/products">Loan Products</a>
         </li>
@@ -40,7 +40,6 @@
     --dark-text: #1f2937;
     --gray-text: #6b7280;
   }
-  
   .navbar {
     background: var(--white) !important;
     box-shadow: 0 2px 10px rgba(30, 58, 138, 0.1);
@@ -49,8 +48,33 @@
     margin: 18px 0 18px 0;
     padding: 0.5rem 1.2rem;
     transition: all 0.2s;
+    min-height: 64px;
   }
-  
+  .brand-link {
+    min-width: 0;
+  }
+  .brand-logo {
+    box-shadow: 0 2px 12px rgba(30, 58, 138, 0.15);
+    border: 2px solid var(--primary-blue);
+    background: var(--light-blue);
+    margin-right: 10px;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    padding: 2px;
+    object-fit: contain;
+    flex-shrink: 0;
+  }
+  .brand-title {
+    color: var(--primary-blue);
+    font-weight: 700;
+    font-size: 1.5rem;
+    letter-spacing: 0.5px;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
   .navbar .navbar-nav .nav-link {
     color: var(--dark-text) !important;
     font-weight: 500;
@@ -60,59 +84,61 @@
     border-radius: 8px;
     margin: 0 0.2rem;
     transition: all 0.2s;
+    text-align: center;
   }
-  
   .navbar .nav-link.active, .navbar .nav-link:hover {
     color: var(--primary-blue) !important;
     background: var(--light-blue);
     box-shadow: 0 2px 8px rgba(30, 58, 138, 0.15);
   }
-  
   .navbar .navbar-toggler {
     border: none;
     background: var(--light-blue);
     border-radius: 8px;
     padding: 0.4rem 0.7rem;
+    margin-left: 0.5rem;
   }
-  
   .navbar .navbar-toggler-icon {
     background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(30,58,138,0.95)' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
   }
-  
-  .navbar .d-flex.align-items-center > img {
-    box-shadow: 0 2px 12px rgba(30, 58, 138, 0.15);
-    border: 2px solid var(--primary-blue);
-    background: var(--light-blue);
-    margin-right: 14px;
-    width: 52px;
-    height: 52px;
-    border-radius: 50%;
-    padding: 2px;
-  }
-  
-  .navbar .d-flex.align-items-center > span {
-    color: var(--primary-blue);
-    font-weight: 700;
-    font-size: 1.5rem;
-    letter-spacing: 0.5px;
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-  }
-  
   @media (max-width: 991px) {
     .navbar {
       border-radius: 8px;
       margin: 0 0 18px 0;
       padding: 0.5rem 0.5rem;
     }
+    .brand-title {
+      font-size: 1.15rem;
+    }
+    .brand-logo {
+      width: 36px; height: 36px;
+    }
     .navbar .navbar-nav .nav-link {
       font-size: 1.08rem;
       padding: 0.7rem 1rem;
     }
-    .navbar .d-flex.align-items-center > span {
-      font-size: 1.3rem;
+  }
+  @media (max-width: 767.98px) {
+    .navbar {
+      border-radius: 6px;
+      margin: 0 0 12px 0;
+      padding: 0.3rem 0.2rem;
+      min-height: 54px;
     }
-    .navbar .d-flex.align-items-center > img {
-      width: 38px; height: 38px;
+    .brand-title {
+      font-size: 1rem;
+    }
+    .brand-logo {
+      width: 28px; height: 28px;
+      margin-right: 7px;
+    }
+    .navbar .navbar-nav .nav-link {
+      font-size: 1rem;
+      padding: 0.6rem 0.7rem;
+      margin: 0.1rem 0;
+    }
+    .navbar .navbar-nav {
+      margin-top: 0.5rem;
     }
   }
 </style> 

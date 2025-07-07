@@ -243,6 +243,115 @@
             .glass-card { border-radius: 8px; }
             .process-step::after { display: none; }
         }
+        
+        @media (max-width: 992px) {
+            .hero-services {
+                padding: 40px 0;
+            }
+            .cta-section {
+                padding: 1.5rem 0.7rem;
+            }
+            .service-card, .glass-card {
+                padding: 1.2rem !important;
+            }
+            .service-title {
+                font-size: 1.1rem;
+            }
+            .service-desc {
+                font-size: 0.98rem;
+            }
+        }
+        @media (max-width: 768px) {
+            .hero-services {
+                padding: 24px 0;
+            }
+            .hero-services h1 {
+                font-size: 1.5rem;
+            }
+            .hero-services p.lead {
+                font-size: 1rem;
+            }
+            .glass-card, .service-card {
+                padding: 1rem !important;
+            }
+            .service-title {
+                font-size: 1rem;
+            }
+            .service-desc {
+                font-size: 0.93rem;
+            }
+            .service-icon svg {
+                width: 38px !important;
+                height: 38px !important;
+            }
+            .process-step {
+                margin-bottom: 1rem;
+            }
+            .cta-section {
+                padding: 1rem 0.5rem;
+            }
+        }
+        @media (max-width: 576px) {
+            .hero-services {
+                padding: 12px 0;
+                border-radius: 6px;
+            }
+            .hero-services h1 {
+                font-size: 1.1rem;
+            }
+            .hero-services p.lead {
+                font-size: 0.95rem;
+            }
+            .glass-card, .service-card {
+                padding: 0.7rem !important;
+                border-radius: 6px;
+            }
+            .service-title {
+                font-size: 0.95rem;
+            }
+            .service-desc {
+                font-size: 0.9rem;
+            }
+            .service-icon svg {
+                width: 28px !important;
+                height: 28px !important;
+            }
+            .cta-section {
+                padding: 0.7rem 0.2rem;
+                border-radius: 6px;
+            }
+            .btn, .btn-lg, .btn-accent {
+                padding: 0.6rem 1.1rem !important;
+                font-size: 1rem !important;
+            }
+            .modal-content {
+                padding: 0.5rem;
+                border-radius: 0.7rem !important;
+            }
+        }
+        /* Responsive grid for all card sections */
+        @media (max-width: 991.98px) {
+            .row.g-4 > .col-md-4, .row.g-4 > .col-md-3, .row.g-4 > .col-md-6, .row.g-4 > .col-lg-6 {
+                flex: 0 0 50%;
+                max-width: 50%;
+            }
+        }
+        @media (max-width: 576px) {
+            .row.g-4 > .col-md-4, .row.g-4 > .col-md-3, .row.g-4 > .col-md-6, .row.g-4 > .col-lg-6 {
+                flex: 0 0 100%;
+                max-width: 100%;
+            }
+        }
+        /* FAQ accordion touch-friendly */
+        @media (max-width: 576px) {
+            .accordion-button {
+                font-size: 1rem;
+                padding: 0.7rem 1rem;
+            }
+            .accordion-body {
+                font-size: 0.95rem;
+            }
+        }
     </style>
 </head>
 <body>

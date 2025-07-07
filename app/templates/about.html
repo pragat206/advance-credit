@@ -247,6 +247,69 @@
             .glass-card { border-radius: 8px; }
             .milestone-card::after { display: none; }
         }
+        
+        @media (max-width: 992px) {
+            .about-hero {
+                padding: 40px 0;
+            }
+            .contact-card {
+                padding: 1.2rem;
+            }
+            .glass-card {
+                padding: 1.2rem;
+            }
+        }
+        @media (max-width: 768px) {
+            .about-hero {
+                padding: 24px 0;
+            }
+            .about-hero h1 {
+                font-size: 1.5rem;
+            }
+            .about-hero p.lead {
+                font-size: 1rem;
+            }
+            .contact-card, .glass-card {
+                padding: 1rem;
+            }
+            .icon-circle {
+                width: 38px;
+                height: 38px;
+            }
+        }
+        @media (max-width: 576px) {
+            .about-hero {
+                padding: 12px 0;
+                border-radius: 6px;
+            }
+            .about-hero h1 {
+                font-size: 1.1rem;
+            }
+            .about-hero p.lead {
+                font-size: 0.95rem;
+            }
+            .contact-card, .glass-card {
+                padding: 0.7rem;
+                border-radius: 6px;
+            }
+            .icon-circle {
+                width: 28px;
+                height: 28px;
+            }
+        }
+        /* Responsive grid for all card sections */
+        @media (max-width: 991.98px) {
+            .row.g-4 > .col-md-4, .row.g-4 > .col-md-3, .row.g-4 > .col-md-6, .row.g-4 > .col-lg-6 {
+                flex: 0 0 50%;
+                max-width: 50%;
+            }
+        }
+        @media (max-width: 576px) {
+            .row.g-4 > .col-md-4, .row.g-4 > .col-md-3, .row.g-4 > .col-md-6, .row.g-4 > .col-lg-6 {
+                flex: 0 0 100%;
+                max-width: 100%;
+            }
+        }
     </style>
 </head>
 <body>

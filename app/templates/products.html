@@ -427,29 +427,145 @@
             color: var(--white);
         }
         
-        @media (max-width: 768px) {
+        @media (max-width: 992px) {
+            .hero-section {
+                padding: 60px 0 40px;
+            }
             .hero-personal-loan {
-                padding: 2rem;
+                padding: 1.5rem;
+            }
+            .loan-product-card {
+                padding: 1.2rem;
+            }
+            .feature-card {
+                padding: 1.2rem;
+            }
+            .cta-section {
+                padding: 2rem 0;
+            }
+        }
+        @media (max-width: 768px) {
+            .hero-section {
+                padding: 40px 0 20px;
+            }
+            .hero-personal-loan {
+                padding: 1rem;
                 margin-top: 1rem;
             }
-            
             .hero-personal-loan .hero-title {
-                font-size: 2rem;
+                font-size: 1.5rem;
             }
-            
             .hero-features {
                 flex-direction: column;
                 gap: 1rem;
             }
-            
             .trust-indicators {
                 flex-direction: column;
                 gap: 1rem;
             }
-            
             .loan-product-card {
                 min-height: auto;
-                padding: 1.5rem;
+                padding: 1rem;
+            }
+            .feature-card {
+                padding: 1rem;
+            }
+            .loan-product-title {
+                font-size: 1.1rem;
+            }
+            .loan-product-bank {
+                font-size: 1rem;
+            }
+            .loan-product-details {
+                font-size: 0.95rem;
+            }
+            .badge {
+                font-size: 0.85rem;
+            }
+            .filter-bar {
+                flex-wrap: wrap;
+            }
+        }
+        @media (max-width: 576px) {
+            .hero-section {
+                padding: 24px 0 10px;
+            }
+            .hero-personal-loan {
+                padding: 0.7rem;
+            }
+            .hero-personal-loan .hero-title {
+                font-size: 1.1rem;
+            }
+            .hero-personal-loan .hero-subtitle {
+                font-size: 0.95rem;
+            }
+            .loan-product-card {
+                padding: 0.7rem;
+            }
+            .loan-product-title {
+                font-size: 1rem;
+            }
+            .loan-product-bank {
+                font-size: 0.95rem;
+            }
+            .loan-product-details {
+                font-size: 0.9rem;
+            }
+            .feature-card {
+                padding: 0.7rem;
+            }
+            .feature-icon {
+                width: 48px;
+                height: 48px;
+                font-size: 1.2rem;
+            }
+            .cta-section {
+                padding: 1rem 0;
+            }
+            .btn, .btn-lg {
+                padding: 0.6rem 1.2rem;
+                font-size: 1rem;
+            }
+            .modal-content {
+                padding: 0.5rem;
+            }
+        }
+        /* Responsive grid for loan product cards */
+        @media (max-width: 991.98px) {
+            #loanCards .col-lg-6, #loanCards .col-xl-4 {
+                flex: 0 0 100%;
+                max-width: 100%;
+            }
+        }
+        /* Filter bar horizontal scroll for small screens */
+        .filter-bar, .d-flex.flex-wrap.justify-content-center.mb-5.gap-2 {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            flex-wrap: nowrap !important;
+            gap: 0.5rem !important;
+        }
+        .loan-filter-btn {
+            min-width: 120px;
+            margin-bottom: 0.5rem;
+        }
+        @media (max-width: 576px) {
+            .loan-filter-btn {
+                min-width: 100px;
+                font-size: 0.95rem;
+                padding: 0.5rem 0.8rem;
+            }
+        }
+        /* Feature cards: 2 per row on small, 1 per row on xs */
+        @media (max-width: 991.98px) {
+            .features-section .col-md-6.col-lg-3 {
+                flex: 0 0 50%;
+                max-width: 50%;
+            }
+        }
+        @media (max-width: 576px) {
+            .features-section .col-md-6.col-lg-3 {
+                flex: 0 0 100%;
+                max-width: 100%;
             }
         }
     </style>

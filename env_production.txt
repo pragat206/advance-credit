@@ -1,0 +1,20 @@
+# Security
+SECRET_KEY=advance-credit-super-secret-key-2024-production-ready
+
+# Database Configuration
+DATABASE_URL=sqlite:///./site.db
+
+# Email Configuration
+SMTP_SERVER=smtp.gmail.com
+SMTP_PORT=587
+SMTP_USERNAME=your-email@gmail.com
+SMTP_PASSWORD=your-app-password
+FROM_EMAIL=noreply@advancecfa.com
+TO_EMAIL=vikas@advancecfa.com
+USE_TLS=True
+
+# Admin Configuration
+ADMIN_PASSWORD=admin123
+
+# Environment
+ENVIRONMENT=production 

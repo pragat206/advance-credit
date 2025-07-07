@@ -897,6 +897,125 @@
                 font-size: 1.1rem;
             }
         }
+        
+        /* Responsive hero headline */
+        .hero-headline {
+            font-size: 3.5rem;
+        }
+        @media (max-width: 991.98px) {
+            .hero-headline {
+                font-size: 2.2rem;
+            }
+            .hero-section {
+                padding: 48px 0;
+                min-height: 60vh;
+            }
+        }
+        @media (max-width: 767.98px) {
+            .hero-headline {
+                font-size: 1.5rem;
+                text-align: center;
+            }
+            .hero-section {
+                padding: 32px 0 24px 0;
+                min-height: 50vh;
+            }
+            .hero-content {
+                text-align: center;
+            }
+            .hero-subheadline {
+                font-size: 1rem;
+                margin-bottom: 1.2rem;
+            }
+            .hero-cta {
+                margin-bottom: 1.2rem;
+            }
+        }
+        /* Responsive value cards */
+        .value-card {
+            min-width: 0;
+            margin-bottom: 1.5rem;
+        }
+        @media (max-width: 991.98px) {
+            .value-card {
+                padding: 1.2rem;
+            }
+        }
+        @media (max-width: 767.98px) {
+            .value-card {
+                padding: 0.9rem;
+                font-size: 0.98rem;
+            }
+            .value-card h4 {
+                font-size: 1.1rem;
+            }
+            .value-card p {
+                font-size: 0.95rem;
+            }
+        }
+        /* Responsive loan product cards */
+        .loan-product-card {
+            margin-bottom: 1.5rem;
+        }
+        /* Responsive testimonials */
+        .testimonial-card {
+            margin-bottom: 1.5rem;
+        }
+        /* Responsive stats section */
+        .stats-section {
+            padding: 32px 0;
+        }
+        .stat-item {
+            margin-bottom: 1.5rem;
+        }
+        /* Responsive section titles */
+        .section-title {
+            font-size: 2.2rem;
+        }
+        @media (max-width: 767.98px) {
+            .section-title {
+                font-size: 1.3rem;
+            }
+            .section-subtitle {
+                font-size: 1rem;
+            }
+        }
+        /* Responsive forms */
+        form {
+            width: 100%;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .form-control, .form-select {
+            font-size: 1rem;
+            padding: 0.7rem 1rem;
+            border-radius: 8px;
+        }
+        @media (max-width: 767.98px) {
+            .form-control, .form-select {
+                font-size: 0.98rem;
+                padding: 0.6rem 0.8rem;
+            }
+        }
+        /* Responsive slider navs */
+        .value-propositions-nav {
+            width: 40px;
+            height: 40px;
+            font-size: 1.1rem;
+        }
+        @media (max-width: 767.98px) {
+            .value-propositions-nav {
+                width: 32px;
+                height: 32px;
+                font-size: 1rem;
+            }
+        }
+        /* Remove horizontal scroll on mobile */
+        html, body {
+            max-width: 100vw;
+            overflow-x: hidden;
+        }
     </style>
 </head>
 <body>

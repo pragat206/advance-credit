@@ -270,24 +270,88 @@
             color: var(--white);
         }
         
-        @media (max-width: 768px) {
-            .partner-card { 
-                min-width: 90vw; 
-                max-width: 98vw; 
+        @media (max-width: 992px) {
+            .partners-hero {
+                padding: 40px 0;
             }
-            .partner-logo-badge { 
-                width: 70px; 
-                height: 70px; 
-                top: -36px; 
+            .partners-bg {
+                padding: 1.2rem;
             }
-            .partner-logo { 
-                max-width: 48px; 
-                max-height: 48px; 
+            .partner-card {
+                padding: 1.2rem;
             }
         }
-        
-        @media (max-width: 767px) { 
-            .glass-card { border-radius: 8px; } 
+        @media (max-width: 768px) {
+            .partners-hero {
+                padding: 24px 0;
+            }
+            .partners-hero h1 {
+                font-size: 1.5rem;
+            }
+            .partners-hero p.lead {
+                font-size: 1rem;
+            }
+            .partners-bg {
+                padding: 1rem;
+            }
+            .partner-card {
+                padding: 1rem;
+            }
+            .partner-desc, .partner-products {
+                font-size: 0.93rem;
+            }
+            .partner-logo-badge {
+                width: 38px;
+                height: 38px;
+            }
+            .partner-logo {
+                max-width: 20px;
+                max-height: 20px;
+            }
+        }
+        @media (max-width: 576px) {
+            .partners-hero {
+                padding: 12px 0;
+                border-radius: 6px;
+            }
+            .partners-hero h1 {
+                font-size: 1.1rem;
+            }
+            .partners-hero p.lead {
+                font-size: 0.95rem;
+            }
+            .partners-bg {
+                padding: 0.7rem;
+                border-radius: 6px;
+            }
+            .partner-card {
+                padding: 0.7rem;
+                border-radius: 6px;
+            }
+            .partner-desc, .partner-products {
+                font-size: 0.9rem;
+            }
+            .partner-logo-badge {
+                width: 28px;
+                height: 28px;
+            }
+            .partner-logo {
+                max-width: 16px;
+                max-height: 16px;
+            }
+        }
+        /* Responsive grid for partner cards */
+        @media (max-width: 991.98px) {
+            .row.g-4 > .col-md-4, .row.g-4 > .col-md-3, .row.g-4 > .col-md-6, .row.g-4 > .col-lg-6 {
+                flex: 0 0 50%;
+                max-width: 50%;
+            }
+        }
+        @media (max-width: 576px) {
+            .row.g-4 > .col-md-4, .row.g-4 > .col-md-3, .row.g-4 > .col-md-6, .row.g-4 > .col-lg-6 {
+                flex: 0 0 100%;
+                max-width: 100%;
+            }
         }
         
         /* Enhanced Trusted Partners Section */
