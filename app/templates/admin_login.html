@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login | Advance Credit</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.1/font/bootstrap-icons.min.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #101820 60%, #18263a 100%);
+            min-height: 100vh;
+            color: #fff;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .login-card {
+            background: rgba(24,38,58,0.92);
+            border-radius: 1.2rem;
+            box-shadow: 0 4px 32px #0005;
+            padding: 2.5rem 2.5rem 2rem 2.5rem;
+            max-width: 400px;
+            width: 100%;
+        }
+        .accent {
+            color: #f5b041 !important;
+        }
+        .form-control, .form-control:focus {
+            background: rgba(34,51,77,0.85);
+            color: #fff;
+            border: 1.5px solid #22334d;
+        }
+        .btn-accent {
+            background: #f5b041;
+            color: #222;
+            font-weight: 700;
+            border: none;
+            border-radius: 0.7rem;
+            box-shadow: 0 2px 12px #f5b04122;
+        }
+        .btn-accent:hover {
+            background: #c97c13;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-card mx-auto">
+        <div class="text-center mb-4">
+            <i class="bi bi-shield-lock fs-1 accent"></i>
+            <h2 class="fw-bold accent">Admin Login</h2>
+        </div>
+        <form method="post" action="/admin/login">
+            <div class="mb-3">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" class="form-control" id="password" name="password" required autofocus>
+            </div>
+            {% if error %}
+            <div class="alert alert-danger py-2">{{ error }}</div>
+            {% endif %}
+            <button type="submit" class="btn btn-accent w-100 mt-2">Login</button>
+        </form>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html> 

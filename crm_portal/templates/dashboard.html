@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-5">
+  <div class="card mb-4 shadow-sm">
+    <div class="card-body">
+      <h2 class="card-title text-primary">Welcome, {{ employee_name }}!</h2>
+      <p class="card-text">This is your CRM dashboard. More features coming soon.</p>
+      <a href="/leads" class="btn btn-info">View Leads</a>
+      <a href="/logout" class="btn btn-danger float-end">Logout</a>
+    </div>
+  </div>
+</div>
+{% endblock %} 

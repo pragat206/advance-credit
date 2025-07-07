@@ -1,0 +1,216 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-5">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h2 class="text-primary">Leads</h2>
+    <div>
+      <button class="btn btn-success me-2" data-bs-toggle="modal" data-bs-target="#addLeadModal">+ Add New Lead</button>
+      <button class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#bulkUploadModal">Bulk Upload</button>
+    </div>
+  </div>
+  <div class="card shadow-sm">
+    <div class="card-body p-0">
+      <div class="table-responsive">
+        <table class="table table-hover mb-0">
+          <thead class="table-light">
+            <tr>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Contact</th>
+              <th>Status</th>
+              <th>Verified</th>
+              <th>Documentation</th>
+              <th>Source</th>
+              <th>Assigned To</th>
+              <th>Partner</th>
+              <th>Created At</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="leads-table-body">
+            {% for lead in leads %}
+            <tr>
+              <td>{{ lead.name }}</td>
+              <td>{{ lead.email }}</td>
+              <td>{{ lead.contact }}</td>
+              <td>{{ lead.status }}</td>
+              <td>{% if lead.is_verified %}Verified{% else %}Unverified{% endif %}</td>
+              <td>{{ lead.documentation }}</td>
+              <td>{{ lead.source }}</td>
+              <td>{{ lead.employee.name if lead.employee else '' }}</td>
+              <td>{{ lead.partner.name if lead.partner else '' }}</td>
+              <td>{{ lead.created_at.strftime('%Y-%m-%d') if lead.created_at else '' }}</td>
+              <td><a href="/leads/{{ lead.id }}" class="btn btn-sm btn-info">View</a></td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Add Lead Modal -->
+<div class="modal fade" id="addLeadModal" tabindex="-1" aria-labelledby="addLeadModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addLeadModalLabel">Add New Lead</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="addLeadForm">
+          <div class="row mb-3">
+            <div class="col">
+              <label class="form-label">Name</label>
+              <input type="text" class="form-control" name="name" required>
+            </div>
+            <div class="col">
+              <label class="form-label">Email</label>
+              <input type="email" class="form-control" name="email">
+            </div>
+          </div>
+          <div class="row mb-3">
+            <div class="col">
+              <label class="form-label">Contact</label>
+              <input type="text" class="form-control" name="contact" required maxlength="10" pattern="\d{10}">
+            </div>
+            <div class="col">
+              <label class="form-label">Partner</label>
+              <select class="form-select" name="partner_id">
+                <option value="">-- None --</option>
+                {% for partner in partners %}
+                <option value="{{ partner.id }}">{{ partner.name }}</option>
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Assign To</label>
+            <select class="form-select" name="assigned_to">
+              <option value="">-- Unassigned --</option>
+              {% for emp in employees %}
+              <option value="{{ emp.id }}">{{ emp.name }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Status</label>
+            <select class="form-select" name="status">
+              <option value="new" selected>New</option>
+              <option value="in_progress">In Progress</option>
+              <option value="closed">Closed</option>
+              <option value="rejected">Rejected</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Verified</label>
+            <select class="form-select" name="is_verified">
+              <option value="0" selected>Unverified</option>
+              <option value="1">Verified</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Source</label>
+            <select class="form-select" name="source">
+              <option value="contact" selected>Contact</option>
+              <option value="apply">Apply</option>
+              <option value="debt">Debt</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Documentation</label>
+            <select class="form-select" name="documentation">
+              <option value="pending" selected>Pending</option>
+              <option value="received">Received</option>
+              <option value="not required">Not Required</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Message</label>
+            <textarea class="form-control" name="message" rows="3"></textarea>
+          </div>
+          <div id="leadFormError" class="alert alert-danger d-none"></div>
+          <button type="submit" class="btn btn-success">Create Lead</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Bulk Upload Modal -->
+<div class="modal fade" id="bulkUploadModal" tabindex="-1" aria-labelledby="bulkUploadModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="bulkUploadModalLabel">Bulk Upload Leads</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form method="post" action="/leads/bulk-upload" enctype="multipart/form-data">
+          <div class="mb-3">
+            <label for="bulkFile" class="form-label">Select CSV or Excel File</label>
+            <input type="file" class="form-control" id="bulkFile" name="file" accept=".csv,.xlsx,.xls" required>
+          </div>
+          <div class="alert alert-info">
+            <strong>Instructions:</strong><br>
+            - The file must be in <b>CSV</b> or <b>Excel (.xlsx/.xls)</b> format.<br>
+            - <b>Column names must match exactly</b> the following:<br>
+            <code>name, contact, email, partner_id, assigned_to, message, status, is_verified, source, documentation</code><br>
+            - You can <a href="/leads/bulk-upload/template.csv" target="_blank">download a sample CSV template here</a> or <a href="/leads/bulk-upload/template.xlsx" target="_blank">download Excel template here</a>.
+          </div>
+          <button type="submit" class="btn btn-dark">Upload</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// Handle Add Lead form submission
+const addLeadForm = document.getElementById('addLeadForm');
+if (addLeadForm) {
+  addLeadForm.addEventListener('submit', async function(e) {
+    const contact = document.querySelector('input[name="contact"]').value;
+    if (!/^\d{10}$/.test(contact)) {
+      e.preventDefault();
+      alert('Please enter a valid 10-digit contact number.');
+      return;
+    }
+    e.preventDefault();
+    const formData = new FormData(addLeadForm);
+    const errorDiv = document.getElementById('leadFormError');
+    errorDiv.classList.add('d-none');
+    errorDiv.textContent = '';
+    try {
+      const response = await fetch('/leads/new', {
+        method: 'POST',
+        body: formData,
+        credentials: 'same-origin'
+      });
+      if (response.redirected) {
+        // Success: reload the page to show new lead
+        window.location.href = response.url;
+      } else {
+        const text = await response.text();
+        // Try to extract error from HTML (fallback)
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(text, 'text/html');
+        const alert = doc.querySelector('.alert-danger');
+        if (alert) {
+          errorDiv.textContent = alert.textContent;
+          errorDiv.classList.remove('d-none');
+        } else {
+          errorDiv.textContent = 'An error occurred.';
+          errorDiv.classList.remove('d-none');
+        }
+      }
+    } catch (err) {
+      errorDiv.textContent = 'An error occurred.';
+      errorDiv.classList.remove('d-none');
+    }
+  });
+}
+</script>
+{% endblock %} 

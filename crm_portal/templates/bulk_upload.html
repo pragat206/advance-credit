@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-5" style="max-width: 600px;">
+  <div class="card shadow-sm">
+    <div class="card-body">
+      <h3 class="mb-4">Bulk Upload Leads (CSV/XLSX)</h3>
+      <div class="mb-3">
+        <a href="/leads/bulk-upload/template.csv" class="btn btn-outline-dark btn-sm me-2">Download CSV Template</a>
+        <a href="/leads/bulk-upload/template.xlsx" class="btn btn-outline-dark btn-sm">Download XLSX Template</a>
+      </div>
+      {% if error %}
+      <div class="alert alert-danger">{{ error }}</div>
+      {% endif %}
+      {% if success %}
+      <div class="alert alert-success">{{ success }}</div>
+      {% endif %}
+      <form method="post" action="/leads/bulk-upload" enctype="multipart/form-data">
+        <div class="mb-3">
+          <label for="csvFile" class="form-label">CSV File</label>
+          <input type="file" class="form-control" id="csvFile" name="file" accept=".csv" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Upload</button>
+      </form>
+      <div class="mt-4">
+        <h6>CSV Format Example:</h6>
+        <pre style="font-size: 0.95em; background: #f8f9fa; padding: 10px; border-radius: 5px;">
+name,contact,email,partner_id,assigned_to,message,status,is_verified,source,documentation
+John Doe,1234567890,john@example.com,1,2,Test message,new,1,contact,pending
+Jane Smith,9876543210,jane@example.com,,,Another message,in_progress,0,apply,received
+        </pre>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %} 

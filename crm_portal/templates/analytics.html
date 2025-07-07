@@ -1,0 +1,171 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container-fluid mt-4">
+  <div class="row mb-4">
+    <div class="col-lg-2 mb-3">
+      <div class="card shadow-sm p-3">
+        <h5 class="mb-3">Filters</h5>
+        <form id="analyticsFilterForm">
+          <div class="mb-2">
+            <label class="form-label">Status</label>
+            <select class="form-select" name="status" id="filterStatus">
+              <option value="">All</option>
+              {% for s in ['new', 'in_progress', 'closed', 'rejected'] %}
+              <option value="{{ s }}">{{ s|capitalize }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="mb-2">
+            <label class="form-label">Partner</label>
+            <select class="form-select" name="partner_id" id="filterPartner">
+              <option value="">All</option>
+              {% for partner, _ in partner_counts %}
+              <option value="{{ partner }}">{{ partner or 'Unassigned' }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="mb-2">
+            <label class="form-label">Assignee</label>
+            <select class="form-select" name="assigned_to" id="filterAssignee">
+              <option value="">All</option>
+              {% for assignee, _ in assignee_counts %}
+              <option value="{{ assignee }}">{{ assignee or 'Unassigned' }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="mb-2">
+            <label class="form-label">Date Range</label>
+            <input type="date" class="form-control mb-1" name="start_date" id="filterStartDate">
+            <input type="date" class="form-control" name="end_date" id="filterEndDate">
+          </div>
+          <button type="submit" class="btn btn-dark w-100 mt-2">Apply Filters</button>
+        </form>
+      </div>
+    </div>
+    <div class="col-lg-10">
+      <div class="row mb-4">
+        <div class="col-md-3 mb-3">
+          <div class="card bg-dark text-white shadow text-center p-3">
+            <h6>Total Leads</h6>
+            <h2 id="kpiTotalLeads">{{ total_leads }}</h2>
+          </div>
+        </div>
+        <div class="col-md-3 mb-3">
+          <div class="card bg-dark text-white shadow text-center p-3">
+            <h6>New Leads</h6>
+            <h2 id="kpiNewLeads">0</h2>
+          </div>
+        </div>
+        <div class="col-md-3 mb-3">
+          <div class="card bg-dark text-white shadow text-center p-3">
+            <h6>Closed Leads</h6>
+            <h2 id="kpiClosedLeads">0</h2>
+          </div>
+        </div>
+        <div class="col-md-3 mb-3">
+          <div class="card bg-dark text-white shadow text-center p-3">
+            <h6>Conversion Rate</h6>
+            <h2 id="kpiConversion">0%</h2>
+          </div>
+        </div>
+      </div>
+      <div class="row mb-4">
+        <div class="col-md-6 mb-3">
+          <div class="card shadow-sm p-3">
+            <h6 class="mb-2">Leads by Status</h6>
+            <canvas id="statusChart" height="120"></canvas>
+          </div>
+        </div>
+        <div class="col-md-6 mb-3">
+          <div class="card shadow-sm p-3">
+            <h6 class="mb-2">Leads by Partner</h6>
+            <canvas id="partnerChart" height="120"></canvas>
+          </div>
+        </div>
+      </div>
+      <div class="row mb-4">
+        <div class="col-md-6 mb-3">
+          <div class="card shadow-sm p-3">
+            <h6 class="mb-2">Leads by Assignee</h6>
+            <canvas id="assigneeChart" height="120"></canvas>
+          </div>
+        </div>
+        <div class="col-md-6 mb-3">
+          <div class="card shadow-sm p-3">
+            <h6 class="mb-2">Leads Over Time</h6>
+            <canvas id="timeChart" height="120"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+// Chart.js chart instances
+let statusChart, partnerChart, assigneeChart, timeChart;
+
+function updateDashboard(data) {
+  // KPIs
+  document.getElementById('kpiTotalLeads').textContent = data.kpiTotalLeads;
+  document.getElementById('kpiNewLeads').textContent = data.kpiNewLeads;
+  document.getElementById('kpiClosedLeads').textContent = data.kpiClosedLeads;
+  document.getElementById('kpiConversion').textContent = data.kpiConversion + '%';
+  // Status chart
+  if (statusChart) statusChart.destroy();
+  statusChart = new Chart(document.getElementById('statusChart').getContext('2d'), {
+    type: 'bar',
+    data: { labels: data.statusLabels, datasets: [{ label: 'Leads', data: data.statusData, backgroundColor: '#0dcaf0' }] },
+    options: { plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true } } }
+  });
+  // Partner chart
+  if (partnerChart) partnerChart.destroy();
+  partnerChart = new Chart(document.getElementById('partnerChart').getContext('2d'), {
+    type: 'pie',
+    data: { labels: data.partnerLabels, datasets: [{ label: 'Leads', data: data.partnerData, backgroundColor: ['#0dcaf0','#181818','#ffc107','#198754','#d32f2f','#6f42c1'] }] },
+    options: { plugins: { legend: { position: 'bottom' } } }
+  });
+  // Assignee chart
+  if (assigneeChart) assigneeChart.destroy();
+  assigneeChart = new Chart(document.getElementById('assigneeChart').getContext('2d'), {
+    type: 'doughnut',
+    data: { labels: data.assigneeLabels, datasets: [{ label: 'Leads', data: data.assigneeData, backgroundColor: ['#0dcaf0','#181818','#ffc107','#198754','#d32f2f','#6f42c1'] }] },
+    options: { plugins: { legend: { position: 'bottom' } } }
+  });
+  // Time chart
+  if (timeChart) timeChart.destroy();
+  timeChart = new Chart(document.getElementById('timeChart').getContext('2d'), {
+    type: 'line',
+    data: { labels: data.timeLabels, datasets: [{ label: 'Leads Over Time', data: data.timeData, backgroundColor: '#0dcaf0', borderColor: '#0dcaf0', fill: false }] },
+    options: { plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true } } }
+  });
+}
+
+async function fetchAnalyticsData(params = {}) {
+  const url = new URL('/analytics/data', window.location.origin);
+  Object.keys(params).forEach(key => {
+    if (params[key]) url.searchParams.append(key, params[key]);
+  });
+  const res = await fetch(url);
+  const data = await res.json();
+  updateDashboard(data);
+}
+
+document.getElementById('analyticsFilterForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+  const params = {
+    status: document.getElementById('filterStatus').value,
+    partner_id: document.getElementById('filterPartner').value,
+    assigned_to: document.getElementById('filterAssignee').value,
+    start_date: document.getElementById('filterStartDate').value,
+    end_date: document.getElementById('filterEndDate').value
+  };
+  fetchAnalyticsData(params);
+});
+
+// Initial load
+window.addEventListener('DOMContentLoaded', () => {
+  fetchAnalyticsData();
+});
+</script>
+{% endblock %} 

@@ -1,0 +1,54 @@
+{% extends 'admin_base.html' %}
+{% block content %}
+<div class="row g-4">
+  <div class="col-md-3">
+    <div class="glass-card p-4 text-center">
+      <i class="bi bi-image fs-2 accent"></i>
+      <div class="fw-bold fs-5 mt-2">Banners</div>
+      <div class="fs-3">{{ stats.banners }}</div>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="glass-card p-4 text-center">
+      <i class="bi bi-briefcase fs-2 accent"></i>
+      <div class="fw-bold fs-5 mt-2">Products</div>
+      <div class="fs-3">{{ stats.products }}</div>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="glass-card p-4 text-center">
+      <i class="bi bi-people fs-2 accent"></i>
+      <div class="fw-bold fs-5 mt-2">Partners</div>
+      <div class="fs-3">{{ stats.partners }}</div>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="glass-card p-4 text-center">
+      <i class="bi bi-question-circle fs-2 accent"></i>
+      <div class="fw-bold fs-5 mt-2">FAQs</div>
+      <div class="fs-3">{{ stats.faqs }}</div>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="glass-card p-4 text-center">
+      <i class="bi bi-chat-quote fs-2 accent"></i>
+      <div class="fw-bold fs-5 mt-2">Testimonials</div>
+      <div class="fs-3">{{ stats.testimonials }}</div>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="glass-card p-4 text-center">
+      <i class="bi bi-gear fs-2 accent"></i>
+      <div class="fw-bold fs-5 mt-2">Services</div>
+      <div class="fs-3">{{ stats.services }}</div>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="glass-card p-4 text-center">
+      <i class="bi bi-person-badge fs-2 accent"></i>
+      <div class="fw-bold fs-5 mt-2">Team/About</div>
+      <div class="fs-3">{{ stats.team }}</div>
+    </div>
+  </div>
+</div>
+{% endblock %} 
