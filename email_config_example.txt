@@ -1,0 +1,39 @@
+# Email Configuration Example
+# Copy these environment variables to your .env file or set them in your system
+
+# SMTP Server Settings (Default: localhost for testing)
+SMTP_SERVER=localhost
+SMTP_PORT=25
+USE_TLS=False
+
+# Email Credentials (not needed for localhost)
+SMTP_USERNAME=
+SMTP_PASSWORD=
+
+# Email Addresses
+FROM_EMAIL=noreply@advancecfa.com
+TO_EMAIL=vikas@advancecfa.com
+
+# Admin Password (change this in production)
+ADMIN_PASSWORD=admin123
+
+# Instructions for Localhost Setup (Default - No setup required):
+# The website is now configured to use localhost SMTP by default.
+# This means emails will be sent to your local mail server if available.
+# 
+# To test email functionality:
+# 1. Run: python test_email.py
+# 2. Check your local mail logs or mail client
+# 3. If you have a local mail server running, emails will be delivered there
+
+# Instructions for Gmail Setup (Optional - for production):
+# 1. Enable 2-Factor Authentication on your Gmail account
+# 2. Generate an App Password: Google Account > Security > App Passwords
+# 3. Use the generated 16-character password as SMTP_PASSWORD
+# 4. Make sure SMTP_USERNAME is your full Gmail address
+# 5. Set: SMTP_SERVER=smtp.gmail.com, SMTP_PORT=587, USE_TLS=True
+
+# Instructions for Other Email Providers:
+# - Outlook/Hotmail: SMTP_SERVER=smtp-mail.outlook.com, SMTP_PORT=587, USE_TLS=True
+# - Yahoo: SMTP_SERVER=smtp.mail.yahoo.com, SMTP_PORT=587, USE_TLS=True
+# - Custom Domain: Use your provider's SMTP settings 
