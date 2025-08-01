@@ -1,5 +1,5 @@
 import requests
-from bs4 import BeautifulSoup
+# from bs4 import BeautifulSoup  # Temporarily disabled for Python 3.13 compatibility
 import re
 import json
 from pathlib import Path
@@ -35,56 +35,17 @@ INTEREST_LABELS = {
 
 STATIC_PATH = Path(__file__).parent / "static_data" / "axis_loans.json"
 
+# Temporarily disabled for Python 3.13 compatibility
 def fetch_axis_bank_loans():
-    url = 'https://www.axisbank.com/retail/loans'
-    resp = requests.get(url, timeout=10)
-    resp.raise_for_status()
-    soup = BeautifulSoup(resp.text, 'html.parser')
-    text = soup.get_text(" ", strip=True)
-    products = []
-    found = set()
-    for prod in MAIN_PRODUCTS:
-        pattern = PRODUCT_PATTERNS[prod]
-        match = re.search(pattern, text, re.IGNORECASE)
-        interest = None
-        if match:
-            # Filter out '100%' and similar non-rate numbers
-            rate = match.group(1)
-            if rate and not rate.startswith('100'):
-                interest = rate
-        if not interest:
-            # Try to find a rate in the next 50 chars after product name
-            idx = text.lower().find(prod.lower())
-            if idx != -1:
-                snippet = text[idx:idx+60]
-                rates = re.findall(r'(\d+\.\d+%\s*(to|-)?\s*\d+\.\d+%|\d+\.\d+%|\d+%\s*(to|-)?\s*\d+%|\d+%)', snippet)
-                for rate in rates:
-                    if not rate.startswith('100'):
-                        interest = rate
-                        break
-        if not interest:
-            interest = FALLBACK_RATES[prod]
-        products.append({
-            'name': prod,
-            'interest': interest,
-            'features': [],
-            'source': url
-        })
-    # Clean up interest rates for each product
-    for prod in products:
-        if prod['interest']:
-            # Extract only the rate part, e.g., '8.75% to 9.75%' or '9.99% to 22%'
-            match = re.search(r'(\d+\.\d+%\s*(to|-)?\s*\d+\.\d+%|\d+\.\d+%|\d+%\s*(to|-)?\s*\d+%|\d+%)', prod['interest'])
-            if match:
-                prod['interest'] = match.group(0)
-    return products
+    return []
 
 def save_axis_loans():
     data = fetch_axis_bank_loans()
-    STATIC_PATH.parent.mkdir(parents=True, exist_ok=True)
-    with open(STATIC_PATH, "w", encoding="utf-8") as f:
-        json.dump(data, f, indent=2, ensure_ascii=False)
+    # STATIC_PATH.parent.mkdir(parents=True, exist_ok=True)
+    # with open(STATIC_PATH, "w", encoding="utf-8") as f:
+    #     json.dump(data, f, indent=2, ensure_ascii=False)
+    pass
 
 if __name__ == '__main__':
     save_axis_loans()
-    print(f"Saved Axis Bank loans to {STATIC_PATH}") 
+    print("Axis Bank scraper temporarily disabled") 

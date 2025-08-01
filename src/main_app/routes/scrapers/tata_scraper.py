@@ -1,5 +1,5 @@
 import requests
-from bs4 import BeautifulSoup
+# from bs4 import BeautifulSoup  # Temporarily disabled for Python 3.13 compatibility
 import json
 from pathlib import Path
 
@@ -19,34 +19,37 @@ INTEREST_LABELS = {
 STATIC_PATH = Path(__file__).parent / "static_data" / "tata_loans.json"
 
 def fetch_tata_capital_loans():
-    url = 'https://www.tatacapital.com/loans.html'
-    resp = requests.get(url, timeout=10)
-    resp.raise_for_status()
-    soup = BeautifulSoup(resp.text, 'html.parser')
-    products = []
-    found = set()
-    # Find all <li> and <a> tags that match main products
-    for tag in soup.find_all(['li', 'a']):
-        text = tag.get_text(strip=True)
-        for prod in MAIN_PRODUCTS:
-            if prod.lower() in text.lower() and prod not in found:
-                products.append({
-                    'name': prod,
-                    'interest': None,
-                    'features': [],
-                    'source': url
-                })
-                found.add(prod)
-    # Try to find interest rates for main products
-    for prod in products:
-        label = INTEREST_LABELS.get(prod['name'])
-        if label:
-            rate_tag = soup.find(string=lambda t: t and label in t)
-            if rate_tag:
-                # Extract the rate (e.g., '@ 11.50% p.a' or 'at 8.75%*')
-                after = rate_tag.split('starting')[-1].strip()
-                prod['interest'] = after.split('\n')[0].strip()
-    return products
+    # Temporarily disabled for Python 3.13 compatibility
+    return []
+    
+    # url = 'https://www.tatacapital.com/loans.html'
+    # resp = requests.get(url, timeout=10)
+    # resp.raise_for_status()
+    # soup = BeautifulSoup(resp.text, 'html.parser')
+    # products = []
+    # found = set()
+    # # Find all <li> and <a> tags that match main products
+    # for tag in soup.find_all(['li', 'a']):
+    #     text = tag.get_text(strip=True)
+    #     for prod in MAIN_PRODUCTS:
+    #         if prod.lower() in text.lower() and prod not in found:
+    #         products.append({
+    #             'name': prod,
+    #             'interest': None,
+    #             'features': [],
+    #             'source': url
+    #         })
+    #         found.add(prod)
+    # # Try to find interest rates for main products
+    # for prod in products:
+    #     label = INTEREST_LABELS.get(prod['name'])
+    #     if label:
+    #         rate_tag = soup.find(string=lambda t: t and label in t)
+    #         if rate_tag:
+    #             # Extract the rate (e.g., '@ 11.50% p.a' or 'at 8.75%*')
+    #             after = rate_tag.split('starting')[-1].strip()
+    #             prod['interest'] = after.split('\n')[0].strip()
+    # return products
 
 def save_tata_loans():
     data = fetch_tata_capital_loans()
