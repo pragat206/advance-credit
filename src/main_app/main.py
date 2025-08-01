@@ -26,6 +26,9 @@ from src.shared.crm_models import WebsiteLead
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
+# Explicitly import psycopg dialect to ensure SQLAlchemy uses it
+import psycopg
+
 # Include CRM routes with /crm prefix
 from src.crm.routes import router as crm_router
 
