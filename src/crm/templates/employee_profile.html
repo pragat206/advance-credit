@@ -1,0 +1,331 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ employee.user.name }} - Employee Profile{% endblock %}
+
+{% block content %}
+<div class="glass-card">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="page-title">{{ employee.user.name }}</h1>
+            <p class="page-subtitle">{{ employee.designation }} • {{ employee.department }}</p>
+        </div>
+        <div class="d-flex gap-2">
+            <a href="/crm/employees/{{ employee.employee_id }}/edit" class="btn btn-warning-modern btn-modern">
+                <i class="bi bi-pencil me-2"></i>Edit Profile
+            </a>
+            <a href="/crm/employees/{{ employee.employee_id }}/billing" class="btn btn-success-modern btn-modern">
+                <i class="bi bi-cash me-2"></i>View Billing
+            </a>
+            <a href="/crm/employees" class="btn btn-primary-modern btn-modern">
+                <i class="bi bi-arrow-left me-2"></i>Back to Employees
+            </a>
+        </div>
+    </div>
+
+    <!-- Employee Stats -->
+    <div class="row g-4 mb-4">
+        <div class="col-lg-3 col-md-6">
+            <div class="stats-card">
+                <div class="stats-icon primary">
+                    <i class="bi bi-graph-up"></i>
+                </div>
+                <h3 class="h4 mb-2">{{ assigned_leads|length }}</h3>
+                <p class="text-muted mb-0">Assigned Leads</p>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6">
+            <div class="stats-card">
+                <div class="stats-icon success">
+                    <i class="bi bi-check-circle"></i>
+                </div>
+                <h3 class="h4 mb-2">{{ converted_leads|length }}</h3>
+                <p class="text-muted mb-0">Converted Leads</p>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6">
+            <div class="stats-card">
+                <div class="stats-icon warning">
+                    <i class="bi bi-cash-stack"></i>
+                </div>
+                <h3 class="h4 mb-2">₹{{ "{:,.0f}".format(employee.salary) }}</h3>
+                <p class="text-muted mb-0">Monthly Salary</p>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6">
+            <div class="stats-card">
+                <div class="stats-icon danger">
+                    <i class="bi bi-percent"></i>
+                </div>
+                <h3 class="h4 mb-2">{{ employee.commission_rate }}%</h3>
+                <p class="text-muted mb-0">Commission Rate</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Employee Details -->
+    <div class="row">
+        <div class="col-lg-4">
+            <div class="glass-card">
+                <h5 class="mb-3"><i class="bi bi-person me-2"></i>Employee Information</h5>
+                <div class="row">
+                    <div class="col-12 mb-3">
+                        <label class="form-label fw-bold">Employee Code</label>
+                        <p class="mb-0">{{ employee.employee_code }}</p>
+                    </div>
+                    <div class="col-12 mb-3">
+                        <label class="form-label fw-bold">Email</label>
+                        <p class="mb-0">
+                            <a href="mailto:{{ employee.user.email }}" class="text-decoration-none">
+                                <i class="bi bi-envelope me-1"></i>{{ employee.user.email }}
+                            </a>
+                        </p>
+                    </div>
+                    <div class="col-12 mb-3">
+                        <label class="form-label fw-bold">Phone</label>
+                        <p class="mb-0">
+                            <a href="tel:{{ employee.user.phone }}" class="text-decoration-none">
+                                <i class="bi bi-telephone me-1"></i>{{ employee.user.phone }}
+                            </a>
+                        </p>
+                    </div>
+                    <div class="col-12 mb-3">
+                        <label class="form-label fw-bold">Department</label>
+                        <p class="mb-0">
+                            <span class="badge badge-modern bg-info">{{ employee.department }}</span>
+                        </p>
+                    </div>
+                    <div class="col-12 mb-3">
+                        <label class="form-label fw-bold">Team</label>
+                        <p class="mb-0">
+                            {% if employee.team %}
+                            <span class="badge badge-modern bg-warning">{{ employee.team.name }}</span>
+                            {% else %}
+                            <span class="text-muted">Not assigned</span>
+                            {% endif %}
+                        </p>
+                    </div>
+                    <div class="col-12 mb-3">
+                        <label class="form-label fw-bold">Joining Date</label>
+                        <p class="mb-0">{{ employee.joining_date.strftime('%d %B %Y') }}</p>
+                    </div>
+                    <div class="col-12 mb-3">
+                        <label class="form-label fw-bold">Status</label>
+                        <p class="mb-0">
+                            {% if employee.is_active %}
+                            <span class="badge badge-modern bg-success">Active</span>
+                            {% else %}
+                            <span class="badge badge-modern bg-danger">Inactive</span>
+                            {% endif %}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-8">
+            <div class="glass-card">
+                <h5 class="mb-3"><i class="bi bi-list-task me-2"></i>Assigned Leads</h5>
+                {% if assigned_leads %}
+                <div class="table-responsive">
+                    <table class="table table-modern">
+                        <thead>
+                            <tr>
+                                <th>Lead</th>
+                                <th>Type</th>
+                                <th>Status</th>
+                                <th>Assigned</th>
+                                <th>Last Contact</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for assignment in assigned_leads %}
+                            <tr>
+                                <td>
+                                    <strong>{{ assignment.lead_name }}</strong>
+                                    <br>
+                                    <small class="text-muted">{{ assignment.lead_contact }}</small>
+                                </td>
+                                <td>
+                                    {% if assignment.lead_type == 'website' %}
+                                    <span class="badge badge-modern bg-primary">Website</span>
+                                    {% else %}
+                                    <span class="badge badge-modern bg-secondary">Social</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if assignment.status == 'assigned' %}
+                                    <span class="badge badge-modern bg-warning">Assigned</span>
+                                    {% elif assignment.status == 'contacted' %}
+                                    <span class="badge badge-modern bg-info">Contacted</span>
+                                    {% elif assignment.status == 'converted' %}
+                                    <span class="badge badge-modern bg-success">Converted</span>
+                                    {% else %}
+                                    <span class="badge badge-modern bg-danger">Lost</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <small>{{ assignment.assigned_at.strftime('%d %b %Y') }}</small>
+                                </td>
+                                <td>
+                                    {% if assignment.last_contact_date %}
+                                    <small>{{ assignment.last_contact_date.strftime('%d %b %Y') }}</small>
+                                    {% else %}
+                                    <small class="text-muted">Not contacted</small>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <div class="btn-group" role="group">
+                                        <a href="/leads/{{ assignment.lead_type }}/{{ assignment.lead_id }}" class="btn btn-sm btn-primary-modern btn-modern" title="View Lead">
+                                            <i class="bi bi-eye"></i>
+                                        </a>
+                                        <button class="btn btn-sm btn-warning-modern btn-modern" title="Update Status" onclick="updateStatus({{ assignment.assignment_id }})">
+                                            <i class="bi bi-pencil"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <div class="text-center py-4">
+                    <div class="stats-icon primary mx-auto mb-3" style="width: 60px; height: 60px; font-size: 1.5rem;">
+                        <i class="bi bi-inbox"></i>
+                    </div>
+                    <h6 class="text-muted">No Leads Assigned</h6>
+                    <p class="text-muted">This employee hasn't been assigned any leads yet.</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Performance Metrics -->
+    <div class="row mt-4">
+        <div class="col-lg-6">
+            <div class="glass-card">
+                <h5 class="mb-3"><i class="bi bi-graph-up me-2"></i>Performance Overview</h5>
+                <div class="row text-center">
+                    <div class="col-4">
+                        <div class="stats-icon primary mb-2" style="width: 50px; height: 50px; font-size: 1.2rem; margin: 0 auto;">
+                            <i class="bi bi-graph-up"></i>
+                        </div>
+                        <h4 class="mb-1">{{ assigned_leads|length }}</h4>
+                        <small class="text-muted">Total Assigned</small>
+                    </div>
+                    <div class="col-4">
+                        <div class="stats-icon success mb-2" style="width: 50px; height: 50px; font-size: 1.2rem; margin: 0 auto;">
+                            <i class="bi bi-check-circle"></i>
+                        </div>
+                        <h4 class="mb-1">{{ converted_leads|length }}</h4>
+                        <small class="text-muted">Converted</small>
+                    </div>
+                    <div class="col-4">
+                        <div class="stats-icon warning mb-2" style="width: 50px; height: 50px; font-size: 1.2rem; margin: 0 auto;">
+                            <i class="bi bi-percent"></i>
+                        </div>
+                        <h4 class="mb-1">
+                            {% if assigned_leads|length > 0 %}
+                            {{ "%.1f"|format(converted_leads|length / assigned_leads|length * 100) }}%
+                            {% else %}
+                            0%
+                            {% endif %}
+                        </h4>
+                        <small class="text-muted">Conversion Rate</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6">
+            <div class="glass-card">
+                <h5 class="mb-3"><i class="bi bi-cash-stack me-2"></i>Earnings Overview</h5>
+                <div class="row">
+                    <div class="col-6">
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Basic Salary</label>
+                            <p class="h5 mb-0">₹{{ "{:,.0f}".format(employee.salary) }}</p>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Commission Rate</label>
+                            <p class="h5 mb-0">{{ employee.commission_rate }}%</p>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Total Commission Earned</label>
+                            <p class="h5 mb-0">₹{{ "{:,.0f}".format(total_commission|default(0)) }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Update Status Modal -->
+<div class="modal fade" id="updateStatusModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Update Lead Status</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="updateStatusForm">
+                    <input type="hidden" id="assignmentId" name="assignment_id">
+                    <div class="mb-3">
+                        <label class="form-label">Status</label>
+                        <select class="form-select form-control-modern" name="status" id="statusSelect">
+                            <option value="assigned">Assigned</option>
+                            <option value="contacted">Contacted</option>
+                            <option value="converted">Converted</option>
+                            <option value="lost">Lost</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Notes</label>
+                        <textarea class="form-control form-control-modern" name="notes" id="notesText" rows="3" placeholder="Add any notes about this lead..."></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary-modern btn-modern" onclick="submitStatusUpdate()">Update Status</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function updateStatus(assignmentId) {
+    document.getElementById('assignmentId').value = assignmentId;
+    new bootstrap.Modal(document.getElementById('updateStatusModal')).show();
+}
+
+function submitStatusUpdate() {
+    const form = document.getElementById('updateStatusForm');
+    const formData = new FormData(form);
+    
+    fetch('/employees/update-lead-status', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            location.reload();
+        } else {
+            alert('Error updating status: ' + data.error);
+        }
+    })
+    .catch(error => {
+        alert('Error updating status');
+    });
+}
+</script>
+{% endblock %} 

@@ -22,50 +22,26 @@ A comprehensive FastAPI application combining a public-facing financial services
 
 ```
 news_slider/
-├── src/                          # Main source code
-│   ├── main_app/                 # Main website application
-│   │   ├── __init__.py
-│   │   ├── main.py              # FastAPI app entry point
-│   │   ├── models.py            # Database models
-│   │   ├── database.py          # Database configuration
-│   │   ├── routes/              # Route modules
-│   │   │   ├── __init__.py
-│   │   │   ├── admin/           # Admin routes
-│   │   │   └── scrapers/        # Bank scrapers
-│   │   ├── templates/           # Website templates
-│   │   └── static/              # Website assets
-│   ├── crm/                     # CRM application
-│   │   ├── __init__.py
-│   │   ├── routes.py            # CRM routes
-│   │   ├── templates/           # CRM templates
-│   │   └── static/              # CRM assets
-│   └── shared/                  # Shared components
-│       ├── __init__.py
-│       └── models.py            # Shared database models
-├── deployment/                   # Deployment files
-│   ├── scripts/
-│   │   ├── deploy_crm.py        # CRM deployment script
-│   │   └── setup_database.py    # Database setup
-│   ├── requirements/
-│   │   ├── main.txt             # Main app requirements
-│   │   └── crm.txt              # CRM requirements
-│   └── config/
-│       ├── Procfile             # Render deployment
-│       ├── runtime.txt          # Python version
-│       └── build.sh             # Build script
-├── docs/                        # Documentation
-│   ├── README.md                # Main documentation
-│   ├── DEPLOYMENT_GUIDE.md      # Deployment guide
-│   └── API_DOCS.md              # API documentation
-├── tests/                       # Test files
-│   ├── __init__.py
-│   ├── test_main_app.py
-│   └── test_crm.py
-├── main.py                      # Application entry point
-├── requirements.txt              # Main dependencies
-├── .gitignore
-├── pyproject.toml
-└── poetry.lock
+├── app/                    # Main website application
+│   ├── main.py            # FastAPI app with CRM integration
+│   ├── models.py          # Database models
+│   ├── db.py              # Database configuration
+│   ├── admin/             # Admin routes
+│   ├── scrapers/          # Bank loan scrapers
+│   ├── templates/         # Website templates
+│   └── static/            # Website assets
+├── crm_portal/            # CRM application
+│   ├── routes.py          # CRM routes
+│   ├── templates/         # CRM templates
+│   └── static/            # CRM assets
+├── common_models/         # Shared database models
+├── deploy_crm.py          # CRM deployment script
+├── crm_main.py           # CRM standalone entry point
+├── crm_requirements.txt   # CRM dependencies
+├── requirements.txt       # Main app dependencies
+├── Procfile              # Render deployment config
+├── runtime.txt           # Python version
+└── DEPLOYMENT_GUIDE.md   # Deployment instructions
 ```
 
 ## **🚀 Quick Start**
@@ -85,9 +61,7 @@ news_slider/
 
 3. **Run the application**
    ```bash
-   python main.py
-   # or
-   uvicorn main:app --reload --port 8000
+   python -m uvicorn app.main:app --reload --port 8000
    ```
 
 4. **Access the application**
@@ -96,7 +70,7 @@ news_slider/
 
 ### **Production Deployment**
 
-See [docs/DEPLOYMENT_GUIDE.md](docs/DEPLOYMENT_GUIDE.md) for detailed deployment instructions.
+See [DEPLOYMENT_GUIDE.md](DEPLOYMENT_GUIDE.md) for detailed deployment instructions.
 
 ## **🔧 Environment Variables**
 
@@ -174,8 +148,8 @@ The application automatically creates all necessary tables and seeds initial dat
 ## **🛠️ Development**
 
 ### **Adding New Features**
-1. Update models in `src/shared/models.py`
-2. Add routes in `src/main_app/main.py` or `src/crm/routes.py`
+1. Update models in `common_models/__init__.py`
+2. Add routes in `app/main.py` or `crm_portal/routes.py`
 3. Create templates in respective `templates/` directories
 4. Update static files as needed
 

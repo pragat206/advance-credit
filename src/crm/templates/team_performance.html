@@ -1,0 +1,196 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ team.name }} - Performance{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <!-- Page Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="page-title">{{ team.name }} Performance</h1>
+            <p class="page-subtitle">Team performance metrics and analytics</p>
+        </div>
+        <a href="/teams" class="btn btn-modern btn-secondary-modern">
+            <i class="bi bi-arrow-left me-2"></i>Back to Teams
+        </a>
+    </div>
+
+    <!-- Performance Stats -->
+    <div class="row mb-4">
+        <div class="col-lg-3 col-md-6">
+            <div class="stats-card">
+                <div class="stats-icon primary">
+                    <i class="bi bi-people"></i>
+                </div>
+                <h3 class="h4 mb-2">{{ team.members_count }}</h3>
+                <p class="text-muted mb-0">Team Members</p>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6">
+            <div class="stats-card">
+                <div class="stats-icon success">
+                    <i class="bi bi-person-check"></i>
+                </div>
+                <h3 class="h4 mb-2">{{ leads_count }}</h3>
+                <p class="text-muted mb-0">Total Leads</p>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6">
+            <div class="stats-card">
+                <div class="stats-icon warning">
+                    <i class="bi bi-graph-up"></i>
+                </div>
+                <h3 class="h4 mb-2">{{ converted_count }}</h3>
+                <p class="text-muted mb-0">Converted Leads</p>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6">
+            <div class="stats-card">
+                <div class="stats-icon info">
+                    <i class="bi bi-percent"></i>
+                </div>
+                <h3 class="h4 mb-2">{{ "%.1f"|format(conversion_rate) }}%</h3>
+                <p class="text-muted mb-0">Conversion Rate</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Performance Details -->
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="glass-card">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="bi bi-graph-up me-2"></i>
+                        Performance Overview
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-4">
+                                <h6 class="fw-bold">Lead Distribution</h6>
+                                <div class="progress mb-2" style="height: 25px;">
+                                    <div class="progress-bar bg-success" style="width: {{ (converted_count / leads_count * 100) if leads_count > 0 else 0 }}%">
+                                        {{ converted_count }} Converted
+                                    </div>
+                                    <div class="progress-bar bg-warning" style="width: {{ ((leads_count - converted_count) / leads_count * 100) if leads_count > 0 else 0 }}%">
+                                        {{ leads_count - converted_count }} Pending
+                                    </div>
+                                </div>
+                                <small class="text-muted">Total: {{ leads_count }} leads</small>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-4">
+                                <h6 class="fw-bold">Conversion Rate</h6>
+                                <div class="d-flex align-items-center">
+                                    <div class="stats-icon success me-3" style="width: 60px; height: 60px; font-size: 1.5rem;">
+                                        <i class="bi bi-percent"></i>
+                                    </div>
+                                    <div>
+                                        <h3 class="mb-0">{{ "%.1f"|format(conversion_rate) }}%</h3>
+                                        <small class="text-muted">Success Rate</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-12">
+                            <h6 class="fw-bold mb-3">Performance Insights</h6>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="text-center p-3 border rounded">
+                                        <div class="stats-icon primary mb-2" style="width: 50px; height: 50px; font-size: 1.2rem; margin: 0 auto;">
+                                            <i class="bi bi-people"></i>
+                                        </div>
+                                        <h6 class="mb-1">Team Size</h6>
+                                        <p class="text-muted mb-0">{{ team.members_count }} members</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="text-center p-3 border rounded">
+                                        <div class="stats-icon success mb-2" style="width: 50px; height: 50px; font-size: 1.2rem; margin: 0 auto;">
+                                            <i class="bi bi-person-check"></i>
+                                        </div>
+                                        <h6 class="mb-1">Lead Efficiency</h6>
+                                        <p class="text-muted mb-0">{{ "%.1f"|format(leads_count / team.members_count) if team.members_count > 0 else 0 }} leads/member</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="text-center p-3 border rounded">
+                                        <div class="stats-icon warning mb-2" style="width: 50px; height: 50px; font-size: 1.2rem; margin: 0 auto;">
+                                            <i class="bi bi-trophy"></i>
+                                        </div>
+                                        <h6 class="mb-1">Conversion Efficiency</h6>
+                                        <p class="text-muted mb-0">{{ "%.1f"|format(converted_count / team.members_count) if team.members_count > 0 else 0 }} conversions/member</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-4">
+            <div class="glass-card">
+                <div class="card-header">
+                    <h6 class="mb-0">
+                        <i class="bi bi-info-circle me-2"></i>
+                        Team Information
+                    </h6>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <small class="text-muted">Team Name</small>
+                        <div class="fw-bold">{{ team.name }}</div>
+                    </div>
+                    <div class="mb-3">
+                        <small class="text-muted">Description</small>
+                        <div class="fw-bold">{{ team.description or 'No description available' }}</div>
+                    </div>
+                    <div class="mb-3">
+                        <small class="text-muted">Manager</small>
+                        <div class="fw-bold">
+                            {% if team.manager %}
+                            {{ team.manager.user.name }}
+                            {% else %}
+                            <span class="text-muted">No manager assigned</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <small class="text-muted">Created</small>
+                        <div class="fw-bold">{{ team.created_at.strftime('%B %d, %Y') }}</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="glass-card mt-4">
+                <div class="card-header">
+                    <h6 class="mb-0">
+                        <i class="bi bi-lightning me-2"></i>
+                        Quick Actions
+                    </h6>
+                </div>
+                <div class="card-body">
+                    <div class="d-grid gap-2">
+                        <a href="/teams/{{ team.team_id }}/members" class="btn btn-modern btn-primary-modern">
+                            <i class="bi bi-people me-2"></i>View Members
+                        </a>
+                        <a href="/employees" class="btn btn-modern btn-secondary-modern">
+                            <i class="bi bi-plus me-2"></i>Add Member
+                        </a>
+                        <a href="/teams" class="btn btn-modern btn-warning-modern">
+                            <i class="bi bi-arrow-left me-2"></i>Back to Teams
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

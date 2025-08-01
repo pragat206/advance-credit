@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - Advance Credit | Financial Advisory & Debt Consolidation Experts</title>
+    <meta name="description" content="Learn about Advance Credit, your trusted financial advisory partner. We help families overcome debt and build stronger financial futures through expert guidance.">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="icon" type="image/svg+xml" href="/static/ac-logo-1.svg">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@700;900&family=Mulish:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <style>
+        :root {
+            --primary-blue: #1e3a8a;
+            --secondary-blue: #3b82f6;
+            --accent-blue: #1e40af;
+            --light-blue: #dbeafe;
+            --white: #ffffff;
+            --dark-text: #1f2937;
+            --gray-text: #6b7280;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            color: var(--dark-text);
+            background: var(--white);
+        }
+        
+        .navbar {
+            background: var(--white) !important;
+            box-shadow: 0 2px 10px rgba(30, 58, 138, 0.1);
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .navbar-brand {
+            color: var(--primary-blue) !important;
+            font-weight: 700;
+            font-size: 1.5rem;
+        }
+        
+        .nav-link {
+            color: var(--dark-text) !important;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+        
+        .nav-link:hover {
+            color: var(--secondary-blue) !important;
+        }
+        
+        .btn-primary {
+            background: var(--primary-blue);
+            border-color: var(--primary-blue);
+            color: var(--white);
+            font-weight: 600;
+            padding: 12px 24px;
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+        
+        .btn-primary:hover {
+            background: var(--accent-blue);
+            border-color: var(--accent-blue);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(30, 58, 138, 0.3);
+        }
+        
+        .btn-outline-primary {
+            color: var(--primary-blue);
+            border-color: var(--primary-blue);
+            font-weight: 600;
+        }
+        
+        .btn-outline-primary:hover {
+            background: var(--primary-blue);
+            border-color: var(--primary-blue);
+        }
+        
+        .text-primary {
+            color: var(--primary-blue) !important;
+        }
+        
+        .bg-primary {
+            background: var(--primary-blue) !important;
+        }
+        
+        .bg-light-blue {
+            background: var(--light-blue);
+        }
+        
+        .text-accent { 
+            color: var(--primary-blue) !important; 
+        }
+        
+        /* Fix text visibility issues */
+        .glass-card p {
+            color: var(--dark-text) !important;
+        }
+        
+        .glass-card .text-muted {
+            color: var(--gray-text) !important;
+        }
+        
+        .about-hero p.lead {
+            color: var(--white) !important;
+        }
+        
+        .glass-card h2, .glass-card h3, .glass-card h4, .glass-card h5, .glass-card h6 {
+            color: var(--dark-text) !important;
+        }
+        
+        .glass-card .text-primary {
+            color: var(--primary-blue) !important;
+        }
+        
+        .btn-accent { 
+            background: var(--primary-blue) !important; 
+            color: var(--white) !important; 
+            border: none; 
+            font-weight: 600;
+            padding: 12px 24px;
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+        
+        .btn-accent:hover, .btn-accent:focus { 
+            background: var(--accent-blue) !important; 
+            color: var(--white) !important; 
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(30, 58, 138, 0.3);
+        }
+        
+        .accent-fill { 
+            fill: var(--primary-blue) !important; 
+        }
+        
+        .glass-card {
+            background: var(--white);
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            transition: all 0.2s;
+            padding: 2rem;
+        }
+        
+        .glass-card:hover {
+            box-shadow: 0 8px 25px rgba(30, 58, 138, 0.15);
+            transform: translateY(-2px);
+        }
+        
+        .icon-circle {
+            width: 60px;
+            height: 60px;
+            background: var(--light-blue);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+            transition: all 0.2s;
+        }
+        
+        .icon-circle:hover {
+            transform: scale(1.1);
+            background: var(--primary-blue);
+            color: var(--white);
+        }
+        
+        .about-hero {
+            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--accent-blue) 100%);
+            color: var(--white);
+            padding: 80px 0;
+            position: relative;
+            overflow: hidden;
+            border-radius: 12px;
+            margin-bottom: 3rem;
+        }
+        
+        .about-hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="50" cy="50" r="1" fill="white" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+            opacity: 0.1;
+        }
+        
+        .contact-card {
+            background: var(--light-blue);
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+        
+        .footer-dark { 
+            background: var(--dark-text); 
+            color: var(--white);
+        }
+        
+        @media (max-width: 767px) { 
+            .glass-card { border-radius: 8px; } 
+        }
+        
+        .achievement-card {
+            transition: all 0.3s ease;
+        }
+        
+        .achievement-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(30, 58, 138, 0.2);
+        }
+        
+        .team-card {
+            transition: all 0.3s ease;
+        }
+        
+        .team-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(30, 58, 138, 0.15);
+        }
+        
+        .testimonial-card {
+            transition: all 0.3s ease;
+        }
+        
+        .testimonial-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(30, 58, 138, 0.15);
+        }
+        
+        .milestone-card {
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        .milestone-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(30, 58, 138, 0.15);
+        }
+        
+        .milestone-card::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            right: -50%;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary-blue) 0%, transparent 100%);
+            transform: translateY(-50%);
+        }
+        
+        .milestone-card:last-child::after {
+            display: none;
+        }
+        
+        .badge {
+            font-size: 0.75rem;
+            padding: 0.5rem 0.75rem;
+        }
+        
+        .star-rating {
+            color: #ffc107;
+        }
+        
+        @media (max-width: 767px) { 
+            .glass-card { border-radius: 8px; }
+            .milestone-card::after { display: none; }
+        }
+        
+        @media (max-width: 992px) {
+            .about-hero {
+                padding: 40px 0;
+            }
+            .contact-card {
+                padding: 1.2rem;
+            }
+            .glass-card {
+                padding: 1.2rem;
+            }
+        }
+        @media (max-width: 768px) {
+            .about-hero {
+                padding: 24px 0;
+            }
+            .about-hero h1 {
+                font-size: 1.5rem;
+            }
+            .about-hero p.lead {
+                font-size: 1rem;
+            }
+            .contact-card, .glass-card {
+                padding: 1rem;
+            }
+            .icon-circle {
+                width: 38px;
+                height: 38px;
+            }
+        }
+        @media (max-width: 576px) {
+            .about-hero {
+                padding: 12px 0;
+                border-radius: 6px;
+            }
+            .about-hero h1 {
+                font-size: 1.1rem;
+            }
+            .about-hero p.lead {
+                font-size: 0.95rem;
+            }
+            .contact-card, .glass-card {
+                padding: 0.7rem;
+                border-radius: 6px;
+            }
+            .icon-circle {
+                width: 28px;
+                height: 28px;
+            }
+        }
+        /* Responsive grid for all card sections */
+        @media (max-width: 991.98px) {
+            .row.g-4 > .col-md-4, .row.g-4 > .col-md-3, .row.g-4 > .col-md-6, .row.g-4 > .col-lg-6 {
+                flex: 0 0 50%;
+                max-width: 50%;
+            }
+        }
+        @media (max-width: 576px) {
+            .row.g-4 > .col-md-4, .row.g-4 > .col-md-3, .row.g-4 > .col-md-6, .row.g-4 > .col-lg-6 {
+                flex: 0 0 100%;
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+{% include 'navbar.html' %}
+<div class="page-content">
+    <div class="container mt-5">
+        <div class="about-hero text-center mb-5">
+            <svg width="120" height="120" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg" class="mb-3">
+                <ellipse cx="60" cy="60" rx="54" ry="54" fill="#22334d" fill-opacity="0.7"/>
+                <rect x="30" y="40" width="60" height="40" rx="16" fill="#f5b041" fill-opacity="0.9"/>
+                <rect x="40" y="55" width="40" height="10" rx="4" fill="#fff" fill-opacity="0.95"/>
+                <rect x="50" y="60" width="20" height="5" rx="2" fill="#f5b041"/>
+                <circle cx="80" cy="65" r="5" fill="#2a4d8f"/>
+                <rect x="65" y="60" width="10" height="5" rx="2" fill="#2a4d8f"/>
+                <ellipse cx="60" cy="100" rx="30" ry="5" fill="#000" fill-opacity="0.12"/>
+            </svg>
+            <h1 class="display-4 fw-bold mb-3 text-white">About Advance Credit</h1>
+            <p class="lead" style="color:#e0e6ed; max-width:700px; margin:0 auto;">Your trusted financial advisory partner, helping families overcome debt and build stronger financial futures. Based in Goregaon, Mumbai, we specialize in debt consolidation, credit building, and personalized financial planning to transform your financial health.</p>
+        </div>
+        <!-- Animated SVG Divider -->
+        <div class="w-100" style="margin-top:-2rem; margin-bottom:2rem;">
+            <svg viewBox="0 0 1440 80" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:100%; height:80px; display:block;"><path d="M0,40 Q360,80 720,40 T1440,40 V80 H0Z" fill="#22334d" fill-opacity="0.7"/></svg>
+        </div>
+        <!-- Company Profile Section -->
+        <div class="row justify-content-center mb-5 g-4">
+            <div class="col-md-10">
+                <div class="glass-card p-4 mb-4 animate__animated animate__fadeInUp">
+                    <h2 class="fw-bold mb-3 text-accent"><i class="bi bi-building me-2"></i>Company Profile</h2>
+                    <p class="fs-5">Advance Credit Pvt Ltd. is a leading financial advisory firm, dedicated to helping families overcome debt and build stronger financial futures. With a strong presence in Mumbai and partnerships with 50+ banks and NBFCs, we have helped over 500 families consolidate ₹2.5Cr+ in debt and improve their credit scores. Our expert financial advisors provide personalized debt consolidation strategies, credit building guidance, and comprehensive financial planning to transform your financial health.</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- What We Do Section -->
+        <div class="row justify-content-center mb-5 g-4">
+            <div class="col-12">
+                <h2 class="text-center text-primary mb-5">What We Do</h2>
+                <div class="row g-4">
+                    <div class="col-md-4">
+                        <div class="glass-card p-4 h-100 text-center">
+                            <div class="bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px;">
+                                <i class="bi bi-arrow-repeat fs-1"></i>
+                            </div>
+                            <h4 class="text-primary mb-3">Debt Consolidation</h4>
+                            <p class="text-muted">We help you combine multiple high-interest loans into one manageable payment with better terms and lower interest rates.</p>
+                            <ul class="list-unstyled text-start">
+                                <li><i class="bi bi-check-circle text-success me-2"></i>Reduce monthly payments</li>
+                                <li><i class="bi bi-check-circle text-success me-2"></i>Lower interest rates</li>
+                                <li><i class="bi bi-check-circle text-success me-2"></i>Simplify payments</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="glass-card p-4 h-100 text-center">
+                            <div class="bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px;">
+                                <i class="bi bi-graph-up-arrow fs-1"></i>
+                            </div>
+                            <h4 class="text-primary mb-3">Credit Building</h4>
+                            <p class="text-muted">Expert guidance to improve your credit score and build a strong financial profile for better loan opportunities.</p>
+                            <ul class="list-unstyled text-start">
+                                <li><i class="bi bi-check-circle text-success me-2"></i>Credit score improvement</li>
+                                <li><i class="bi bi-check-circle text-success me-2"></i>Financial profile building</li>
+                                <li><i class="bi bi-check-circle text-success me-2"></i>Better loan terms</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="glass-card p-4 h-100 text-center">
+                            <div class="bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px;">
+                                <i class="bi bi-calculator fs-1"></i>
+                            </div>
+                            <h4 class="text-primary mb-3">Financial Planning</h4>
+                            <p class="text-muted">Comprehensive financial planning to help you achieve your goals and build long-term financial security.</p>
+                            <ul class="list-unstyled text-start">
+                                <li><i class="bi bi-check-circle text-success me-2"></i>Personalized strategies</li>
+                                <li><i class="bi bi-check-circle text-success me-2"></i>Goal-based planning</li>
+                                <li><i class="bi bi-check-circle text-success me-2"></i>Long-term security</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Mission & Vision Section -->
+        <div class="row justify-content-center mb-5 g-4">
+            <div class="col-md-5">
+                <div class="glass-card p-4 h-100 text-center animate__animated animate__fadeInUp" style="animation-delay:0.1s;">
+                    <h3 class="fw-bold mb-3 text-accent"><i class="bi bi-bullseye me-2"></i>Our Mission</h3>
+                    <p class="fs-5">To empower individuals and businesses by providing quick, transparent, and personalized loan solutions, enabling them to achieve their dreams and build a brighter financial future.</p>
+                </div>
+            </div>
+            <div class="col-md-5">
+                <div class="glass-card p-4 h-100 text-center animate__animated animate__fadeInUp" style="animation-delay:0.2s;">
+                    <h3 class="fw-bold mb-3 text-accent"><i class="bi bi-eye me-2"></i>Our Vision</h3>
+                    <p class="fs-5">To be India's most trusted and innovative financial partner, recognized for our integrity, expertise, and commitment to customer success.</p>
+                </div>
+            </div>
+        </div>
+        <!-- Core Values Section -->
+        <div class="row justify-content-center mb-5 g-4">
+            <div class="col-md-10">
+                <div class="glass-card p-4 animate__animated animate__fadeInUp" style="animation-delay:0.3s;">
+                    <h3 class="fw-bold mb-3 text-accent"><i class="bi bi-stars me-2"></i>Our Core Values</h3>
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <div class="d-flex align-items-start">
+                                <span class="icon-circle me-3 animate__animated animate__fadeIn" style="transition:transform 0.2s;"><i class="bi bi-people-fill text-accent" style="font-size:2rem;"></i></span>
+                                <div><b>Customer First:</b> We put your needs at the center of everything we do.</div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="d-flex align-items-start">
+                                <span class="icon-circle me-3 animate__animated animate__fadeIn" style="transition:transform 0.2s;"><i class="bi bi-shield-lock-fill text-accent" style="font-size:2rem;"></i></span>
+                                <div><b>Integrity:</b> We act with honesty, transparency, and ethics in all our dealings.</div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="d-flex align-items-start">
+                                <span class="icon-circle me-3 animate__animated animate__fadeIn" style="transition:transform 0.2s;"><i class="bi bi-lightning-charge-fill text-accent" style="font-size:2rem;"></i></span>
+                                <div><b>Innovation:</b> We embrace technology and new ideas to deliver better solutions.</div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="d-flex align-items-start">
+                                <span class="icon-circle me-3 animate__animated animate__fadeIn" style="transition:transform 0.2s;"><i class="bi bi-graph-up-arrow text-accent" style="font-size:2rem;"></i></span>
+                                <div><b>Growth:</b> We are committed to the growth of our customers, partners, and team.</div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="d-flex align-items-start">
+                                <span class="icon-circle me-3 animate__animated animate__fadeIn" style="transition:transform 0.2s;"><i class="bi bi-hand-thumbs-up-fill text-accent" style="font-size:2rem;"></i></span>
+                                <div><b>Accountability:</b> We take responsibility for our actions and deliver on our promises.</div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="d-flex align-items-start">
+                                <span class="icon-circle me-3 animate__animated animate__fadeIn" style="transition:transform 0.2s;"><i class="bi bi-people text-accent" style="font-size:2rem;"></i></span>
+                                <div><b>Collaboration:</b> We work as one team, supporting each other and our clients.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Our Process Section -->
+        <div class="row justify-content-center mb-5 g-4">
+            <div class="col-12">
+                <h2 class="text-center text-primary mb-5">How We Work</h2>
+                <div class="row g-4">
+                    <div class="col-md-3">
+                        <div class="glass-card p-4 h-100 text-center">
+                            <div class="bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 70px; height: 70px;">
+                                <span class="fw-bold fs-4">1</span>
+                            </div>
+                            <h5 class="text-primary mb-3">Assessment</h5>
+                            <p class="text-muted">We analyze your current financial situation, existing loans, and credit profile to understand your unique needs.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="glass-card p-4 h-100 text-center">
+                            <div class="bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 70px; height: 70px;">
+                                <span class="fw-bold fs-4">2</span>
+                            </div>
+                            <h5 class="text-primary mb-3">Strategy</h5>
+                            <p class="text-muted">Our experts create a personalized debt consolidation or credit building strategy tailored to your goals.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="glass-card p-4 h-100 text-center">
+                            <div class="bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 70px; height: 70px;">
+                                <span class="fw-bold fs-4">3</span>
+                            </div>
+                            <h5 class="text-primary mb-3">Implementation</h5>
+                            <p class="text-muted">We guide you through the entire process, from application to disbursement, ensuring smooth execution.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="glass-card p-4 h-100 text-center">
+                            <div class="bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 70px; height: 70px;">
+                                <span class="fw-bold fs-4">4</span>
+                            </div>
+                            <h5 class="text-primary mb-3">Support</h5>
+                            <p class="text-muted">Ongoing support and monitoring to ensure you stay on track and achieve your financial goals.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+
+        <!-- Company Achievements Section -->
+        <section class="row mt-5 mb-5">
+            <div class="col-12">
+                <h2 class="text-center text-primary mb-5">Our Achievements</h2>
+                <div class="row g-4">
+                    <div class="col-md-3">
+                        <div class="glass-card text-center p-4 h-100">
+                            <div class="bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px;">
+                                <i class="bi bi-people-fill fs-1"></i>
+                            </div>
+                            <h3 class="text-primary fw-bold mb-2">500+</h3>
+                            <h5 class="text-primary mb-3">Families Helped</h5>
+                            <p class="text-muted">Successfully transformed the financial lives of over 500 families through debt consolidation and credit building.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="glass-card text-center p-4 h-100">
+                            <div class="bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px;">
+                                <i class="bi bi-cash-stack fs-1"></i>
+                            </div>
+                            <h3 class="text-primary fw-bold mb-2">₹2.5Cr+</h3>
+                            <h5 class="text-primary mb-3">Debt Consolidated</h5>
+                            <p class="text-muted">Successfully consolidated over ₹2.5 crores in debt, helping families reduce their monthly EMI burden.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="glass-card text-center p-4 h-100">
+                            <div class="bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px;">
+                                <i class="bi bi-bank2 fs-1"></i>
+                            </div>
+                            <h3 class="text-primary fw-bold mb-2">50+</h3>
+                            <h5 class="text-primary mb-3">Bank Partners</h5>
+                            <p class="text-muted">Strong partnerships with 50+ leading banks and NBFCs across India for reliable financial solutions.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="glass-card text-center p-4 h-100">
+                            <div class="bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px;">
+                                <i class="bi bi-star-fill fs-1"></i>
+                            </div>
+                            <h3 class="text-primary fw-bold mb-2">4.8/5</h3>
+                            <h5 class="text-primary mb-3">Customer Rating</h5>
+                            <p class="text-muted">Consistently high customer satisfaction rating based on successful debt consolidation and advisory services.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Detailed Team Section -->
+        <section class="row mt-5 mb-5">
+            <div class="col-12">
+                <h2 class="text-center text-primary mb-5">Meet Our Expert Team</h2>
+                <div class="row g-4">
+                    <div class="col-lg-3">
+                        <div class="glass-card p-4 h-100 text-center">
+                            <div class="bg-light-blue rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 100px; height: 100px;">
+                                <i class="bi bi-gear-wide-connected text-primary" style="font-size: 3rem;"></i>
+                            </div>
+                            <h4 class="text-primary mb-2">Nishant Valanju</h4>
+                            <p class="text-muted mb-3">Cheif Operating Officer</p>
+                            <div class="mt-3">
+                                <span class="badge bg-primary me-2">Operations</span>
+                                <span class="badge bg-primary me-2">Strategy</span>
+                                <span class="badge bg-primary">Process Excellence</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="glass-card p-4 h-100 text-center">
+                            <div class="bg-light-blue rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 100px; height: 100px;">
+                                <i class="bi bi-graph-up-arrow text-primary" style="font-size: 3rem;"></i>
+                            </div>
+                            <h4 class="text-primary mb-2">Kuldeep Yadav</h4>
+                            <p class="text-muted mb-3">Head - Retail Assets</p>
+                            <div class="mt-3">
+                                <span class="badge bg-primary me-2">Home Loans</span>
+                                <span class="badge bg-primary me-2">LAP</span>
+                                <span class="badge bg-primary">Mortgage</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="glass-card p-4 h-100 text-center">
+                            <div class="bg-light-blue rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 100px; height: 100px;">
+                                <i class="bi bi-cash-coin text-primary" style="font-size: 3rem;"></i>
+                            </div>
+                            <h4 class="text-primary mb-2">Vikas Tiwari</h4>
+                            <p class="text-muted mb-3">Cheif Business Officer</p>
+                            <div class="mt-3">
+                                <span class="badge bg-primary me-2">Personal Loans</span>
+                                <span class="badge bg-primary me-2">Debt Consolidation</span>
+                                <span class="badge bg-primary">Credit Solutions</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="glass-card p-4 h-100 text-center">
+                            <div class="bg-light-blue rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 100px; height: 100px;">
+                                <i class="bi bi-megaphone text-primary" style="font-size: 3rem;"></i>
+                            </div>
+                            <h4 class="text-primary mb-2">Saurabh Upadhyay</h4>
+                            <p class="text-muted mb-3">Chief Marketing Officer</p>
+                            <div class="mt-3">
+                                <span class="badge bg-primary me-2">Digital Marketing</span>
+                                <span class="badge bg-primary me-2">Brand Strategy</span>
+                                <span class="badge bg-primary">Growth</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    
+
+    
+    <!-- Client Testimonials Section -->
+    <section class="row mt-5 mb-5">
+        <div class="col-12">
+            <h2 class="text-center text-primary mb-5">What Our Clients Say</h2>
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="glass-card p-4 h-100">
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="bg-success text-white rounded-circle d-inline-flex align-items-center justify-content-center me-3" style="width: 50px; height: 50px;">
+                                <i class="bi bi-person-check fs-4"></i>
+                            </div>
+                            <div>
+                                <h6 class="mb-1 fw-bold">Rajesh Mehta</h6>
+                                <small class="text-muted">Mumbai, Maharashtra</small>
+                            </div>
+                        </div>
+                        <p class="text-muted mb-3">"Advance Credit helped me consolidate 4 different loans into one manageable payment. My monthly EMI reduced from ₹45,000 to ₹28,000. The team was professional and guided me through every step."</p>
+                        <div class="d-flex justify-content-between">
+                            <span class="badge bg-success">₹17,000 saved/month</span>
+                            <div class="text-warning">
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="glass-card p-4 h-100">
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="bg-success text-white rounded-circle d-inline-flex align-items-center justify-content-center me-3" style="width: 50px; height: 50px;">
+                                <i class="bi bi-person-check fs-4"></i>
+                            </div>
+                            <div>
+                                <h6 class="mb-1 fw-bold">Sunita Desai</h6>
+                                <small class="text-muted">Pune, Maharashtra</small>
+                            </div>
+                        </div>
+                        <p class="text-muted mb-3">"My credit score was 620 and I was struggling to get loan approval. Advance Credit helped me improve it to 750 in 6 months. Now I can easily get loans at better interest rates."</p>
+                        <div class="d-flex justify-content-between">
+                            <span class="badge bg-success">130 points improvement</span>
+                            <div class="text-warning">
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="glass-card p-4 h-100">
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="bg-success text-white rounded-circle d-inline-flex align-items-center justify-content-center me-3" style="width: 50px; height: 50px;">
+                                <i class="bi bi-person-check fs-4"></i>
+                            </div>
+                            <div>
+                                <h6 class="mb-1 fw-bold">Vikram Singh</h6>
+                                <small class="text-muted">Delhi, NCR</small>
+                            </div>
+                        </div>
+                        <p class="text-muted mb-3">"The team at Advance Credit provided excellent financial planning advice. They helped me create a budget and debt repayment strategy that actually works. Highly recommended!"</p>
+                        <div class="d-flex justify-content-between">
+                            <span class="badge bg-success">Financial freedom achieved</span>
+                            <div class="text-warning">
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Company Milestones Section -->
+    <section class="row mt-5 mb-5">
+        <div class="col-12">
+            <h2 class="text-center text-primary mb-5">Our Journey</h2>
+            <div class="row g-4">
+                <div class="col-md-3">
+                    <div class="glass-card text-center p-4 h-100">
+                        <div class="bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+                            <span class="fw-bold fs-4">2021</span>
+                        </div>
+                        <h5 class="text-primary mb-3">Company Founded</h5>
+                        <p class="text-muted">Started with a vision to help families overcome financial stress through expert debt consolidation services.</p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="glass-card text-center p-4 h-100">
+                        <div class="bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+                            <span class="fw-bold fs-4">2022</span>
+                        </div>
+                        <h5 class="text-primary mb-3">100+ Families</h5>
+                        <p class="text-muted">Reached our first milestone of helping 100+ families achieve debt consolidation and financial freedom.</p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="glass-card text-center p-4 h-100">
+                        <div class="bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+                            <span class="fw-bold fs-4">2023</span>
+                        </div>
+                        <h5 class="text-primary mb-3">₹1Cr+ Consolidated</h5>
+                        <p class="text-muted">Successfully consolidated over ₹1 crore in debt, expanding our services to credit building and financial planning.</p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="glass-card text-center p-4 h-100">
+                        <div class="bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+                            <span class="fw-bold fs-4">2024</span>
+                        </div>
+                        <h5 class="text-primary mb-3">Market Leader</h5>
+                        <p class="text-muted">Became a trusted name in financial advisory with 500+ families helped and ₹2.5Cr+ debt consolidated.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Why Choose Us Section -->
+    <section class="row mt-5 mb-5">
+        <div class="col-12">
+            <h2 class="text-center text-primary mb-5">Why Choose Advance Credit?</h2>
+            <div class="row g-4">
+                <div class="col-md-6">
+                    <div class="glass-card p-4 h-100">
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="bg-light-blue rounded-circle d-inline-flex align-items-center justify-content-center me-3" style="width: 50px; height: 50px;">
+                                <i class="bi bi-shield-check text-primary fs-4"></i>
+                            </div>
+                            <h4 class="text-primary mb-0">Trusted & Reliable</h4>
+                        </div>
+                        <p class="text-muted mb-3">With partnerships with 50+ banks and NBFCs, we ensure you get the best financial solutions. Our track record speaks for itself.</p>
+                        <ul class="list-unstyled">
+                            <li class="mb-2"><i class="bi bi-check-circle text-success me-2"></i>Licensed financial advisors</li>
+                            <li class="mb-2"><i class="bi bi-check-circle text-success me-2"></i>Transparent fee structure</li>
+                            <li class="mb-2"><i class="bi bi-check-circle text-success me-2"></i>No hidden charges</li>
+                            <li class="mb-2"><i class="bi bi-check-circle text-success me-2"></i>Data security compliance</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="glass-card p-4 h-100">
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="bg-light-blue rounded-circle d-inline-flex align-items-center justify-content-center me-3" style="width: 50px; height: 50px;">
+                                <i class="bi bi-clock-history text-primary fs-4"></i>
+                            </div>
+                            <h4 class="text-primary mb-0">Quick & Efficient</h4>
+                        </div>
+                        <p class="text-muted mb-3">We understand the urgency of financial needs. Our streamlined process ensures quick approval and disbursement.</p>
+                        <ul class="list-unstyled">
+                            <li class="mb-2"><i class="bi bi-check-circle text-success me-2"></i>24-48 hour processing</li>
+                            <li class="mb-2"><i class="bi bi-check-circle text-success me-2"></i>Minimal documentation</li>
+                            <li class="mb-2"><i class="bi bi-check-circle text-success me-2"></i>Online application</li>
+                            <li class="mb-2"><i class="bi bi-check-circle text-success me-2"></i>Real-time updates</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Call to Action Section -->
+    <section class="row mt-5 mb-5">
+        <div class="col-12">
+            <div class="glass-card p-5 text-center" style="background: linear-gradient(135deg, var(--primary-blue) 0%, var(--accent-blue) 100%); color: var(--white);">
+                <h2 class="fw-bold mb-4">Ready to Transform Your Financial Future?</h2>
+                <p class="lead mb-4">Join hundreds of families who have already achieved financial freedom with Advance Credit. Our expert team is ready to help you consolidate debt, improve your credit score, and build a stronger financial foundation.</p>
+                <div class="row g-3 justify-content-center">
+                    <div class="col-md-4">
+                        <a href="/emi" class="btn btn-light btn-lg w-100 mb-2">
+                            <i class="bi bi-calculator me-2"></i>EMI Calculator
+                        </a>
+                    </div>
+                    <div class="col-md-4">
+                        <a href="/products" class="btn btn-light btn-lg w-100 mb-2">
+                            <i class="bi bi-bank me-2"></i>Loan Products
+                        </a>
+                    </div>
+                    <div class="col-md-4">
+                        <a href="/contact" class="btn btn-light btn-lg w-100 mb-2">
+                            <i class="bi bi-chat-dots me-2"></i>Get Started
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <div class="row justify-content-center align-items-center mb-5 g-4">
+        <div class="col-md-6">
+            <div class="glass-card p-4 h-100 animate__animated animate__fadeInUp" style="animation-delay:0.5s;">
+                <h2 class="fw-bold mb-3 text-accent">Our Story & Mission</h2>
+                <p class="fs-5">Founded with a vision to help families overcome financial stress, Advance Credit has transformed the lives of hundreds of families through expert debt consolidation and financial advisory services. Our mission is to provide personalized financial solutions—whether you need debt consolidation, credit building, or comprehensive financial planning—we guide you every step of the way.</p>
+                <ul class="list-unstyled mt-4 mb-0">
+                    <li class="d-flex align-items-center mb-3">
+                        <span class="icon-circle me-3 animate__animated animate__fadeIn" style="transition:transform 0.2s;"><i class="bi bi-emoji-smile text-accent" style="font-size:2rem;"></i></span>
+                        <span><b>Debt Relief:</b> We help you consolidate multiple EMIs into one manageable payment.</span>
+                    </li>
+                    <li class="d-flex align-items-center mb-3">
+                        <span class="icon-circle me-3"><i class="bi bi-shield-check text-accent" style="font-size:2rem;"></i></span>
+                        <span><b>Credit Building:</b> Expert guidance to improve your credit score and financial profile.</span>
+                    </li>
+                    <li class="d-flex align-items-center mb-3">
+                        <span class="icon-circle me-3"><i class="bi bi-lightning-charge-fill text-accent" style="font-size:2rem;"></i></span>
+                        <span><b>Personalized Planning:</b> Custom financial strategies tailored to your unique situation.</span>
+                    </li>
+                    <li class="d-flex align-items-center mb-3">
+                        <span class="icon-circle me-3"><i class="bi bi-graph-up-arrow text-accent" style="font-size:2rem;"></i></span>
+                        <span><b>Financial Freedom:</b> We help you build a brighter, debt-free financial future.</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="contact-card h-100 d-flex flex-column justify-content-center align-items-center">
+                <h3 class="fw-bold mb-3 text-accent">Contact Information</h3>
+                <div class="mb-3"><i class="bi bi-geo-alt-fill accent-fill me-2" style="font-size:1.5rem;"></i> Office no. 205 Accord Classic, Near Goregaon Railway Station, Peru Baug, Jay Prakash Nagar, Goregaon, Mumbai, Maharashtra, 400063.</div>
+                <div class="mb-2"><i class="bi bi-envelope-fill accent-fill me-2" style="font-size:1.5rem;"></i> <a href="mailto:support@advancecfa.com" class="text-accent text-decoration-none">support@advancecfa.com</a></div>
+                <div class="mb-2"><i class="bi bi-telephone-fill accent-fill me-2" style="font-size:1.5rem;"></i> <a href="tel:+919987763779" class="text-accent text-decoration-none">+91 9987763779</a></div>
+                <div class="mb-2"><i class="bi bi-globe2 accent-fill me-2" style="font-size:1.5rem;"></i> <a href="https://advancecfa.com" class="text-accent text-decoration-none" target="_blank">advancecfa.com</a></div>
+            </div>
+        </div>
+    </div>
+</div>
+{% include 'footer.html' %}
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+</body>
+</html> 

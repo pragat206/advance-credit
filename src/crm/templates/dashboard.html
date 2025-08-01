@@ -1,0 +1,154 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard - Advance Credit CRM{% endblock %}
+
+{% block content %}
+<div class="glass-card">
+    <h1 class="page-title">Dashboard</h1>
+    <p class="page-subtitle">Welcome back! Here's an overview of your CRM performance.</p>
+
+    <!-- Stats Cards -->
+    <div class="row g-4 mb-4">
+        <div class="col-lg-3 col-md-6">
+            <div class="stats-card">
+                <div class="stats-icon primary">
+                    <i class="bi bi-globe"></i>
+                </div>
+                <h3 class="h4 mb-2">{{ website_leads_count }}</h3>
+                <p class="text-muted mb-0">Website Leads</p>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6">
+            <div class="stats-card">
+                <div class="stats-icon secondary">
+                    <i class="bi bi-share"></i>
+                </div>
+                <h3 class="h4 mb-2">{{ social_leads_count }}</h3>
+                <p class="text-muted mb-0">Social Media Leads</p>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6">
+            <div class="stats-card">
+                <div class="stats-icon success">
+                    <i class="bi bi-people"></i>
+                </div>
+                <h3 class="h4 mb-2">{{ users_count }}</h3>
+                <p class="text-muted mb-0">Team Members</p>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6">
+            <div class="stats-card">
+                <div class="stats-icon warning">
+                    <i class="bi bi-graph-up"></i>
+                </div>
+                <h3 class="h4 mb-2">{{ total_leads }}</h3>
+                <p class="text-muted mb-0">Total Leads</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="row g-3 mb-4">
+        <div class="col-12">
+            <h4 class="mb-3"><i class="bi bi-lightning me-2"></i>Quick Actions</h4>
+        </div>
+        <div class="col-md-3">
+            <a href="/crm/website-leads" class="btn btn-primary-modern btn-modern w-100">
+                <i class="bi bi-globe me-2"></i>View Website Leads
+            </a>
+        </div>
+        <div class="col-md-3">
+            <a href="/crm/social-leads" class="btn btn-success-modern btn-modern w-100">
+                <i class="bi bi-share me-2"></i>View Social Leads
+            </a>
+        </div>
+        <div class="col-md-3">
+            <a href="/crm/users" class="btn btn-warning-modern btn-modern w-100">
+                <i class="bi bi-people me-2"></i>Manage Users
+            </a>
+        </div>
+        <div class="col-md-3">
+            <a href="/crm/analytics" class="btn btn-danger-modern btn-modern w-100">
+                <i class="bi bi-graph-up me-2"></i>View Analytics
+            </a>
+        </div>
+    </div>
+
+    <!-- Recent Leads -->
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="glass-card">
+                <h5 class="mb-3"><i class="bi bi-globe me-2"></i>Recent Website Leads</h5>
+                {% if recent_website_leads %}
+                <div class="table-responsive">
+                    <table class="table table-modern">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Contact</th>
+                                <th>Date</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for lead in recent_website_leads %}
+                            <tr>
+                                <td>{{ lead.name }}</td>
+                                <td>{{ lead.contact }}</td>
+                                <td>{{ lead.created_at.strftime('%d %b %Y') }}</td>
+                                <td>
+                                    <a href="/crm/website-leads/{{ lead.lead_id }}" class="btn btn-sm btn-primary-modern btn-modern">
+                                        <i class="bi bi-eye"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <p class="text-muted">No recent website leads.</p>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="col-lg-6">
+            <div class="glass-card">
+                <h5 class="mb-3"><i class="bi bi-share me-2"></i>Recent Social Media Leads</h5>
+                {% if recent_social_leads %}
+                <div class="table-responsive">
+                    <table class="table table-modern">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Platform</th>
+                                <th>Date</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for lead in recent_social_leads %}
+                            <tr>
+                                <td>{{ lead.name }}</td>
+                                <td>
+                                    <span class="badge badge-modern bg-primary">{{ lead.platform_name }}</span>
+                                </td>
+                                <td>{{ lead.created_at.strftime('%d %b %Y') }}</td>
+                                <td>
+                                    <a href="/crm/social-leads/{{ lead.lead_id }}" class="btn btn-sm btn-primary-modern btn-modern">
+                                        <i class="bi bi-eye"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <p class="text-muted">No recent social media leads.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

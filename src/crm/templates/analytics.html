@@ -1,0 +1,199 @@
+{% extends 'base.html' %}
+
+{% block title %}Analytics - Advance Credit CRM{% endblock %}
+
+{% block content %}
+<div class="glass-card">
+    <h1 class="page-title">Analytics Dashboard</h1>
+    <p class="page-subtitle">Comprehensive insights into your lead generation performance.</p>
+
+    <!-- Key Metrics -->
+    <div class="row g-4 mb-4">
+        <div class="col-lg-3 col-md-6">
+            <div class="stats-card">
+                <div class="stats-icon primary">
+                    <i class="bi bi-globe"></i>
+                </div>
+                <h3 class="h4 mb-2">{{ website_leads_count }}</h3>
+                <p class="text-muted mb-0">Website Leads</p>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6">
+            <div class="stats-card">
+                <div class="stats-icon secondary">
+                    <i class="bi bi-share"></i>
+                </div>
+                <h3 class="h4 mb-2">{{ social_leads_count }}</h3>
+                <p class="text-muted mb-0">Social Media Leads</p>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6">
+            <div class="stats-card">
+                <div class="stats-icon success">
+                    <i class="bi bi-graph-up"></i>
+                </div>
+                <h3 class="h4 mb-2">{{ total_leads }}</h3>
+                <p class="text-muted mb-0">Total Leads</p>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6">
+            <div class="stats-card">
+                <div class="stats-icon warning">
+                    <i class="bi bi-calendar"></i>
+                </div>
+                <h3 class="h4 mb-2">{{ this_month_leads }}</h3>
+                <p class="text-muted mb-0">This Month</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Leads -->
+    <div class="row mb-4">
+        <div class="col-lg-6">
+            <div class="glass-card">
+                <h5 class="mb-3"><i class="bi bi-clock me-2"></i>Recent Website Leads</h5>
+                {% if recent_website_leads %}
+                <div class="table-responsive">
+                    <table class="table table-modern">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Contact</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for lead in recent_website_leads %}
+                            <tr>
+                                <td>{{ lead.name }}</td>
+                                <td>{{ lead.contact }}</td>
+                                <td>{{ lead.created_at.strftime('%d %b %Y') }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <p class="text-muted">No recent website leads.</p>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="col-lg-6">
+            <div class="glass-card">
+                <h5 class="mb-3"><i class="bi bi-clock me-2"></i>Recent Social Media Leads</h5>
+                {% if recent_social_leads %}
+                <div class="table-responsive">
+                    <table class="table table-modern">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Platform</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for lead in recent_social_leads %}
+                            <tr>
+                                <td>{{ lead.name }}</td>
+                                <td>
+                                    <span class="badge badge-modern bg-primary">{{ lead.platform_name }}</span>
+                                </td>
+                                <td>{{ lead.created_at.strftime('%d %b %Y') }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <p class="text-muted">No recent social media leads.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Platform Breakdown -->
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="glass-card">
+                <h5 class="mb-3"><i class="bi bi-pie-chart me-2"></i>Social Media Platform Breakdown</h5>
+                {% if platform_breakdown %}
+                <div class="table-responsive">
+                    <table class="table table-modern">
+                        <thead>
+                            <tr>
+                                <th>Platform</th>
+                                <th>Leads</th>
+                                <th>Percentage</th>
+                                <th>Progress</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for platform, count in platform_breakdown.items() %}
+                            {% set percentage = (count / social_leads_count * 100) if social_leads_count > 0 else 0 %}
+                            <tr>
+                                <td>
+                                    <span class="badge badge-modern bg-primary">{{ platform }}</span>
+                                </td>
+                                <td><strong>{{ count }}</strong></td>
+                                <td>{{ "%.1f"|format(percentage) }}%</td>
+                                <td>
+                                    <div class="progress" style="height: 8px;">
+                                        <div class="progress-bar bg-primary" style="width: {{ percentage }}%"></div>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <p class="text-muted">No social media leads to analyze.</p>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="glass-card">
+                <h5 class="mb-3"><i class="bi bi-bar-chart me-2"></i>Lead Source Comparison</h5>
+                <div class="row text-center">
+                    <div class="col-6">
+                        <div class="stats-icon primary mb-2" style="width: 50px; height: 50px; font-size: 1.2rem; margin: 0 auto;">
+                            <i class="bi bi-globe"></i>
+                        </div>
+                        <h4 class="mb-1">{{ website_leads_count }}</h4>
+                        <small class="text-muted">Website</small>
+                    </div>
+                    <div class="col-6">
+                        <div class="stats-icon secondary mb-2" style="width: 50px; height: 50px; font-size: 1.2rem; margin: 0 auto;">
+                            <i class="bi bi-share"></i>
+                        </div>
+                        <h4 class="mb-1">{{ social_leads_count }}</h4>
+                        <small class="text-muted">Social Media</small>
+                    </div>
+                </div>
+                
+                {% if total_leads > 0 %}
+                <div class="mt-3">
+                    <div class="d-flex justify-content-between mb-1">
+                        <small>Website</small>
+                        <small>{{ "%.1f"|format(website_leads_count / total_leads * 100) }}%</small>
+                    </div>
+                    <div class="progress mb-3" style="height: 6px;">
+                        <div class="progress-bar bg-primary" style="width: {{ website_leads_count / total_leads * 100 }}%"></div>
+                    </div>
+                    
+                    <div class="d-flex justify-content-between mb-1">
+                        <small>Social Media</small>
+                        <small>{{ "%.1f"|format(social_leads_count / total_leads * 100) }}%</small>
+                    </div>
+                    <div class="progress" style="height: 6px;">
+                        <div class="progress-bar bg-secondary" style="width: {{ social_leads_count / total_leads * 100 }}%"></div>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

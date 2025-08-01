@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Social Media Lead Details - Advance Credit CRM</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <style>
+        :root {
+            --primary-blue: #1e3a8a;
+            --secondary-blue: #3b82f6;
+            --accent-blue: #1e40af;
+            --light-blue: #dbeafe;
+            --white: #ffffff;
+            --dark-text: #1f2937;
+            --gray-text: #6b7280;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #f8fafc;
+        }
+        
+        .navbar {
+            background: var(--white) !important;
+            box-shadow: 0 2px 10px rgba(30, 58, 138, 0.1);
+        }
+        
+        .navbar-brand {
+            color: var(--primary-blue) !important;
+            font-weight: 700;
+        }
+        
+        .card {
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn-success {
+            background: #059669;
+            border-color: #059669;
+        }
+        
+        .btn-success:hover {
+            background: #047857;
+            border-color: #047857;
+        }
+        
+        .detail-row {
+            padding: 1rem 0;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .detail-row:last-child {
+            border-bottom: none;
+        }
+        
+        .detail-label {
+            font-weight: 600;
+            color: var(--gray-text);
+            margin-bottom: 0.5rem;
+        }
+        
+        .detail-value {
+            color: var(--dark-text);
+        }
+        
+        .platform-badge {
+            font-size: 1rem;
+            padding: 0.5rem 1rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="container">
+            <a class="navbar-brand" href="/dashboard">
+                <i class="bi bi-building me-2"></i>Advance Credit CRM
+            </a>
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link" href="/dashboard">
+                    <i class="bi bi-house me-1"></i> Dashboard
+                </a>
+                <a class="nav-link" href="/website-leads">
+                    <i class="bi bi-globe me-1"></i> Website Leads
+                </a>
+                <a class="nav-link active" href="/social-leads">
+                    <i class="bi bi-share me-1"></i> Social Leads
+                </a>
+                <a class="nav-link" href="/logout">
+                    <i class="bi bi-box-arrow-right"></i> Logout
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <a href="/social-leads" class="btn btn-outline-secondary mb-2">
+                    <i class="bi bi-arrow-left me-1"></i> Back to Social Leads
+                </a>
+                <h2><i class="bi bi-person me-2"></i>Social Media Lead Details</h2>
+            </div>
+            <div>
+                <span class="badge bg-success fs-6">Lead ID: {{ lead.lead_id }}</span>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="card">
+                    <div class="card-header bg-white">
+                        <h5 class="mb-0"><i class="bi bi-info-circle me-2"></i>Lead Information</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="detail-row">
+                            <div class="detail-label">Full Name</div>
+                            <div class="detail-value fs-5 fw-bold">{{ lead.name }}</div>
+                        </div>
+                        
+                        <div class="detail-row">
+                            <div class="detail-label">Contact Number</div>
+                            <div class="detail-value">
+                                <a href="tel:{{ lead.contact }}" class="text-decoration-none">
+                                    <i class="bi bi-telephone me-1"></i>{{ lead.contact }}
+                                </a>
+                            </div>
+                        </div>
+                        
+                        <div class="detail-row">
+                            <div class="detail-label">City</div>
+                            <div class="detail-value">
+                                <i class="bi bi-geo-alt me-1"></i>{{ lead.city }}
+                            </div>
+                        </div>
+                        
+                        <div class="detail-row">
+                            <div class="detail-label">Platform</div>
+                            <div class="detail-value">
+                                <span class="badge bg-primary platform-badge">{{ lead.platform_name }}</span>
+                            </div>
+                        </div>
+                        
+                        <div class="detail-row">
+                            <div class="detail-label">Loan Amount Required</div>
+                            <div class="detail-value">
+                                {% if lead.loan_amount %}
+                                    <span class="fs-5 fw-bold text-success">₹{{ "{:,.0f}".format(lead.loan_amount) }}</span>
+                                {% else %}
+                                    <span class="text-muted">Not specified</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                        
+                        <div class="detail-row">
+                            <div class="detail-label">Ongoing Loan</div>
+                            <div class="detail-value">
+                                {% if lead.any_ongoing_loan %}
+                                    <span class="badge bg-warning fs-6">Yes - Has existing loan</span>
+                                {% else %}
+                                    <span class="badge bg-success fs-6">No - First time borrower</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                        
+                        <div class="detail-row">
+                            <div class="detail-label">Lead Created</div>
+                            <div class="detail-value">
+                                <i class="bi bi-calendar me-1"></i>{{ lead.created_at.strftime('%d %B %Y at %I:%M %p') }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-4">
+                <div class="card">
+                    <div class="card-header bg-white">
+                        <h5 class="mb-0"><i class="bi bi-lightning me-2"></i>Quick Actions</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-grid gap-2">
+                            <a href="tel:{{ lead.contact }}" class="btn btn-success">
+                                <i class="bi bi-telephone me-2"></i>Call Lead
+                            </a>
+                            <a href="https://wa.me/91{{ lead.contact }}" target="_blank" class="btn btn-success">
+                                <i class="bi bi-whatsapp me-2"></i>WhatsApp
+                            </a>
+                            <button class="btn btn-outline-secondary" onclick="copyContact()">
+                                <i class="bi bi-clipboard me-2"></i>Copy Contact
+                            </button>
+                            <button class="btn btn-outline-info" onclick="copyDetails()">
+                                <i class="bi bi-clipboard-data me-2"></i>Copy Details
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card mt-3">
+                    <div class="card-header bg-white">
+                        <h5 class="mb-0"><i class="bi bi-graph-up me-2"></i>Lead Analysis</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row g-3">
+                            <div class="col-6">
+                                <div class="text-center">
+                                    <div class="fs-4 fw-bold text-primary">
+                                        {% if lead.loan_amount %}
+                                            ₹{{ "{:,.0f}".format(lead.loan_amount) }}
+                                        {% else %}
+                                            -
+                                        {% endif %}
+                                    </div>
+                                    <small class="text-muted">Loan Amount</small>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="text-center">
+                                    <div class="fs-4 fw-bold text-warning">
+                                        {% if lead.any_ongoing_loan %}
+                                            Existing
+                                        {% else %}
+                                            New
+                                        {% endif %}
+                                    </div>
+                                    <small class="text-muted">Customer Type</small>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <hr>
+                        
+                        <div class="d-flex align-items-center mb-2">
+                            <i class="bi bi-share text-primary me-2"></i>
+                            <span class="fw-bold">{{ lead.platform_name }}</span>
+                        </div>
+                        <small class="text-muted">Lead source platform</small>
+                    </div>
+                </div>
+                
+                <div class="card mt-3">
+                    <div class="card-header bg-white">
+                        <h5 class="mb-0"><i class="bi bi-clock me-2"></i>Timeline</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="timeline">
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="bg-success rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 32px; height: 32px;">
+                                    <i class="bi bi-check text-white"></i>
+                                </div>
+                                <div>
+                                    <div class="fw-bold">Lead Created</div>
+                                    <small class="text-muted">{{ lead.created_at.strftime('%d %b %Y, %I:%M %p') }}</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function copyContact() {
+            const contact = '{{ lead.contact }}';
+            navigator.clipboard.writeText(contact).then(function() {
+                const button = event.target;
+                const originalText = button.innerHTML;
+                button.innerHTML = '<i class="bi bi-check me-2"></i>Copied!';
+                button.classList.remove('btn-outline-secondary');
+                button.classList.add('btn-success');
+                
+                setTimeout(() => {
+                    button.innerHTML = originalText;
+                    button.classList.remove('btn-success');
+                    button.classList.add('btn-outline-secondary');
+                }, 2000);
+            });
+        }
+        
+        function copyDetails() {
+            const details = `Name: {{ lead.name }}\nContact: {{ lead.contact }}\nCity: {{ lead.city }}\nPlatform: {{ lead.platform_name }}\nLoan Amount: {% if lead.loan_amount %}₹{{ "{:,.0f}".format(lead.loan_amount) }}{% else %}Not specified{% endif %}\nOngoing Loan: {% if lead.any_ongoing_loan %}Yes{% else %}No{% endif %}`;
+            
+            navigator.clipboard.writeText(details).then(function() {
+                const button = event.target;
+                const originalText = button.innerHTML;
+                button.innerHTML = '<i class="bi bi-check me-2"></i>Copied!';
+                button.classList.remove('btn-outline-info');
+                button.classList.add('btn-info');
+                
+                setTimeout(() => {
+                    button.innerHTML = originalText;
+                    button.classList.remove('btn-info');
+                    button.classList.add('btn-outline-info');
+                }, 2000);
+            });
+        }
+    </script>
+</body>
+</html> 

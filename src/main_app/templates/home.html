@@ -1,0 +1,2161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advance Credit - Your Financial Health Partner | Debt Consolidation Experts</title>
+    <meta name="description" content="Transform your financial future with expert debt consolidation. Free yourself from multiple EMIs. Get personalized financial advisory and loan approval for weak profiles.">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <style>
+        :root {
+            --primary-blue: #1e3a8a;
+            --secondary-blue: #3b82f6;
+            --accent-blue: #1e40af;
+            --light-blue: #dbeafe;
+            --white: #ffffff;
+            --dark-text: #1f2937;
+            --gray-text: #6b7280;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            color: var(--dark-text);
+            background: var(--white);
+        }
+        
+        .navbar {
+            background: var(--white) !important;
+            box-shadow: 0 2px 10px rgba(30, 58, 138, 0.1);
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .navbar-brand {
+            color: var(--primary-blue) !important;
+            font-weight: 700;
+            font-size: 1.5rem;
+        }
+        
+        .nav-link {
+            color: var(--dark-text) !important;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+        
+        .nav-link:hover {
+            color: var(--secondary-blue) !important;
+        }
+        
+        .btn-primary {
+            background: var(--primary-blue);
+            border-color: var(--primary-blue);
+            color: var(--white);
+            font-weight: 600;
+            padding: 12px 24px;
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+        
+        .btn-primary:hover {
+            background: var(--accent-blue);
+            border-color: var(--accent-blue);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(30, 58, 138, 0.3);
+        }
+        
+        .btn-outline-primary {
+            color: var(--primary-blue);
+            border-color: var(--primary-blue);
+            font-weight: 600;
+        }
+        
+        .btn-outline-primary:hover {
+            background: var(--primary-blue);
+            border-color: var(--primary-blue);
+        }
+        
+        .text-primary {
+            color: var(--primary-blue) !important;
+        }
+        
+        .bg-primary {
+            background: var(--primary-blue) !important;
+        }
+        
+        .bg-light-blue {
+            background: var(--light-blue);
+        }
+        
+        .hero-section {
+            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--accent-blue) 100%);
+            color: var(--white);
+            padding: 80px 0;
+            position: relative;
+            overflow: hidden;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+        }
+        
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="50" cy="50" r="1" fill="white" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+            opacity: 0.1;
+        }
+        
+        .hero-banner {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 1;
+        }
+        
+        .hero-banner-slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+        
+        .hero-banner-slide.active {
+            opacity: 1;
+        }
+        
+        .hero-banner-slide::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(30, 58, 138, 0.9) 0%, rgba(30, 64, 175, 0.8) 100%);
+        }
+        
+        .hero-banner-slide-1 {
+            background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600"><defs><linearGradient id="bg1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:%231e3a8a;stop-opacity:0.8"/><stop offset="100%" style="stop-color:%231e40af;stop-opacity:0.6"/></linearGradient></defs><rect width="1200" height="600" fill="url(%23bg1)"/><circle cx="200" cy="150" r="80" fill="white" opacity="0.1"/><circle cx="1000" cy="450" r="120" fill="white" opacity="0.1"/><circle cx="800" cy="100" r="60" fill="white" opacity="0.1"/></svg>');
+        }
+        
+        .hero-banner-slide-2 {
+            background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600"><defs><linearGradient id="bg2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:%231e40af;stop-opacity:0.8"/><stop offset="100%" style="stop-color:%233b82f6;stop-opacity:0.6"/></linearGradient></defs><rect width="1200" height="600" fill="url(%23bg2)"/><rect x="100" y="200" width="300" height="200" fill="white" opacity="0.1" rx="20"/><rect x="800" y="100" width="250" height="150" fill="white" opacity="0.1" rx="20"/><rect x="600" y="400" width="200" height="120" fill="white" opacity="0.1" rx="20"/></svg>');
+        }
+        
+        .hero-banner-slide-3 {
+            background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600"><defs><linearGradient id="bg3" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:%233b82f6;stop-opacity:0.8"/><stop offset="100%" style="stop-color:%231e3a8a;stop-opacity:0.6"/></linearGradient></defs><rect width="1200" height="600" fill="url(%23bg3)"/><polygon points="200,300 300,200 400,300 300,400" fill="white" opacity="0.1"/><polygon points="800,250 900,150 1000,250 900,350" fill="white" opacity="0.1"/><polygon points="600,350 700,250 800,350 700,450" fill="white" opacity="0.1"/></svg>');
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 3;
+        }
+        
+        .hero-headline {
+            font-size: 3.5rem;
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            animation: slideInLeft 1s ease-out;
+        }
+        
+        .hero-subheadline {
+            font-size: 1.25rem;
+            font-weight: 400;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+            opacity: 0.95;
+            animation: slideInRight 1s ease-out 0.3s both;
+        }
+        
+        .hero-cta {
+            animation: slideInUp 1s ease-out 0.6s both;
+        }
+        
+        .hero-trust-badges {
+            animation: slideInUp 1s ease-out 0.9s both;
+        }
+        
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .hero-banner-indicators {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 4;
+            display: flex;
+            gap: 10px;
+        }
+        
+        .hero-banner-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .hero-banner-indicator.active {
+            background: var(--white);
+            transform: scale(1.2);
+        }
+        
+        .hero-slide-content {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.8s ease-in-out;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+        }
+        
+        .hero-slide-content.active {
+            opacity: 1;
+            transform: translateY(0);
+            position: relative;
+        }
+        
+        .hero-slide-content .hero-headline {
+            animation: none;
+        }
+        
+        .hero-slide-content .hero-subheadline {
+            animation: none;
+        }
+        
+        .hero-slide-content .hero-cta {
+            animation: none;
+        }
+        
+        .hero-slide-content .hero-trust-badges {
+            animation: none;
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+        
+        .hero-headline {
+            font-size: 3.5rem;
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+        }
+        
+        .hero-subheadline {
+            font-size: 1.25rem;
+            font-weight: 400;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+            opacity: 0.95;
+        }
+        
+        .trust-badge {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50px;
+            padding: 8px 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin: 0 10px 10px 0;
+            display: inline-block;
+        }
+        
+        .value-card {
+            background: var(--white);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 4px 20px rgba(30, 58, 138, 0.1);
+            border: 1px solid #e5e7eb;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            height: 100%;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .value-card h4 {
+            margin-bottom: 1rem;
+            line-height: 1.3;
+            min-height: 2.6rem;
+        }
+        
+        .value-card p {
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+            flex-grow: 1;
+        }
+        
+        .value-card ul {
+            margin-bottom: 0;
+        }
+        
+        .value-card .list-unstyled li {
+            margin-bottom: 0.5rem;
+            line-height: 1.4;
+        }
+        
+        .value-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(30, 58, 138, 0.1), transparent);
+            transition: left 0.6s;
+        }
+        
+        .value-card:hover::before {
+            left: 100%;
+        }
+        
+        .value-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 12px 40px rgba(30, 58, 138, 0.2);
+        }
+        
+        .value-card .value-icon {
+            transition: all 0.4s ease;
+        }
+        
+        .value-card:hover .value-icon {
+            transform: scale(1.1) rotate(5deg);
+            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+            color: var(--white);
+        }
+        
+        .value-card .list-unstyled li {
+            transition: all 0.3s ease;
+            padding: 0.25rem 0;
+        }
+        
+        .value-card:hover .list-unstyled li {
+            transform: translateX(5px);
+        }
+        
+        .value-card .list-unstyled li i {
+            transition: all 0.3s ease;
+        }
+        
+        .value-card:hover .list-unstyled li i {
+            transform: scale(1.2);
+        }
+        
+        /* Value Propositions Slider */
+        .value-propositions-container {
+            position: relative;
+            overflow: hidden;
+            min-height: 400px;
+        }
+        
+        .value-propositions-slide {
+            opacity: 0;
+            transform: translateX(50px);
+            transition: all 0.6s ease-in-out;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            visibility: hidden;
+        }
+        
+        .value-propositions-slide.active {
+            opacity: 1;
+            transform: translateX(0);
+            position: relative;
+            visibility: visible;
+        }
+        
+        .value-propositions-slide.prev {
+            transform: translateX(-50px);
+            visibility: hidden;
+        }
+        
+        .value-propositions-indicators {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 2rem;
+            align-items: center;
+        }
+        
+        .value-propositions-indicators::before,
+        .value-propositions-indicators::after {
+            content: 'Scroll to explore more services';
+            font-size: 0.875rem;
+            color: var(--gray-text);
+            font-weight: 500;
+            margin: 0 1rem;
+        }
+        
+        @media (max-width: 768px) {
+            .value-propositions-indicators::before,
+            .value-propositions-indicators::after {
+                display: none;
+            }
+        }
+        
+        .value-propositions-indicator {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #d1d5db;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .value-propositions-indicator.active {
+            background: var(--primary-blue);
+            transform: scale(1.3);
+        }
+        
+        .value-propositions-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: var(--white);
+            border: 2px solid var(--primary-blue);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-blue);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 10;
+            box-shadow: 0 4px 12px rgba(30, 58, 138, 0.2);
+        }
+        
+        .value-propositions-nav:hover {
+            background: var(--primary-blue);
+            color: var(--white);
+            transform: translateY(-50%) scale(1.15);
+            box-shadow: 0 6px 20px rgba(30, 58, 138, 0.3);
+        }
+        
+        .value-propositions-nav:active {
+            transform: translateY(-50%) scale(0.95);
+        }
+        
+        .value-propositions-nav.prev {
+            left: -25px;
+        }
+        
+        .value-propositions-nav.next {
+            right: -25px;
+        }
+        
+        .value-propositions-nav:focus {
+            outline: 2px solid var(--primary-blue);
+            outline-offset: 2px;
+        }
+        
+        @media (max-width: 768px) {
+            .value-propositions-nav {
+                width: 45px;
+                height: 45px;
+                font-size: 1.3rem;
+            }
+            
+            .value-propositions-nav.prev {
+                left: -22px;
+            }
+            
+            .value-propositions-nav.next {
+                right: -22px;
+            }
+            
+            .value-card {
+                padding: 1.5rem;
+            }
+            
+            .value-card h4 {
+                font-size: 1.1rem;
+                min-height: auto;
+            }
+            
+            .value-propositions-container {
+                min-height: 350px;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .value-card {
+                padding: 1.25rem;
+            }
+            
+            .value-card h4 {
+                font-size: 1rem;
+            }
+            
+            .value-card p {
+                font-size: 0.9rem;
+            }
+            
+            .value-card .list-unstyled li {
+                font-size: 0.85rem;
+            }
+        }
+        
+        /* New Sections Styling */
+        .bg-gradient-primary {
+            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+        }
+        
+        .calculation-result {
+            animation: slideInUp 0.6s ease-out;
+        }
+        
+        #calculationResult .row > div {
+            transition: all 0.3s ease;
+        }
+        
+        #calculationResult .row > div:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        #calculationResult h3 {
+            font-size: 2.5rem;
+            font-weight: 900;
+            text-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.5px;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+            background: rgba(255, 255, 255, 0.9);
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            display: inline-block;
+        }
+        
+        #calculationResult p {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+            color: #111827 !important;
+        }
+        
+        #calculationResult small {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: #6b7280 !important;
+        }
+        
+        #calculationResult .row > div {
+            background: rgba(255, 255, 255, 0.95) !important;
+            backdrop-filter: blur(10px);
+            position: relative;
+        }
+        
+        #calculationResult .row > div::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 0.75rem;
+            z-index: -1;
+        }
+        
+        .credit-score-circle {
+            transition: all 0.3s ease;
+        }
+        
+        .credit-score-circle:hover {
+            transform: scale(1.1);
+        }
+        
+        .emergency-section {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .emergency-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="emergency" width="20" height="20" patternUnits="userSpaceOnUse"><circle cx="10" cy="10" r="1" fill="white" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23emergency)"/></svg>');
+            opacity: 0.1;
+        }
+        
+        .loan-product-card {
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        
+        .loan-product-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary-blue);
+            box-shadow: 0 8px 25px rgba(30, 58, 138, 0.15);
+        }
+        
+        .value-icon {
+            width: 60px;
+            height: 60px;
+            background: var(--light-blue);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            color: var(--primary-blue);
+            font-size: 1.5rem;
+        }
+        
+        .testimonial-card {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            border-left: 4px solid var(--primary-blue);
+        }
+        
+        .stats-section {
+            background: var(--light-blue);
+            padding: 60px 0;
+        }
+        
+        .stat-item {
+            text-align: center;
+            padding: 1rem;
+        }
+        
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--primary-blue);
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-label {
+            color: var(--gray-text);
+            font-weight: 500;
+        }
+        
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary-blue);
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+        
+        .section-subtitle {
+            font-size: 1.1rem;
+            color: var(--gray-text);
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .debt-consolidation-form {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2.5rem;
+            box-shadow: 0 8px 32px rgba(30, 58, 138, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: var(--dark-text);
+            position: relative;
+            z-index: 3;
+            max-width: 450px;
+            margin: 0 auto;
+        }
+        
+        .debt-consolidation-form::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+            border-radius: 20px;
+            z-index: -1;
+            opacity: 0.1;
+        }
+        
+        .debt-consolidation-form .form-label {
+            color: var(--dark-text);
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            font-size: 0.95rem;
+            display: block;
+        }
+        
+        .debt-consolidation-form .form-control {
+            color: var(--dark-text);
+            background: var(--white);
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 14px 16px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            height: auto;
+            min-height: 48px;
+        }
+        
+        .debt-consolidation-form .form-control:focus {
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 4px rgba(30, 58, 138, 0.1);
+            outline: none;
+            background: var(--white);
+        }
+        
+        .debt-consolidation-form .form-control::placeholder {
+            color: #9ca3af;
+            opacity: 0.8;
+        }
+        
+        .debt-consolidation-form .btn-primary {
+            background: linear-gradient(135deg, var(--primary-blue), var(--accent-blue));
+            border: none;
+            border-radius: 12px;
+            padding: 14px 24px;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            min-height: 48px;
+        }
+        
+        .debt-consolidation-form .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(30, 58, 138, 0.3);
+        }
+        
+        .debt-consolidation-form .text-success {
+            color: #059669 !important;
+            font-weight: 500;
+        }
+        
+        .debt-consolidation-form .alert {
+            border-radius: 12px;
+            border: none;
+            font-weight: 500;
+        }
+        
+        .debt-consolidation-form .small {
+            font-size: 0.875rem;
+            line-height: 1.4;
+        }
+        
+        .debt-consolidation-form .form-text {
+            color: #6b7280;
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+        }
+        
+        .debt-consolidation-form .input-group-text {
+            background: #f9fafb;
+            border: 2px solid #e5e7eb;
+            border-right: none;
+            color: #6b7280;
+            font-weight: 500;
+        }
+        
+        .debt-consolidation-form .input-group .form-control {
+            border-left: none;
+        }
+        
+        .debt-consolidation-form .input-group .form-control:focus {
+            border-left: none;
+        }
+        
+        .debt-consolidation-form .text-danger {
+            color: #dc2626 !important;
+        }
+        
+        .debt-consolidation-form .text-muted {
+            color: #6b7280 !important;
+        }
+        
+        /* Focus styles for better accessibility */
+        .debt-consolidation-form .form-control:focus-visible {
+            outline: 2px solid var(--primary-blue);
+            outline-offset: 2px;
+        }
+        
+        .debt-consolidation-form .btn:focus-visible {
+            outline: 2px solid var(--white);
+            outline-offset: 2px;
+        }
+        
+        /* Error states */
+        .debt-consolidation-form .form-control.is-invalid {
+            border-color: #dc2626;
+            box-shadow: 0 0 0 4px rgba(220, 38, 38, 0.1);
+        }
+        
+        .debt-consolidation-form .invalid-feedback {
+            color: #dc2626;
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+        }
+        
+        /* Success message styling */
+        .debt-consolidation-form .alert-success {
+            background: #f0fdf4;
+            color: #166534;
+            border: 1px solid #bbf7d0;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .debt-consolidation-form {
+                margin: 2rem auto;
+                padding: 2rem;
+            }
+        }
+        
+        .form-control {
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 12px 16px;
+            font-size: 1rem;
+            transition: all 0.2s;
+        }
+        
+        .form-control:focus {
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.1);
+        }
+        
+
+        
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease-out;
+        }
+        
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        @media (max-width: 768px) {
+            .hero-headline {
+                font-size: 2.5rem;
+            }
+            
+            .hero-subheadline {
+                font-size: 1.1rem;
+            }
+        }
+        
+        /* Responsive hero headline */
+        .hero-headline {
+            font-size: 3.5rem;
+        }
+        @media (max-width: 991.98px) {
+            .hero-headline {
+                font-size: 2.2rem;
+            }
+            .hero-section {
+                padding: 48px 0;
+                min-height: 60vh;
+            }
+        }
+        @media (max-width: 767.98px) {
+            .hero-headline {
+                font-size: 1.5rem;
+                text-align: center;
+            }
+            .hero-section {
+                padding: 32px 0 24px 0;
+                min-height: 50vh;
+            }
+            .hero-content {
+                text-align: center;
+            }
+            .hero-subheadline {
+                font-size: 1rem;
+                margin-bottom: 1.2rem;
+            }
+            .hero-cta {
+                margin-bottom: 1.2rem;
+            }
+        }
+        /* Responsive value cards */
+        .value-card {
+            min-width: 0;
+            margin-bottom: 1.5rem;
+        }
+        @media (max-width: 991.98px) {
+            .value-card {
+                padding: 1.2rem;
+            }
+        }
+        @media (max-width: 767.98px) {
+            .value-card {
+                padding: 0.9rem;
+                font-size: 0.98rem;
+            }
+            .value-card h4 {
+                font-size: 1.1rem;
+            }
+            .value-card p {
+                font-size: 0.95rem;
+            }
+        }
+        /* Responsive loan product cards */
+        .loan-product-card {
+            margin-bottom: 1.5rem;
+        }
+        /* Responsive testimonials */
+        .testimonial-card {
+            margin-bottom: 1.5rem;
+        }
+        /* Responsive stats section */
+        .stats-section {
+            padding: 32px 0;
+        }
+        .stat-item {
+            margin-bottom: 1.5rem;
+        }
+        /* Responsive section titles */
+        .section-title {
+            font-size: 2.2rem;
+        }
+        @media (max-width: 767.98px) {
+            .section-title {
+                font-size: 1.3rem;
+            }
+            .section-subtitle {
+                font-size: 1rem;
+            }
+        }
+        /* Responsive forms */
+        form {
+            width: 100%;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .form-control, .form-select {
+            font-size: 1rem;
+            padding: 0.7rem 1rem;
+            border-radius: 8px;
+        }
+        @media (max-width: 767.98px) {
+            .form-control, .form-select {
+                font-size: 0.98rem;
+                padding: 0.6rem 0.8rem;
+            }
+        }
+        /* Responsive slider navs */
+        .value-propositions-nav {
+            width: 40px;
+            height: 40px;
+            font-size: 1.1rem;
+        }
+        @media (max-width: 767.98px) {
+            .value-propositions-nav {
+                width: 32px;
+                height: 32px;
+                font-size: 1rem;
+            }
+        }
+        /* Remove horizontal scroll on mobile */
+        html, body {
+            max-width: 100vw;
+            overflow-x: hidden;
+        }
+    </style>
+</head>
+<body>
+{% include 'navbar.html' %}
+
+<!-- Hero Section -->
+<section class="hero-section">
+    <!-- Moving Banner Background -->
+    <div class="hero-banner">
+        <div class="hero-banner-slide hero-banner-slide-1 active" data-slide="1"></div>
+        <div class="hero-banner-slide hero-banner-slide-2" data-slide="2"></div>
+        <div class="hero-banner-slide hero-banner-slide-3" data-slide="3"></div>
+    </div>
+    
+    <!-- Banner Indicators -->
+    <div class="hero-banner-indicators">
+        <div class="hero-banner-indicator active" data-slide="1"></div>
+        <div class="hero-banner-indicator" data-slide="2"></div>
+        <div class="hero-banner-indicator" data-slide="3"></div>
+    </div>
+    
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6 hero-content">
+                <!-- Slide 1 Content -->
+                <div class="hero-slide-content active" data-slide="1">
+                    <h1 class="hero-headline">Fix Your Finances Today</h1>
+                    <p class="hero-subheadline">Struggling with debt? We help overwhelmed borrowers turn their financial situation around. Get expert guidance, debt consolidation, and a clear path to financial freedom.</p>
+                    <div class="hero-cta mb-4">
+                        <a href="#" class="btn btn-primary btn-lg me-3" data-bs-toggle="modal" data-bs-target="#contactModal" data-source="hero">Start Your Recovery</a>
+                        <a href="/emi" class="btn btn-outline-light btn-lg">See How We Help</a>
+                    </div>
+                    <div class="hero-trust-badges">
+                        <span class="trust-badge"><i class="bi bi-shield-check me-2"></i>1000+ Lives Transformed</span>
+                        <span class="trust-badge"><i class="bi bi-graph-up me-2"></i>No Upfront Fees</span>
+                        <span class="trust-badge"><i class="bi bi-credit-card me-2"></i>24/7 Support</span>
+                        <span class="trust-badge"><i class="bi bi-cash-stack me-2"></i>Expert Advisors</span>
+                    </div>
+                </div>
+                
+                <!-- Slide 2 Content -->
+                <div class="hero-slide-content" data-slide="2">
+                    <h1 class="hero-headline">Consolidate Your Debts</h1>
+                    <p class="hero-subheadline">Multiple EMIs draining your income? We consolidate all your loans into one manageable payment. Reduce monthly outflow by up to 40% and breathe easy again.</p>
+                    <div class="hero-cta mb-4">
+                        <a href="#" class="btn btn-primary btn-lg me-3" data-bs-toggle="modal" data-bs-target="#contactModal" data-source="hero">Calculate Savings</a>
+                        <a href="/emi" class="btn btn-outline-light btn-lg">EMI Calculator</a>
+                    </div>
+                    <div class="hero-trust-badges">
+                        <span class="trust-badge"><i class="bi bi-calculator me-2"></i>40% EMI Reduction</span>
+                        <span class="trust-badge"><i class="bi bi-check-circle me-2"></i>Single Payment</span>
+                        <span class="trust-badge"><i class="bi bi-graph-up me-2"></i>Better Credit Score</span>
+                        <span class="trust-badge"><i class="bi bi-clock me-2"></i>Quick Processing</span>
+                    </div>
+                </div>
+                
+                <!-- Slide 3 Content -->
+                <div class="hero-slide-content" data-slide="3">
+                    <h1 class="hero-headline">Weak Profile? No Problem</h1>
+                    <p class="hero-subheadline">Poor credit score? Multiple rejections? Our expert advisors specialize in helping weak profiles get loan approval. We know the right lenders and strategies.</p>
+                    <div class="hero-cta mb-4">
+                        <a href="#" class="btn btn-primary btn-lg me-3" data-bs-toggle="modal" data-bs-target="#contactModal" data-source="hero">Get Expert Help</a>
+                        <a href="/services" class="btn btn-outline-light btn-lg">Our Services</a>
+                    </div>
+                    <div class="hero-trust-badges">
+                        <span class="trust-badge"><i class="bi bi-person-check me-2"></i>Weak Profile Experts</span>
+                        <span class="trust-badge"><i class="bi bi-bank me-2"></i>Direct Lender Access</span>
+                        <span class="trust-badge"><i class="bi bi-file-earmark-text me-2"></i>Documentation Help</span>
+                        <span class="trust-badge"><i class="bi bi-star me-2"></i>High Success Rate</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="debt-consolidation-form">
+                    <div class="text-center mb-4">
+                        <div class="bg-primary rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+                            <i class="bi bi-clipboard-check text-white" style="font-size: 1.5rem;"></i>
+                        </div>
+                        <h4 class="text-primary mb-2">Get Started Today</h4>
+                        <p class="text-muted mb-0">Choose how you'd like to begin your financial transformation</p>
+                    </div>
+                    
+                    <!-- Simple CTA Buttons -->
+                    <div class="d-grid gap-3">
+                        <a href="/contact" class="btn btn-primary btn-lg">
+                            <i class="bi bi-telephone me-2"></i>
+                            Free Consultation Call
+                        </a>
+                        
+                        <a href="/emi" class="btn btn-outline-primary btn-lg">
+                            <i class="bi bi-calculator me-2"></i>
+                            Calculate Your EMI
+                        </a>
+                        
+                        <a href="/products" class="btn btn-outline-primary btn-lg">
+                            <i class="bi bi-briefcase me-2"></i>
+                            View Loan Products
+                        </a>
+                    </div>
+                    
+                    <div class="text-center mt-4">
+                        <div class="text-success small">
+                            <i class="bi bi-clock-history me-1"></i>
+                            No upfront fees • 24/7 support
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Stats Section -->
+<section class="stats-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3 stat-item">
+                <div class="stat-number">₹2.5Cr+</div>
+                <div class="stat-label">Debt Consolidated</div>
+            </div>
+            <div class="col-md-3 stat-item">
+                <div class="stat-number">500+</div>
+                <div class="stat-label">Happy Families</div>
+            </div>
+            <div class="col-md-3 stat-item">
+                <div class="stat-number">85%</div>
+                <div class="stat-label">EMI Reduction</div>
+            </div>
+            <div class="col-md-3 stat-item">
+                <div class="stat-number">4.9★</div>
+                <div class="stat-label">Client Rating</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Value Propositions -->
+<section class="py-5">
+    <div class="container">
+        <h2 class="section-title">How We Transform Your Financial Health</h2>
+        <p class="section-subtitle">From debt stress to financial freedom - your journey starts here</p>
+        
+        <div class="value-propositions-container">
+            <!-- Navigation Buttons -->
+            <button class="value-propositions-nav prev" onclick="changeValueSlide(-1)" aria-label="Previous services">
+                <i class="bi bi-chevron-left"></i>
+            </button>
+            <button class="value-propositions-nav next" onclick="changeValueSlide(1)" aria-label="Next services">
+                <i class="bi bi-chevron-right"></i>
+            </button>
+            
+
+            
+            <!-- Slide 1: Core Services -->
+            <div class="value-propositions-slide active" data-slide="1">
+                <div class="row g-4">
+                    <div class="col-lg-4">
+                        <div class="value-card fade-in">
+                            <div class="value-icon">
+                                <i class="bi bi-arrow-down-up"></i>
+                            </div>
+                            <h4 class="text-primary mb-3">Debt Consolidation</h4>
+                            <p class="text-muted">Transform multiple high-interest EMIs into one manageable payment. Reduce your monthly outflow by up to 40%.</p>
+                            <ul class="list-unstyled">
+                                <li><i class="bi bi-check-circle text-primary me-2"></i>Lower interest rates</li>
+                                <li><i class="bi bi-check-circle text-primary me-2"></i>Single monthly payment</li>
+                                <li><i class="bi bi-check-circle text-primary me-2"></i>Improved credit score</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="value-card fade-in">
+                            <div class="value-icon">
+                                <i class="bi bi-graph-up-arrow"></i>
+                            </div>
+                            <h4 class="text-primary mb-3">Credit Profile Building</h4>
+                            <p class="text-muted">Weak credit profile? We help you build a strong financial profile that gets loan approval.</p>
+                            <ul class="list-unstyled">
+                                <li><i class="bi bi-check-circle text-primary me-2"></i>Credit score improvement</li>
+                                <li><i class="bi bi-check-circle text-primary me-2"></i>Documentation guidance</li>
+                                <li><i class="bi bi-check-circle text-primary me-2"></i>Loan approval strategies</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="value-card fade-in">
+                            <div class="value-icon">
+                                <i class="bi bi-person-check"></i>
+                            </div>
+                            <h4 class="text-primary mb-3">Personal Financial Advisor</h4>
+                            <p class="text-muted">Get a dedicated financial advisor who understands your situation and creates a personalized plan.</p>
+                            <ul class="list-unstyled">
+                                <li><i class="bi bi-check-circle text-primary me-2"></i>One-on-one consultation</li>
+                                <li><i class="bi bi-check-circle text-primary me-2"></i>Regular follow-ups</li>
+                                <li><i class="bi bi-check-circle text-primary me-2"></i>Ongoing support</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Slide 2: Advanced Solutions -->
+            <div class="value-propositions-slide" data-slide="2">
+                <div class="row g-4">
+                    <div class="col-lg-4">
+                        <div class="value-card fade-in">
+                            <div class="value-icon">
+                                <i class="bi bi-calculator"></i>
+                            </div>
+                            <h4 class="text-primary mb-3">EMI Optimization</h4>
+                            <p class="text-muted">Our experts analyze your loan structure and optimize EMIs for maximum savings and better cash flow.</p>
+                            <ul class="list-unstyled">
+                                <li><i class="bi bi-check-circle text-primary me-2"></i>Smart loan restructuring</li>
+                                <li><i class="bi bi-check-circle text-primary me-2"></i>Interest rate negotiation</li>
+                                <li><i class="bi bi-check-circle text-primary me-2"></i>Payment schedule optimization</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="value-card fade-in">
+                            <div class="value-icon">
+                                <i class="bi bi-shield-check"></i>
+                            </div>
+                            <h4 class="text-primary mb-3">Financial Protection</h4>
+                            <p class="text-muted">Secure your financial future with comprehensive protection plans and emergency fund strategies.</p>
+                            <ul class="list-unstyled">
+                                <li><i class="bi bi-check-circle text-primary me-2"></i>Emergency fund planning</li>
+                                <li><i class="bi bi-check-circle text-primary me-2"></i>Insurance optimization</li>
+                                <li><i class="bi bi-check-circle text-primary me-2"></i>Risk management</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="value-card fade-in">
+                            <div class="value-icon">
+                                <i class="bi bi-bank"></i>
+                            </div>
+                            <h4 class="text-primary mb-3">Lender Network</h4>
+                            <p class="text-muted">Access to our extensive network of banks and NBFCs for the best loan terms and approval rates.</p>
+                            <ul class="list-unstyled">
+                                <li><i class="bi bi-check-circle text-primary me-2"></i>Direct lender access</li>
+                                <li><i class="bi bi-check-circle text-primary me-2"></i>Preferential rates</li>
+                                <li><i class="bi bi-check-circle text-primary me-2"></i>Faster processing</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Slide 3: Specialized Services -->
+            <div class="value-propositions-slide" data-slide="3">
+                <div class="row g-4">
+                    <div class="col-lg-4">
+                        <div class="value-card fade-in">
+                            <div class="value-icon">
+                                <i class="bi bi-file-earmark-text"></i>
+                            </div>
+                            <h4 class="text-primary mb-3">Documentation Support</h4>
+                            <p class="text-muted">Complete assistance with loan documentation, ensuring smooth processing and faster approvals.</p>
+                            <ul class="list-unstyled">
+                                <li><i class="bi bi-check-circle text-primary me-2"></i>Document preparation</li>
+                                <li><i class="bi bi-check-circle text-primary me-2"></i>Application assistance</li>
+                                <li><i class="bi bi-check-circle text-primary me-2"></i>Follow-up support</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="value-card fade-in">
+                            <div class="value-icon">
+                                <i class="bi bi-graph-up"></i>
+                            </div>
+                            <h4 class="text-primary mb-3">Investment Planning</h4>
+                            <p class="text-muted">Beyond debt management, we help you build wealth through smart investment strategies.</p>
+                            <ul class="list-unstyled">
+                                <li><i class="bi bi-check-circle text-primary me-2"></i>Investment portfolio design</li>
+                                <li><i class="bi bi-check-circle text-primary me-2"></i>Tax-efficient strategies</li>
+                                <li><i class="bi bi-check-circle text-primary me-2"></i>Retirement planning</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="value-card fade-in">
+                            <div class="value-icon">
+                                <i class="bi bi-headset"></i>
+                            </div>
+                            <h4 class="text-primary mb-3">24/7 Support</h4>
+                            <p class="text-muted">Round-the-clock support for all your financial queries and emergency assistance when needed.</p>
+                            <ul class="list-unstyled">
+                                <li><i class="bi bi-check-circle text-primary me-2"></i>Instant query resolution</li>
+                                <li><i class="bi bi-check-circle text-primary me-2"></i>Emergency assistance</li>
+                                <li><i class="bi bi-check-circle text-primary me-2"></i>Regular check-ins</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Indicators -->
+        <div class="value-propositions-indicators">
+            <div class="value-propositions-indicator active" data-slide="1" onclick="goToValueSlide(1)"></div>
+            <div class="value-propositions-indicator" data-slide="2" onclick="goToValueSlide(2)"></div>
+            <div class="value-propositions-indicator" data-slide="3" onclick="goToValueSlide(3)"></div>
+        </div>
+    </div>
+</section>
+
+<!-- Success Stories -->
+<section class="py-5 bg-light-blue">
+    <div class="container">
+        <h2 class="section-title">Success Stories</h2>
+        <p class="section-subtitle">Real people, real results - see how we've transformed financial lives</p>
+        <div class="row g-4">
+            <div class="col-lg-4">
+                <div class="testimonial-card fade-in">
+                    <div class="mb-3">
+                        <i class="bi bi-quote text-primary" style="font-size: 2rem;"></i>
+                    </div>
+                    <p class="mb-3">"I was paying ₹45,000 in EMIs across 5 loans. Advance Credit consolidated them into one payment of ₹28,000. I'm finally breathing easy!"</p>
+                    <div class="d-flex align-items-center">
+                        <div class="bg-primary rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 50px; height: 50px;">
+                            <span class="text-white fw-bold">RS</span>
+                        </div>
+                        <div>
+                            <div class="fw-bold text-primary">Rahul Sharma</div>
+                            <small class="text-muted">Mumbai, IT Professional</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="testimonial-card fade-in">
+                    <div class="mb-3">
+                        <i class="bi bi-quote text-primary" style="font-size: 2rem;"></i>
+                    </div>
+                    <p class="mb-3">"My credit score was 650 and banks kept rejecting my loan applications. Advance Credit helped me improve it to 750 and I got my home loan approved!"</p>
+                    <div class="d-flex align-items-center">
+                        <div class="bg-primary rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 50px; height: 50px;">
+                            <span class="text-white fw-bold">PK</span>
+                        </div>
+                        <div>
+                            <div class="fw-bold text-primary">Priya Kumar</div>
+                            <small class="text-muted">Delhi, Business Owner</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="testimonial-card fade-in">
+                    <div class="mb-3">
+                        <i class="bi bi-quote text-primary" style="font-size: 2rem;"></i>
+                    </div>
+                    <p class="mb-3">"The team was with me every step. They didn't just get me a loan, they taught me how to manage my finances better. Highly recommended!"</p>
+                    <div class="d-flex align-items-center">
+                        <div class="bg-primary rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 50px; height: 50px;">
+                            <span class="text-white fw-bold">AK</span>
+                        </div>
+                        <div>
+                            <div class="fw-bold text-primary">Amit Kumar</div>
+                            <small class="text-muted">Bangalore, Consultant</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- How It Works -->
+<section class="py-5">
+    <div class="container">
+        <h2 class="section-title">How We Help You</h2>
+        <p class="section-subtitle">Simple, transparent process to transform your financial health</p>
+        <div class="row justify-content-center">
+            <div class="col-md-10">
+                <div class="row g-4">
+                    <div class="col-md-4 text-center">
+                        <div class="bg-primary rounded-circle d-flex align-items-center justify-content-center mx-auto mb-3" style="width: 80px; height: 80px;">
+                            <span class="text-white fw-bold fs-4">1</span>
+                        </div>
+                        <h5 class="text-primary mb-2">Free Assessment</h5>
+                        <p class="text-muted">We analyze your current financial situation and identify opportunities for debt consolidation and credit improvement.</p>
+                    </div>
+                    <div class="col-md-4 text-center">
+                        <div class="bg-primary rounded-circle d-flex align-items-center justify-content-center mx-auto mb-3" style="width: 80px; height: 80px;">
+                            <span class="text-white fw-bold fs-4">2</span>
+                        </div>
+                        <h5 class="text-primary mb-2">Personalized Plan</h5>
+                        <p class="text-muted">Our certified advisors create a customized strategy to consolidate your debts and improve your credit profile.</p>
+                    </div>
+                    <div class="col-md-4 text-center">
+                        <div class="bg-primary rounded-circle d-flex align-items-center justify-content-center mx-auto mb-3" style="width: 80px; height: 80px;">
+                            <span class="text-white fw-bold fs-4">3</span>
+                        </div>
+                        <h5 class="text-primary mb-2">Implementation</h5>
+                        <p class="text-muted">We guide you through the entire process, from application to approval, ensuring the best possible terms.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Emergency Debt Relief Section -->
+<section class="py-5" style="background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%); color: white;">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <div class="fade-in">
+                    <h2 class="section-title text-white mb-4">Emergency Debt Relief</h2>
+                    <p class="section-subtitle text-white-50 mb-4">Facing loan default? Credit card maxed out? We provide immediate solutions for urgent financial crises.</p>
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-center">
+                                <div class="bg-white rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px;">
+                                    <i class="bi bi-exclamation-triangle text-danger"></i>
+                                </div>
+                                <div>
+                                    <h6 class="text-white mb-1">Loan Default</h6>
+                                    <small class="text-white-50">Immediate restructuring</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-center">
+                                <div class="bg-white rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px;">
+                                    <i class="bi bi-credit-card text-danger"></i>
+                                </div>
+                                <div>
+                                    <h6 class="text-white mb-1">Credit Card Debt</h6>
+                                    <small class="text-white-50">Balance transfer solutions</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-center">
+                                <div class="bg-white rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px;">
+                                    <i class="bi bi-calendar-x text-danger"></i>
+                                </div>
+                                <div>
+                                    <h6 class="text-white mb-1">EMI Overdue</h6>
+                                    <small class="text-white-50">Payment restructuring</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-center">
+                                <div class="bg-white rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px;">
+                                    <i class="bi bi-bank text-danger"></i>
+                                </div>
+                                <div>
+                                    <h6 class="text-white mb-1">Bank Notice</h6>
+                                    <small class="text-white-50">Legal assistance</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="#" class="btn btn-light btn-lg" data-bs-toggle="modal" data-bs-target="#contactModal" data-source="emergency">
+                        <i class="bi bi-telephone me-2"></i>Get Emergency Help Now
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="fade-in">
+                    <div class="bg-white rounded-3 p-4 text-dark">
+                        <h5 class="text-danger mb-3">⚠️ Urgent Financial Crisis?</h5>
+                        <ul class="list-unstyled">
+                            <li class="mb-2"><i class="bi bi-check-circle text-success me-2"></i>24/7 emergency support</li>
+                            <li class="mb-2"><i class="bi bi-check-circle text-success me-2"></i>Same-day loan restructuring</li>
+                            <li class="mb-2"><i class="bi bi-check-circle text-success me-2"></i>Legal protection assistance</li>
+                            <li class="mb-2"><i class="bi bi-check-circle text-success me-2"></i>Direct lender negotiations</li>
+                            <li class="mb-2"><i class="bi bi-check-circle text-success me-2"></i>Credit score damage control</li>
+                        </ul>
+                        <div class="alert alert-warning mt-3 mb-0">
+                            <strong>Don't wait!</strong> Every day of delay can worsen your financial situation.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Debt Calculator Section -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <h2 class="section-title">Calculate Your Debt Relief</h2>
+        <p class="section-subtitle">See exactly how much you can save with our debt consolidation services</p>
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="bg-white rounded-3 shadow-lg p-4">
+                    <div class="row g-4">
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold">Total Loan Amount Left</label>
+                            <div class="input-group">
+                                <span class="input-group-text">₹</span>
+                                <input type="number" class="form-control" id="totalLoanAmount" placeholder="500000" min="0">
+                            </div>
+                            <small class="text-muted">Total outstanding amount across all loans</small>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold">Current Monthly EMI</label>
+                            <div class="input-group">
+                                <span class="input-group-text">₹</span>
+                                <input type="number" class="form-control" id="currentEmi" placeholder="25000" min="0">
+                            </div>
+                            <small class="text-muted">Total EMI you're paying currently</small>
+                        </div>
+
+                        <div class="col-12 text-center">
+                            <button class="btn btn-primary btn-lg" onclick="calculateDebtRelief()">
+                                <i class="bi bi-calculator me-2"></i>Calculate Savings
+                            </button>
+                        </div>
+                    </div>
+                    <div id="calculationResult" class="mt-4 d-none">
+                        <div class="row g-3">
+                            <div class="col-md-4">
+                                <div class="text-center p-4 bg-success bg-opacity-30 rounded-3 border border-success border-opacity-75 shadow">
+                                    <h3 class="text-success mb-2 fw-bold" id="monthlySavings">₹0</h3>
+                                    <p class="text-dark fw-bold">Monthly Savings</p>
+                                    <small class="text-muted fw-medium">Current EMI - New EMI</small>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="text-center p-4 bg-primary bg-opacity-30 rounded-3 border border-primary border-opacity-75 shadow">
+                                    <h3 class="text-primary mb-2 fw-bold" id="newEmi">₹0</h3>
+                                    <p class="text-dark fw-bold">New Monthly EMI</p>
+                                    <small class="text-muted fw-medium">13% p.a. for 5 years</small>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="text-center p-4 bg-warning bg-opacity-30 rounded-3 border border-warning border-opacity-75 shadow">
+                                    <h3 class="text-warning mb-2 fw-bold" id="totalSavings">₹0</h3>
+                                    <p class="text-dark fw-bold">Annual Savings</p>
+                                    <small class="text-muted fw-medium">Monthly savings × 12</small>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="alert alert-success mt-4 mb-3">
+                            <div class="d-flex align-items-start">
+                                <i class="bi bi-check-circle me-2 mt-1"></i>
+                                <div>
+                                    <strong>Great News!</strong> You could save <span id="savingsText" class="fw-bold"></span> every month with our debt consolidation loan at 13% p.a. for 5 years.
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="text-center">
+                            <a href="#" class="btn btn-success btn-lg" data-bs-toggle="modal" data-bs-target="#contactModal" data-source="calculator">
+                                <i class="bi bi-telephone me-2"></i>Get Free Assessment
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Credit Score Impact Section -->
+<section class="py-5">
+    <div class="container">
+        <h2 class="section-title">How We Improve Your Credit Score</h2>
+        <p class="section-subtitle">Transform your credit profile from poor to excellent in 6-12 months</p>
+        <div class="row g-4">
+            <div class="col-lg-3 col-md-6">
+                <div class="text-center fade-in">
+                    <div class="bg-danger bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center mx-auto mb-3" style="width: 80px; height: 80px;">
+                        <span class="text-danger fw-bold fs-4">300</span>
+                    </div>
+                    <h5 class="text-danger mb-2">Poor Credit</h5>
+                    <p class="text-muted small">Multiple defaults, high utilization</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="text-center fade-in">
+                    <div class="bg-warning bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center mx-auto mb-3" style="width: 80px; height: 80px;">
+                        <span class="text-warning fw-bold fs-4">550</span>
+                    </div>
+                    <h5 class="text-warning mb-2">Fair Credit</h5>
+                    <p class="text-muted small">Some late payments, moderate debt</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="text-center fade-in">
+                    <div class="bg-info bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center mx-auto mb-3" style="width: 80px; height: 80px;">
+                        <span class="text-info fw-bold fs-4">700</span>
+                    </div>
+                    <h5 class="text-info mb-2">Good Credit</h5>
+                    <p class="text-muted small">Timely payments, low utilization</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="text-center fade-in">
+                    <div class="bg-success bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center mx-auto mb-3" style="width: 80px; height: 80px;">
+                        <span class="text-success fw-bold fs-4">750+</span>
+                    </div>
+                    <h5 class="text-success mb-2">Excellent Credit</h5>
+                    <p class="text-muted small">Perfect payment history, low debt</p>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-5">
+            <div class="col-lg-8 mx-auto">
+                <div class="bg-gradient-primary rounded-3 p-4 text-white">
+                    <h4 class="mb-3">Our Credit Improvement Strategy</h4>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <ul class="list-unstyled">
+                                <li class="mb-2"><i class="bi bi-check-circle me-2"></i>Dispute incorrect entries</li>
+                                <li class="mb-2"><i class="bi bi-check-circle me-2"></i>Negotiate payment plans</li>
+                                <li class="mb-2"><i class="bi bi-check-circle me-2"></i>Reduce credit utilization</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <ul class="list-unstyled">
+                                <li class="mb-2"><i class="bi bi-check-circle me-2"></i>Add positive tradelines</li>
+                                <li class="mb-2"><i class="bi bi-check-circle me-2"></i>Improve payment history</li>
+                                <li class="mb-2"><i class="bi bi-check-circle me-2"></i>Monitor credit reports</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Loan Products Comparison -->
+<section class="py-5 bg-light-blue">
+    <div class="container">
+        <h2 class="section-title">Best Loan Products for You</h2>
+        <p class="section-subtitle">Compare and choose the perfect loan option based on your profile</p>
+        <div class="row g-4">
+            <div class="col-lg-4">
+                <div class="bg-white rounded-3 shadow p-4 h-100">
+                    <div class="text-center mb-4">
+                        <div class="bg-primary rounded-circle d-flex align-items-center justify-content-center mx-auto mb-3" style="width: 60px; height: 60px;">
+                            <i class="bi bi-house text-white fs-4"></i>
+                        </div>
+                        <h5 class="text-primary">Home Loan</h5>
+                        <p class="text-muted small">Best for property purchase</p>
+                    </div>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><i class="bi bi-check text-success me-2"></i>Interest: 8.5% - 9.5%</li>
+                        <li class="mb-2"><i class="bi bi-check text-success me-2"></i>Tenure: Up to 30 years</li>
+                        <li class="mb-2"><i class="bi bi-check text-success me-2"></i>Processing: 0.5%</li>
+                        <li class="mb-2"><i class="bi bi-check text-success me-2"></i>Prepayment: 2% after 1 year</li>
+                    </ul>
+                    <div class="text-center mt-4">
+                        <a href="/products" class="btn btn-outline-primary">Learn More</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="bg-white rounded-3 shadow p-4 h-100">
+                    <div class="text-center mb-4">
+                        <div class="bg-success rounded-circle d-flex align-items-center justify-content-center mx-auto mb-3" style="width: 60px; height: 60px;">
+                            <i class="bi bi-car-front text-white fs-4"></i>
+                        </div>
+                        <h5 class="text-success">Personal Loan</h5>
+                        <p class="text-muted small">Best for debt consolidation</p>
+                    </div>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><i class="bi bi-check text-success me-2"></i>Interest: 10.5% - 15%</li>
+                        <li class="mb-2"><i class="bi bi-check text-success me-2"></i>Tenure: Up to 7 years</li>
+                        <li class="mb-2"><i class="bi bi-check text-success me-2"></i>Processing: 1-2%</li>
+                        <li class="mb-2"><i class="bi bi-check text-success me-2"></i>Quick disbursal: 6-8 hours</li>
+                    </ul>
+                    <div class="text-center mt-4">
+                        <a href="/products" class="btn btn-outline-success">Learn More</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="bg-white rounded-3 shadow p-4 h-100">
+                    <div class="text-center mb-4">
+                        <div class="bg-warning rounded-circle d-flex align-items-center justify-content-center mx-auto mb-3" style="width: 60px; height: 60px;">
+                            <i class="bi bi-briefcase text-white fs-4"></i>
+                        </div>
+                        <h5 class="text-warning">Business Loan</h5>
+                        <p class="text-muted small">Best for business expansion</p>
+                    </div>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><i class="bi bi-check text-success me-2"></i>Interest: 12% - 18%</li>
+                        <li class="mb-2"><i class="bi bi-check text-success me-2"></i>Tenure: Up to 5 years</li>
+                        <li class="mb-2"><i class="bi bi-check text-success me-2"></i>Processing: 1-3%</li>
+                        <li class="mb-2"><i class="bi bi-check text-success me-2"></i>Collateral: Optional</li>
+                    </ul>
+                    <div class="text-center mt-4">
+                        <a href="/products" class="btn btn-outline-warning">Learn More</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- NRI Services Section -->
+<section class="py-5 bg-gradient-to-r" style="background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <div class="text-white">
+                    <h2 class="section-title text-white mb-4">NRI Services</h2>
+                    <h3 class="h4 mb-4">Invest in India from Abroad</h3>
+                    <p class="lead mb-4">Are you an NRI looking to invest in India? We provide specialized financial services for Non-Resident Indians who want to fund their family's needs or invest in Indian real estate and businesses.</p>
+                    
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-center text-white">
+                                <i class="bi bi-check-circle-fill text-success me-3 fs-5"></i>
+                                <span>Home Loans for NRIs</span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-center text-white">
+                                <i class="bi bi-check-circle-fill text-success me-3 fs-5"></i>
+                                <span>Business Funding</span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-center text-white">
+                                <i class="bi bi-check-circle-fill text-success me-3 fs-5"></i>
+                                <span>Family Support Loans</span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-center text-white">
+                                <i class="bi bi-check-circle-fill text-success me-3 fs-5"></i>
+                                <span>Investment Advisory</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="d-flex flex-wrap gap-3">
+                        <a href="/contact" class="btn btn-light btn-lg">
+                            <i class="bi bi-globe me-2"></i>Get NRI Consultation
+                        </a>
+                        <a href="tel:+919987763779" class="btn btn-outline-light btn-lg">
+                            <i class="bi bi-telephone me-2"></i>Call Now
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="bg-white rounded-3 shadow p-4">
+                    <h4 class="text-primary mb-4">Why Choose Our NRI Services?</h4>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-start">
+                                <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px;">
+                                    <i class="bi bi-shield-check"></i>
+                                </div>
+                                <div>
+                                    <h6 class="mb-1">RBI Compliant</h6>
+                                    <small class="text-muted">All transactions follow RBI guidelines</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-start">
+                                <div class="bg-success text-white rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px;">
+                                    <i class="bi bi-clock"></i>
+                                </div>
+                                <div>
+                                    <h6 class="mb-1">Quick Processing</h6>
+                                    <small class="text-muted">Fast approval within 48-72 hours</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-start">
+                                <div class="bg-warning text-white rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px;">
+                                    <i class="bi bi-currency-exchange"></i>
+                                </div>
+                                <div>
+                                    <h6 class="mb-1">Currency Support</h6>
+                                    <small class="text-muted">Multi-currency loan options</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-start">
+                                <div class="bg-info text-white rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px;">
+                                    <i class="bi bi-headset"></i>
+                                </div>
+                                <div>
+                                    <h6 class="mb-1">24/7 Support</h6>
+                                    <small class="text-muted">Global timezone support</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-4 p-3 bg-light rounded">
+                        <h6 class="text-primary mb-2">Special NRI Benefits:</h6>
+                        <ul class="list-unstyled mb-0">
+                            <li class="mb-1"><i class="bi bi-arrow-right text-primary me-2"></i>Lower interest rates for NRIs</li>
+                            <li class="mb-1"><i class="bi bi-arrow-right text-primary me-2"></i>No prepayment charges</li>
+                            <li class="mb-1"><i class="bi bi-arrow-right text-primary me-2"></i>Flexible repayment options</li>
+                            <li class="mb-0"><i class="bi bi-arrow-right text-primary me-2"></i>Tax benefits on home loans</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FAQ Section -->
+<section class="py-5 bg-light-blue">
+    <div class="container">
+        <h2 class="section-title">Frequently Asked Questions</h2>
+        <div class="row justify-content-center">
+            <div class="col-md-10">
+                <div class="accordion" id="faqAccordion">
+                    <div class="accordion-item border-0 mb-3">
+                        <h2 class="accordion-header" id="faq1">
+                            <button class="accordion-button bg-white collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse1">
+                                How much can I save through debt consolidation?
+                            </button>
+                        </h2>
+                        <div id="collapse1" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                Most clients save 30-40% on their monthly EMI payments. For example, if you're paying ₹50,000 across multiple loans, consolidation can reduce it to ₹30,000-35,000.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item border-0 mb-3">
+                        <h2 class="accordion-header" id="faq2">
+                            <button class="accordion-button bg-white collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse2">
+                                What if I have a poor credit score?
+                            </button>
+                        </h2>
+                        <div id="collapse2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                We specialize in helping people with weak credit profiles. Our advisors will guide you through credit improvement strategies and connect you with lenders who consider other factors beyond just credit score.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item border-0 mb-3">
+                        <h2 class="accordion-header" id="faq3">
+                            <button class="accordion-button bg-white collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse3">
+                                Is the consultation really free?
+                            </button>
+                        </h2>
+                        <div id="collapse3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                Yes, our initial financial assessment and consultation are completely free. We only charge fees when we successfully help you get a loan or consolidate your debts.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Trusted Partners -->
+<section class="py-5">
+    <div class="container">
+        <h2 class="section-title">Trusted Financial Partners</h2>
+        <p class="section-subtitle">We work with India's leading banks and NBFCs to get you the best terms</p>
+        <div class="row justify-content-center align-items-center g-4">
+            <div class="col-auto"><img src="/static/partners/Axis_Bank_logo.png" alt="Axis Bank" style="height: 40px; filter: grayscale(100%); opacity: 0.7;"></div>
+            <div class="col-auto"><img src="/static/partners/HDFC-Bank-logo.png" alt="HDFC Bank" style="height: 40px; filter: grayscale(100%); opacity: 0.7;"></div>
+            <div class="col-auto"><img src="/static/partners/ICICI_Bank_Logo.png" alt="ICICI Bank" style="height: 40px; filter: grayscale(100%); opacity: 0.7;"></div>
+            <div class="col-auto"><img src="/static/partners/Bajaj-Finance-logo.png" alt="Bajaj Finance" style="height: 40px; filter: grayscale(100%); opacity: 0.7;"></div>
+            <div class="col-auto"><img src="/static/partners/tata_capital_logo.png" alt="Tata Capital" style="height: 40px; filter: grayscale(100%); opacity: 0.7;"></div>
+            <div class="col-auto"><img src="/static/partners/Yes_Bank.png" alt="Yes Bank" style="height: 40px; filter: grayscale(100%); opacity: 0.7;"></div>
+        </div>
+    </div>
+</section>
+
+<!-- Contact Modal -->
+<div class="modal fade" id="contactModal" tabindex="-1" aria-labelledby="contactModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <form method="post" action="/contact" id="contactForm">
+                <div class="modal-header border-0">
+                    <h5 class="modal-title text-primary" id="contactModalLabel">Get Free Financial Assessment</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="contactSource" name="source" value="homepage">
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Name <span class="text-primary">*</span></label>
+                        <input type="text" class="form-control" id="name" name="name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="contact" class="form-label">Contact <span class="text-primary">*</span></label>
+                        <input type="text" class="form-control" id="contact" name="contact" required maxlength="10" pattern="\d{10}">
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email (Optional)</label>
+                        <input type="email" class="form-control" id="email" name="email">
+                    </div>
+                    <div class="mb-3">
+                        <label for="query" class="form-label">Tell us about your financial situation <span class="text-primary">*</span></label>
+                        <textarea class="form-control" id="query" name="query" rows="3" required placeholder="e.g., I have multiple EMIs totaling ₹40,000 monthly, looking to consolidate..."></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer border-0">
+                    <button type="submit" class="btn btn-primary w-100">Get Free Assessment</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- Success Toast -->
+<div id="successToast" class="toast align-items-center text-bg-success border-0 position-fixed bottom-0 end-0 m-4" role="alert" aria-live="assertive" aria-atomic="true" style="z-index:2000;display:none;">
+    <div class="d-flex">
+        <div class="toast-body">
+            Successfully submitted your request.
+        </div>
+        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+</div>
+
+{% include 'footer.html' %}
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+// Fade-in animation
+function onVisible(element, callback) {
+    const observer = new IntersectionObserver((entries, obs) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                callback(entry.target);
+                obs.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.15 });
+    observer.observe(element);
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.fade-in').forEach(el => {
+        onVisible(el, (e) => e.classList.add('visible'));
+    });
+    
+
+});
+
+// Contact form handler
+const contactForm = document.getElementById('contactForm');
+if (contactForm) {
+    contactForm.addEventListener('submit', async function(e) {
+        const contact = document.getElementById('contact').value;
+        if (!/^\d{10}$/.test(contact)) {
+            e.preventDefault();
+            alert('Please enter a valid 10-digit contact number.');
+            return;
+        }
+        e.preventDefault();
+        const form = e.target;
+        const data = new FormData(form);
+        const res = await fetch('/contact', { method: 'POST', body: data });
+        if (res.ok) {
+            form.reset();
+            const modal = bootstrap.Modal.getOrCreateInstance(document.getElementById('contactModal'));
+            modal.hide();
+            const toast = document.getElementById('successToast');
+            toast.style.display = 'block';
+            const bsToast = new bootstrap.Toast(toast);
+            bsToast.show();
+            setTimeout(() => { toast.style.display = 'none'; }, 3500);
+        } else {
+            alert('Sorry, there was an error. Please try again.');
+        }
+    });
+}
+
+// Set source field dynamically
+for (const btn of document.querySelectorAll('[data-bs-target="#contactModal"]')) {
+    btn.addEventListener('click', function() {
+        const src = btn.getAttribute('data-source') || 'homepage';
+        document.getElementById('contactSource').value = src;
+    });
+}
+
+// Hero Banner Slider
+function initHeroBanner() {
+    const slides = document.querySelectorAll('.hero-banner-slide');
+    const indicators = document.querySelectorAll('.hero-banner-indicator');
+    const contentSlides = document.querySelectorAll('.hero-slide-content');
+    let currentSlide = 0;
+    
+    function showSlide(index) {
+        // Remove active class from all slides, indicators, and content
+        slides.forEach(slide => slide.classList.remove('active'));
+        indicators.forEach(indicator => indicator.classList.remove('active'));
+        contentSlides.forEach(content => content.classList.remove('active'));
+        
+        // Add active class to current slide, indicator, and content
+        slides[index].classList.add('active');
+        indicators[index].classList.add('active');
+        contentSlides[index].classList.add('active');
+    }
+    
+    function nextSlide() {
+        currentSlide = (currentSlide + 1) % slides.length;
+        showSlide(currentSlide);
+    }
+    
+    // Auto-advance slides every 4 seconds
+    setInterval(nextSlide, 4000);
+    
+    // Allow manual navigation via indicators
+    indicators.forEach((indicator, index) => {
+        indicator.addEventListener('click', () => {
+            currentSlide = index;
+            showSlide(currentSlide);
+        });
+    });
+}
+
+// Initialize hero banner when DOM is loaded
+document.addEventListener('DOMContentLoaded', function() {
+    initHeroBanner();
+    initValuePropositionsSlider();
+});
+
+// Value Propositions Slider
+let currentValueSlide = 0;
+const valueSlides = document.querySelectorAll('.value-propositions-slide');
+const valueIndicators = document.querySelectorAll('.value-propositions-indicator');
+
+function initValuePropositionsSlider() {
+    if (valueSlides.length > 0) {
+        // Auto-advance slides every 15 seconds (much slower)
+        setInterval(() => {
+            changeValueSlide(1);
+        }, 15000);
+    }
+}
+
+function changeValueSlide(direction) {
+    const totalSlides = valueSlides.length;
+    currentValueSlide = (currentValueSlide + direction + totalSlides) % totalSlides;
+    showValueSlide(currentValueSlide);
+}
+
+function goToValueSlide(slideIndex) {
+    currentValueSlide = slideIndex - 1;
+    showValueSlide(currentValueSlide);
+}
+
+function showValueSlide(index) {
+    // Remove active class from all slides and indicators
+    valueSlides.forEach(slide => slide.classList.remove('active', 'prev'));
+    valueIndicators.forEach(indicator => indicator.classList.remove('active'));
+    
+    // Add active class to current slide and indicator
+    valueSlides[index].classList.add('active');
+    valueIndicators[index].classList.add('active');
+    
+    // Add prev class to previous slide for smooth transition
+    const prevIndex = (index - 1 + valueSlides.length) % valueSlides.length;
+    valueSlides[prevIndex].classList.add('prev');
+}
+
+// Debt Calculator Function
+async function calculateDebtRelief() {
+    const totalLoanAmount = parseFloat(document.getElementById('totalLoanAmount').value) || 0;
+    const currentEmi = parseFloat(document.getElementById('currentEmi').value) || 0;
+    
+    if (totalLoanAmount === 0 || currentEmi === 0) {
+        alert('Please enter both total loan amount and current monthly EMI');
+        return;
+    }
+    
+    // Fixed parameters for our offer
+    const newInterestRate = 13; // 13% p.a.
+    const newTenure = 5; // 5 years
+    
+    // Calculate new EMI at 13% p.a. for 5 years
+    const monthlyRate = newInterestRate / (12 * 100);
+    const totalMonths = newTenure * 12;
+    
+    let newEmi;
+    if (monthlyRate === 0) {
+        newEmi = totalLoanAmount / totalMonths;
+    } else {
+        newEmi = totalLoanAmount * (monthlyRate * Math.pow(1 + monthlyRate, totalMonths)) / (Math.pow(1 + monthlyRate, totalMonths) - 1);
+    }
+    
+    // Calculate savings
+    const monthlySavings = currentEmi - newEmi;
+    const annualSavings = monthlySavings * 12;
+    
+    // Display results
+    document.getElementById('monthlySavings').textContent = '₹' + Math.round(monthlySavings).toLocaleString();
+    document.getElementById('newEmi').textContent = '₹' + Math.round(newEmi).toLocaleString();
+    document.getElementById('totalSavings').textContent = '₹' + Math.round(annualSavings).toLocaleString();
+    
+    // Update savings text
+    const savingsText = document.getElementById('savingsText');
+    if (monthlySavings > 0) {
+        savingsText.textContent = '₹' + Math.round(monthlySavings).toLocaleString();
+        savingsText.className = 'fw-bold text-success';
+    } else {
+        savingsText.textContent = '₹' + Math.round(Math.abs(monthlySavings)).toLocaleString() + ' more';
+        savingsText.className = 'fw-bold text-danger';
+    }
+    
+    // Submit data to backend for lead capture
+    const formData = new FormData();
+    formData.append('total_loan_amount', totalLoanAmount);
+    formData.append('current_emi', currentEmi);
+    formData.append('new_emi', Math.round(newEmi));
+    formData.append('monthly_savings', Math.round(monthlySavings));
+    formData.append('annual_savings', Math.round(annualSavings));
+    formData.append('source', 'debt-calculator');
+    
+    try {
+        const response = await fetch('/debt-calculator', {
+            method: 'POST',
+            body: formData
+        });
+        
+        if (response.ok) {
+            console.log('Calculator data submitted successfully');
+        }
+    } catch (error) {
+        console.error('Error submitting calculator data:', error);
+    }
+    
+    // Show results
+    document.getElementById('calculationResult').classList.remove('d-none');
+    
+    // Scroll to results
+    document.getElementById('calculationResult').scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+</script>
+</body>
+</html> 

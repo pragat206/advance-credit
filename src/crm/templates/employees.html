@@ -1,0 +1,247 @@
+{% extends 'base.html' %}
+
+{% block title %}Employees - Advance Credit CRM{% endblock %}
+
+{% block content %}
+<div class="glass-card">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="page-title">Employees</h1>
+        <a href="/crm/employees/new" class="btn btn-primary-modern btn-modern">
+            <i class="bi bi-plus-circle me-2"></i>Add Employee
+        </a>
+    </div>
+
+    <!-- Employee Stats -->
+    <div class="row g-4 mb-4">
+        <div class="col-lg-3 col-md-6">
+            <div class="stats-card">
+                <div class="stats-icon primary">
+                    <i class="bi bi-people"></i>
+                </div>
+                <h3 class="h4 mb-2">{{ total_employees }}</h3>
+                <p class="text-muted mb-0">Total Employees</p>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6">
+            <div class="stats-card">
+                <div class="stats-icon success">
+                    <i class="bi bi-person-check"></i>
+                </div>
+                <h3 class="h4 mb-2">{{ active_employees }}</h3>
+                <p class="text-muted mb-0">Active Employees</p>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6">
+            <div class="stats-card">
+                <div class="stats-icon warning">
+                    <i class="bi bi-graph-up"></i>
+                </div>
+                <h3 class="h4 mb-2">{{ total_leads }}</h3>
+                <p class="text-muted mb-0">Assigned Leads</p>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6">
+            <div class="stats-card">
+                <div class="stats-icon danger">
+                    <i class="bi bi-cash-stack"></i>
+                </div>
+                <h3 class="h4 mb-2">₹{{ total_salary|default(0) }}</h3>
+                <p class="text-muted mb-0">Total Salary</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Search and Filter -->
+    <div class="row mb-4">
+        <div class="col-md-4">
+            <div class="input-group">
+                <span class="input-group-text"><i class="bi bi-search"></i></span>
+                <input type="text" class="form-control form-control-modern" id="searchInput" placeholder="Search by name, code, or designation...">
+            </div>
+        </div>
+        <div class="col-md-3">
+            <select class="form-select form-control-modern" id="departmentFilter">
+                <option value="">All Departments</option>
+                <option value="Operations">Operations</option>
+                <option value="Sales">Sales</option>
+                <option value="Digital">Digital</option>
+            </select>
+        </div>
+        <div class="col-md-3">
+            <select class="form-select form-control-modern" id="statusFilter">
+                <option value="">All Status</option>
+                <option value="active">Active</option>
+                <option value="inactive">Inactive</option>
+            </select>
+        </div>
+        <div class="col-md-2">
+            <button class="btn btn-success-modern btn-modern w-100" onclick="exportToCSV()">
+                <i class="bi bi-download"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Employees Table -->
+    <div class="table-responsive">
+        <table class="table table-modern" id="employeesTable">
+            <thead>
+                <tr>
+                    <th>Employee</th>
+                    <th>Code</th>
+                    <th>Department</th>
+                    <th>Team</th>
+                    <th>Leads</th>
+                    <th>Salary</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for employee in employees %}
+                <tr>
+                    <td>
+                        <div class="d-flex align-items-center">
+                            <div class="stats-icon success me-3" style="width: 40px; height: 40px; font-size: 1rem;">
+                                <i class="bi bi-person"></i>
+                            </div>
+                            <div>
+                                <strong>{{ employee.user.name }}</strong>
+                                <br>
+                                <small class="text-muted">{{ employee.designation }}</small>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <span class="badge badge-modern bg-primary">{{ employee.employee_code }}</span>
+                    </td>
+                    <td>
+                        <span class="badge badge-modern bg-info">{{ employee.department }}</span>
+                    </td>
+                    <td>
+                        {% if employee.team %}
+                        <span class="badge badge-modern bg-warning">{{ employee.team.name }}</span>
+                        {% else %}
+                        <span class="text-muted">-</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <span class="badge badge-modern bg-success">{{ employee.lead_count|default(0) }}</span>
+                    </td>
+                    <td>
+                        <strong>₹{{ "{:,.0f}".format(employee.salary) }}</strong>
+                        {% if employee.commission_rate > 0 %}
+                        <br>
+                        <small class="text-muted">{{ employee.commission_rate }}% commission</small>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if employee.is_active %}
+                        <span class="badge badge-modern bg-success">Active</span>
+                        {% else %}
+                        <span class="badge badge-modern bg-danger">Inactive</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <div class="btn-group" role="group">
+                            <a href="/crm/employees/{{ employee.employee_id }}/profile" class="btn btn-sm btn-primary-modern btn-modern" title="View Profile">
+                                <i class="bi bi-eye"></i>
+                            </a>
+                            <a href="/crm/employees/{{ employee.employee_id }}/edit" class="btn btn-sm btn-warning-modern btn-modern" title="Edit">
+                                <i class="bi bi-pencil"></i>
+                            </a>
+                            <a href="/crm/employees/{{ employee.employee_id }}/billing" class="btn btn-sm btn-success-modern btn-modern" title="Billing">
+                                <i class="bi bi-cash"></i>
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Empty State -->
+    {% if not employees %}
+    <div class="text-center py-5">
+        <div class="stats-icon success mx-auto mb-3" style="width: 80px; height: 80px; font-size: 2rem;">
+            <i class="bi bi-person-badge"></i>
+        </div>
+        <h4 class="text-muted">No Employees Yet</h4>
+        <p class="text-muted">Add your first employee to start building your team.</p>
+        <a href="/crm/employees/new" class="btn btn-primary-modern btn-modern">
+            <i class="bi bi-person-plus me-2"></i>Add First Employee
+        </a>
+    </div>
+    {% endif %}
+</div>
+
+<script>
+// Search functionality
+document.getElementById('searchInput').addEventListener('keyup', function() {
+    const searchTerm = this.value.toLowerCase();
+    const rows = document.querySelectorAll('#employeesTable tbody tr');
+    
+    rows.forEach(row => {
+        const text = row.textContent.toLowerCase();
+        row.style.display = text.includes(searchTerm) ? '' : 'none';
+    });
+});
+
+// Department filter functionality
+document.getElementById('departmentFilter').addEventListener('change', function() {
+    const filter = this.value;
+    const rows = document.querySelectorAll('#employeesTable tbody tr');
+    
+    rows.forEach(row => {
+        const departmentCell = row.querySelector('td:nth-child(3)');
+        if (departmentCell) {
+            const departmentText = departmentCell.textContent.trim();
+            row.style.display = !filter || departmentText.includes(filter) ? '' : 'none';
+        }
+    });
+});
+
+// Status filter functionality
+document.getElementById('statusFilter').addEventListener('change', function() {
+    const filter = this.value;
+    const rows = document.querySelectorAll('#employeesTable tbody tr');
+    
+    rows.forEach(row => {
+        const statusCell = row.querySelector('td:nth-child(7)');
+        if (statusCell) {
+            const statusText = statusCell.textContent.toLowerCase();
+            row.style.display = !filter || statusText.includes(filter) ? '' : 'none';
+        }
+    });
+});
+
+// Export to CSV
+function exportToCSV() {
+    const table = document.getElementById('employeesTable');
+    const rows = Array.from(table.querySelectorAll('tbody tr'));
+    
+    let csv = 'Name,Code,Department,Team,Leads,Salary,Status\n';
+    
+    rows.forEach(row => {
+        const cells = row.querySelectorAll('td');
+        const name = cells[0].textContent.trim();
+        const code = cells[1].textContent.trim();
+        const department = cells[2].textContent.trim();
+        const team = cells[3].textContent.trim();
+        const leads = cells[4].textContent.trim();
+        const salary = cells[5].textContent.trim();
+        const status = cells[6].textContent.trim();
+        
+        csv += `"${name}","${code}","${department}","${team}","${leads}","${salary}","${status}"\n`;
+    });
+    
+    const blob = new Blob([csv], { type: 'text/csv' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'employees.csv';
+    a.click();
+    window.URL.revokeObjectURL(url);
+}
+</script>
+{% endblock %} 

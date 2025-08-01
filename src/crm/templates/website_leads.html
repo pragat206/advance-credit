@@ -1,0 +1,206 @@
+{% extends 'base.html' %}
+
+{% block title %}Website Leads - Advance Credit CRM{% endblock %}
+
+{% block content %}
+<div class="glass-card">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="page-title">Website Leads</h1>
+            <p class="page-subtitle">Manage and track all leads from your website forms.</p>
+        </div>
+        <div class="d-flex gap-2">
+            <button class="btn btn-success-modern btn-modern" onclick="exportToCSV()">
+                <i class="bi bi-download me-2"></i>Export CSV
+            </button>
+        </div>
+    </div>
+
+    <!-- Search and Filter -->
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <div class="input-group">
+                <span class="input-group-text"><i class="bi bi-search"></i></span>
+                <input type="text" class="form-control form-control-modern" id="searchInput" placeholder="Search by name, contact, or email...">
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="d-flex gap-2">
+                <select class="form-select form-control-modern" id="dateFilter">
+                    <option value="">All Time</option>
+                    <option value="today">Today</option>
+                    <option value="week">This Week</option>
+                    <option value="month">This Month</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <!-- Leads Table -->
+    <div class="table-responsive">
+        <table class="table table-modern" id="leadsTable">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Contact</th>
+                    <th>Email</th>
+                    <th>Message</th>
+                    <th>Status</th>
+                    <th>Date</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for lead in leads %}
+                <tr>
+                    <td>
+                        <div class="d-flex align-items-center">
+                            <div class="stats-icon primary me-3" style="width: 40px; height: 40px; font-size: 1rem;">
+                                <i class="bi bi-person"></i>
+                            </div>
+                            <div>
+                                <strong>{{ lead.name }}</strong>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <a href="tel:{{ lead.contact }}" class="text-decoration-none">
+                            <i class="bi bi-telephone me-1"></i>{{ lead.contact }}
+                        </a>
+                    </td>
+                    <td>
+                        {% if lead.email %}
+                        <a href="mailto:{{ lead.email }}" class="text-decoration-none">
+                            <i class="bi bi-envelope me-1"></i>{{ lead.email }}
+                        </a>
+                        {% else %}
+                        <span class="text-muted">-</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <div class="text-truncate" style="max-width: 200px;" title="{{ lead.message }}">
+                            {{ lead.message[:50] }}{% if lead.message|length > 50 %}...{% endif %}
+                        </div>
+                    </td>
+                    <td>
+                        {% if lead.assignment %}
+                        <div class="d-flex align-items-center">
+                            <span class="badge badge-modern bg-success me-2">Assigned</span>
+                            <small class="text-muted">{{ lead.assignment.employee.user.name }}</small>
+                        </div>
+                        {% else %}
+                        <span class="badge badge-modern bg-warning">Unassigned</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <span class="badge badge-modern bg-light text-dark">
+                            {{ lead.created_at.strftime('%d %b %Y') }}
+                        </span>
+                    </td>
+                    <td>
+                        <div class="btn-group" role="group">
+                            <a href="/crm/website-leads/{{ lead.lead_id }}" class="btn btn-sm btn-primary-modern btn-modern" title="View Details">
+                                <i class="bi bi-eye"></i>
+                            </a>
+                            <a href="/crm/leads/website/{{ lead.lead_id }}/assign" class="btn btn-sm btn-info-modern btn-modern" title="Assign Lead">
+                                <i class="bi bi-person-plus"></i>
+                            </a>
+                            <a href="tel:{{ lead.contact }}" class="btn btn-sm btn-success-modern btn-modern" title="Call">
+                                <i class="bi bi-telephone"></i>
+                            </a>
+                            {% if lead.email %}
+                            <a href="mailto:{{ lead.email }}" class="btn btn-sm btn-warning-modern btn-modern" title="Email">
+                                <i class="bi bi-envelope"></i>
+                            </a>
+                            {% endif %}
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Empty State -->
+    {% if not leads %}
+    <div class="text-center py-5">
+        <div class="stats-icon primary mx-auto mb-3" style="width: 80px; height: 80px; font-size: 2rem;">
+            <i class="bi bi-inbox"></i>
+        </div>
+        <h4 class="text-muted">No Website Leads Yet</h4>
+        <p class="text-muted">Website leads will appear here once customers submit forms on your website.</p>
+    </div>
+    {% endif %}
+</div>
+
+<script>
+// Search functionality
+document.getElementById('searchInput').addEventListener('keyup', function() {
+    const searchTerm = this.value.toLowerCase();
+    const rows = document.querySelectorAll('#leadsTable tbody tr');
+    
+    rows.forEach(row => {
+        const text = row.textContent.toLowerCase();
+        row.style.display = text.includes(searchTerm) ? '' : 'none';
+    });
+});
+
+// Date filter functionality
+document.getElementById('dateFilter').addEventListener('change', function() {
+    const filter = this.value;
+    const rows = document.querySelectorAll('#leadsTable tbody tr');
+    
+    rows.forEach(row => {
+        const dateCell = row.querySelector('td:nth-child(5)');
+        if (dateCell) {
+            const dateText = dateCell.textContent.trim();
+            let show = true;
+            
+            if (filter === 'today') {
+                const today = new Date().toLocaleDateString('en-GB');
+                show = dateText.includes(today);
+            } else if (filter === 'week') {
+                // Simple week filter - you can enhance this
+                const weekAgo = new Date();
+                weekAgo.setDate(weekAgo.getDate() - 7);
+                show = new Date(dateText) >= weekAgo;
+            } else if (filter === 'month') {
+                // Simple month filter - you can enhance this
+                const monthAgo = new Date();
+                monthAgo.setMonth(monthAgo.getMonth() - 1);
+                show = new Date(dateText) >= monthAgo;
+            }
+            
+            row.style.display = show ? '' : 'none';
+        }
+    });
+});
+
+// Export to CSV
+function exportToCSV() {
+    const table = document.getElementById('leadsTable');
+    const rows = Array.from(table.querySelectorAll('tbody tr'));
+    
+    let csv = 'Name,Contact,Email,Message,Date\n';
+    
+    rows.forEach(row => {
+        const cells = row.querySelectorAll('td');
+        const name = cells[0].textContent.trim();
+        const contact = cells[1].textContent.trim();
+        const email = cells[2].textContent.trim();
+        const message = cells[3].textContent.trim();
+        const date = cells[4].textContent.trim();
+        
+        csv += `"${name}","${contact}","${email}","${message}","${date}"\n`;
+    });
+    
+    const blob = new Blob([csv], { type: 'text/csv' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'website_leads.csv';
+    a.click();
+    window.URL.revokeObjectURL(url);
+}
+</script>
+{% endblock %} 

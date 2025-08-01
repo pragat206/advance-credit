@@ -1,0 +1,241 @@
+{% extends 'base.html' %}
+
+{% block title %}Social Media Leads - Advance Credit CRM{% endblock %}
+
+{% block content %}
+<div class="glass-card">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="page-title">Social Media Leads</h1>
+            <p class="page-subtitle">Manage and track all leads from social media platforms.</p>
+        </div>
+        <div class="d-flex gap-2">
+            <a href="/crm/social-leads/bulk-upload" class="btn btn-warning-modern btn-modern">
+                <i class="bi bi-upload me-2"></i>Bulk Upload
+            </a>
+            <button class="btn btn-success-modern btn-modern" onclick="exportToCSV()">
+                <i class="bi bi-download me-2"></i>Export CSV
+            </button>
+        </div>
+    </div>
+
+    <!-- Search and Filter -->
+    <div class="row mb-4">
+        <div class="col-md-4">
+            <div class="input-group">
+                <span class="input-group-text"><i class="bi bi-search"></i></span>
+                <input type="text" class="form-control form-control-modern" id="searchInput" placeholder="Search by name, contact, or city...">
+            </div>
+        </div>
+        <div class="col-md-4">
+            <select class="form-select form-control-modern" id="platformFilter">
+                <option value="">All Platforms</option>
+                <option value="Instagram">Instagram</option>
+                <option value="Facebook">Facebook</option>
+                <option value="WhatsApp">WhatsApp</option>
+                <option value="LinkedIn">LinkedIn</option>
+                <option value="Twitter">Twitter</option>
+                <option value="Other">Other</option>
+            </select>
+        </div>
+        <div class="col-md-4">
+            <select class="form-select form-control-modern" id="dateFilter">
+                <option value="">All Time</option>
+                <option value="today">Today</option>
+                <option value="week">This Week</option>
+                <option value="month">This Month</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- Leads Table -->
+    <div class="table-responsive">
+        <table class="table table-modern" id="leadsTable">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Contact</th>
+                    <th>City</th>
+                    <th>Platform</th>
+                    <th>Loan Amount</th>
+                    <th>Ongoing Loan</th>
+                    <th>Status</th>
+                    <th>Date</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for lead in leads %}
+                <tr>
+                    <td>
+                        <div class="d-flex align-items-center">
+                            <div class="stats-icon secondary me-3" style="width: 40px; height: 40px; font-size: 1rem;">
+                                <i class="bi bi-person"></i>
+                            </div>
+                            <div>
+                                <strong>{{ lead.name }}</strong>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <a href="tel:{{ lead.contact }}" class="text-decoration-none">
+                            <i class="bi bi-telephone me-1"></i>{{ lead.contact }}
+                        </a>
+                    </td>
+                    <td>
+                        <span class="badge badge-modern bg-info">{{ lead.city }}</span>
+                    </td>
+                    <td>
+                        <span class="badge badge-modern bg-primary">{{ lead.platform_name }}</span>
+                    </td>
+                    <td>
+                        {% if lead.loan_amount %}
+                        <span class="badge badge-modern bg-success">₹{{ "{:,.0f}".format(lead.loan_amount) }}</span>
+                        {% else %}
+                        <span class="text-muted">-</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if lead.any_ongoing_loan %}
+                        <span class="badge badge-modern bg-warning">Yes</span>
+                        {% else %}
+                        <span class="badge badge-modern bg-light text-dark">No</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if lead.assignment %}
+                        <div class="d-flex align-items-center">
+                            <span class="badge badge-modern bg-success me-2">Assigned</span>
+                            <small class="text-muted">{{ lead.assignment.employee.user.name }}</small>
+                        </div>
+                        {% else %}
+                        <span class="badge badge-modern bg-warning">Unassigned</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <span class="badge badge-modern bg-light text-dark">
+                            {{ lead.created_at.strftime('%d %b %Y') }}
+                        </span>
+                    </td>
+                    <td>
+                        <div class="btn-group" role="group">
+                            <a href="/crm/social-leads/{{ lead.lead_id }}" class="btn btn-sm btn-primary-modern btn-modern" title="View Details">
+                                <i class="bi bi-eye"></i>
+                            </a>
+                            <a href="/crm/leads/social/{{ lead.lead_id }}/assign" class="btn btn-sm btn-info-modern btn-modern" title="Assign Lead">
+                                <i class="bi bi-person-plus"></i>
+                            </a>
+                            <a href="tel:{{ lead.contact }}" class="btn btn-sm btn-success-modern btn-modern" title="Call">
+                                <i class="bi bi-telephone"></i>
+                            </a>
+                            <a href="https://wa.me/{{ lead.contact }}" target="_blank" class="btn btn-sm btn-warning-modern btn-modern" title="WhatsApp">
+                                <i class="bi bi-whatsapp"></i>
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Empty State -->
+    {% if not leads %}
+    <div class="text-center py-5">
+        <div class="stats-icon secondary mx-auto mb-3" style="width: 80px; height: 80px; font-size: 2rem;">
+            <i class="bi bi-share"></i>
+        </div>
+        <h4 class="text-muted">No Social Media Leads Yet</h4>
+        <p class="text-muted">Social media leads will appear here once you upload them or they come from your campaigns.</p>
+        <a href="/crm/social-leads/bulk-upload" class="btn btn-primary-modern btn-modern">
+            <i class="bi bi-upload me-2"></i>Upload Your First Leads
+        </a>
+    </div>
+    {% endif %}
+</div>
+
+<script>
+// Search functionality
+document.getElementById('searchInput').addEventListener('keyup', function() {
+    const searchTerm = this.value.toLowerCase();
+    const rows = document.querySelectorAll('#leadsTable tbody tr');
+    
+    rows.forEach(row => {
+        const text = row.textContent.toLowerCase();
+        row.style.display = text.includes(searchTerm) ? '' : 'none';
+    });
+});
+
+// Platform filter functionality
+document.getElementById('platformFilter').addEventListener('change', function() {
+    const filter = this.value;
+    const rows = document.querySelectorAll('#leadsTable tbody tr');
+    
+    rows.forEach(row => {
+        const platformCell = row.querySelector('td:nth-child(4)');
+        if (platformCell) {
+            const platformText = platformCell.textContent.trim();
+            row.style.display = !filter || platformText.includes(filter) ? '' : 'none';
+        }
+    });
+});
+
+// Date filter functionality
+document.getElementById('dateFilter').addEventListener('change', function() {
+    const filter = this.value;
+    const rows = document.querySelectorAll('#leadsTable tbody tr');
+    
+    rows.forEach(row => {
+        const dateCell = row.querySelector('td:nth-child(7)');
+        if (dateCell) {
+            const dateText = dateCell.textContent.trim();
+            let show = true;
+            
+            if (filter === 'today') {
+                const today = new Date().toLocaleDateString('en-GB');
+                show = dateText.includes(today);
+            } else if (filter === 'week') {
+                const weekAgo = new Date();
+                weekAgo.setDate(weekAgo.getDate() - 7);
+                show = new Date(dateText) >= weekAgo;
+            } else if (filter === 'month') {
+                const monthAgo = new Date();
+                monthAgo.setMonth(monthAgo.getMonth() - 1);
+                show = new Date(dateText) >= monthAgo;
+            }
+            
+            row.style.display = show ? '' : 'none';
+        }
+    });
+});
+
+// Export to CSV
+function exportToCSV() {
+    const table = document.getElementById('leadsTable');
+    const rows = Array.from(table.querySelectorAll('tbody tr'));
+    
+    let csv = 'Name,Contact,City,Platform,Loan Amount,Ongoing Loan,Date\n';
+    
+    rows.forEach(row => {
+        const cells = row.querySelectorAll('td');
+        const name = cells[0].textContent.trim();
+        const contact = cells[1].textContent.trim();
+        const city = cells[2].textContent.trim();
+        const platform = cells[3].textContent.trim();
+        const loanAmount = cells[4].textContent.trim();
+        const ongoingLoan = cells[5].textContent.trim();
+        const date = cells[6].textContent.trim();
+        
+        csv += `"${name}","${contact}","${city}","${platform}","${loanAmount}","${ongoingLoan}","${date}"\n`;
+    });
+    
+    const blob = new Blob([csv], { type: 'text/csv' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'social_media_leads.csv';
+    a.click();
+    window.URL.revokeObjectURL(url);
+}
+</script>
+{% endblock %} 
