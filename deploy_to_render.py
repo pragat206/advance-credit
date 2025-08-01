@@ -167,14 +167,10 @@ def main():
     
     # Fix PostgreSQL URLs for newer SQLAlchemy
     if DATABASE_URL.startswith("postgres://"):
-        DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql+psycopg://", 1)
-    elif DATABASE_URL.startswith("postgresql://") and "psycopg" not in DATABASE_URL:
-        DATABASE_URL = DATABASE_URL.replace("postgresql://", "postgresql+psycopg://", 1)
+        DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
     
     if CRM_DATABASE_URL.startswith("postgres://"):
-        CRM_DATABASE_URL = CRM_DATABASE_URL.replace("postgres://", "postgresql+psycopg://", 1)
-    elif CRM_DATABASE_URL.startswith("postgresql://") and "psycopg" not in CRM_DATABASE_URL:
-        CRM_DATABASE_URL = CRM_DATABASE_URL.replace("postgresql://", "postgresql+psycopg://", 1)
+        CRM_DATABASE_URL = CRM_DATABASE_URL.replace("postgres://", "postgresql://", 1)
     
     print(f"📊 Main Database URL: {DATABASE_URL.split('@')[1] if '@' in DATABASE_URL else 'Local'}")
     print(f"📊 CRM Database URL: {CRM_DATABASE_URL.split('@')[1] if '@' in CRM_DATABASE_URL else 'Local'}")

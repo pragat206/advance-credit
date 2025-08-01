@@ -26,9 +26,6 @@ from src.shared.crm_models import WebsiteLead
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-# Explicitly import psycopg dialect to ensure SQLAlchemy uses it
-import psycopg
-
 # Include CRM routes with /crm prefix
 from src.crm.routes import router as crm_router
 
@@ -87,14 +84,10 @@ if ENVIRONMENT == "production":
     CRM_DATABASE_URL = os.getenv("CRM_DATABASE_URL")
     
     if DATABASE_URL and DATABASE_URL.startswith("postgres://"):
-        DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql+psycopg://", 1)
-    elif DATABASE_URL and DATABASE_URL.startswith("postgresql://") and "psycopg" not in DATABASE_URL:
-        DATABASE_URL = DATABASE_URL.replace("postgresql://", "postgresql+psycopg://", 1)
+        DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
     
     if CRM_DATABASE_URL and CRM_DATABASE_URL.startswith("postgres://"):
-        CRM_DATABASE_URL = CRM_DATABASE_URL.replace("postgres://", "postgresql+psycopg://", 1)
-    elif CRM_DATABASE_URL and CRM_DATABASE_URL.startswith("postgresql://") and "psycopg" not in CRM_DATABASE_URL:
-        CRM_DATABASE_URL = CRM_DATABASE_URL.replace("postgresql://", "postgresql+psycopg://", 1)
+        CRM_DATABASE_URL = CRM_DATABASE_URL.replace("postgres://", "postgresql://", 1)
 else:
     # Use SQLite for development
     DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./site.db")

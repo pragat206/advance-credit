@@ -15,9 +15,6 @@ import io
 import os
 from datetime import datetime, timedelta
 
-# Explicitly import psycopg dialect to ensure SQLAlchemy uses it
-import psycopg
-
 router = APIRouter()
 
 templates = Jinja2Templates(directory="src/crm/templates")
@@ -26,9 +23,7 @@ DATABASE_URL = os.getenv("CRM_DATABASE_URL", "sqlite:///./crm.db")
 
 # Handle PostgreSQL URL conversion
 if DATABASE_URL.startswith("postgres://"):
-    DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql+psycopg://", 1)
-elif DATABASE_URL.startswith("postgresql://") and "psycopg" not in DATABASE_URL:
-    DATABASE_URL = DATABASE_URL.replace("postgresql://", "postgresql+psycopg://", 1)
+    DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
 
 engine = create_engine(DATABASE_URL, connect_args={"check_same_thread": False} if "sqlite" in DATABASE_URL else {})
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
