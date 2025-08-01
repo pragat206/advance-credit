@@ -10,7 +10,9 @@ SQLALCHEMY_DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./site.db")
 
 # Handle PostgreSQL URL from Render.com (convert to SQLAlchemy format)
 if SQLALCHEMY_DATABASE_URL.startswith("postgres://"):
-    SQLALCHEMY_DATABASE_URL = SQLALCHEMY_DATABASE_URL.replace("postgres://", "postgresql://", 1)
+    SQLALCHEMY_DATABASE_URL = SQLALCHEMY_DATABASE_URL.replace("postgres://", "postgresql+psycopg://", 1)
+elif SQLALCHEMY_DATABASE_URL.startswith("postgresql://") and "psycopg" not in SQLALCHEMY_DATABASE_URL:
+    SQLALCHEMY_DATABASE_URL = SQLALCHEMY_DATABASE_URL.replace("postgresql://", "postgresql+psycopg://", 1)
 
 engine = create_engine(
     SQLALCHEMY_DATABASE_URL, 
@@ -21,7 +23,9 @@ SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 # CRM database for leads
 CRM_DATABASE_URL = os.getenv("CRM_DATABASE_URL", "sqlite:///./crm.db")
 if CRM_DATABASE_URL.startswith("postgres://"):
-    CRM_DATABASE_URL = CRM_DATABASE_URL.replace("postgres://", "postgresql://", 1)
+    CRM_DATABASE_URL = CRM_DATABASE_URL.replace("postgres://", "postgresql+psycopg://", 1)
+elif CRM_DATABASE_URL.startswith("postgresql://") and "psycopg" not in CRM_DATABASE_URL:
+    CRM_DATABASE_URL = CRM_DATABASE_URL.replace("postgresql://", "postgresql+psycopg://", 1)
 
 crm_engine = create_engine(
     CRM_DATABASE_URL, 
