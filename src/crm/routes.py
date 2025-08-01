@@ -10,7 +10,7 @@ from sqlalchemy.orm import sessionmaker
 import bcrypt
 from fastapi.templating import Jinja2Templates
 from typing import Optional
-import pandas as pd
+# import pandas as pd  # Temporarily disabled for deployment
 import io
 import os
 from datetime import datetime, timedelta
@@ -293,21 +293,20 @@ async def bulk_upload_post(request: Request, file: UploadFile = File(...), db: S
     
     try:
         content = await file.read()
-        df = pd.read_csv(io.StringIO(content.decode('utf-8')))
+        # df = pd.read_csv(io.StringIO(content.decode('utf-8'))) # Temporarily disabled for deployment
+        # for _, row in df.iterrows():
+        #     lead = SocialMediaLead(
+        #         name=row['name'],
+        #         contact=row['contact'],
+        #         city=row['city'],
+        #         any_ongoing_loan=row.get('any_ongoing_loan', False),
+        #         loan_amount=row.get('loan_amount'),
+        #         platform_name=row['platform_name']
+        #     )
+        #     db.add(lead)
         
-        for _, row in df.iterrows():
-            lead = SocialMediaLead(
-                name=row['name'],
-                contact=row['contact'],
-                city=row['city'],
-                any_ongoing_loan=row.get('any_ongoing_loan', False),
-                loan_amount=row.get('loan_amount'),
-                platform_name=row['platform_name']
-            )
-            db.add(lead)
-        
-        db.commit()
-        return templates.TemplateResponse("bulk_upload.html", {"request": request, "error": None, "success": f"Successfully uploaded {len(df)} leads."})
+        # db.commit()
+        return templates.TemplateResponse("bulk_upload.html", {"request": request, "error": None, "success": "Bulk upload functionality is temporarily disabled."})
     
     except Exception as e:
         return templates.TemplateResponse("bulk_upload.html", {"request": request, "error": f"Error processing file: {str(e)}"})
