@@ -70,12 +70,14 @@ if ENVIRONMENT == "production":
         allow_headers=["*"],
     )
     
-    # Trusted Host Middleware
-    allowed_hosts = os.getenv("ALLOWED_HOSTS", "advancecredit.com,www.advancecredit.com").split(",")
-    app.add_middleware(
-        TrustedHostMiddleware,
-        allowed_hosts=allowed_hosts
-    )
+    # Trusted Host Middleware - disabled for local testing
+    # allowed_hosts = os.getenv("ALLOWED_HOSTS", "advancecredit.com,www.advancecredit.com").split(",")
+    # Only add TrustedHost middleware if not running locally
+    # if "localhost" not in allowed_hosts and "127.0.0.1" not in allowed_hosts:
+    #     app.add_middleware(
+    #         TrustedHostMiddleware,
+    #         allowed_hosts=allowed_hosts
+    #     )
 
 # Database setup for production
 if ENVIRONMENT == "production":
@@ -103,6 +105,9 @@ if "sqlite" in CRM_DATABASE_URL:
     crm_engine = create_engine(CRM_DATABASE_URL, connect_args={"check_same_thread": False})
 else:
     crm_engine = create_engine(CRM_DATABASE_URL, pool_size=20, max_overflow=0, pool_pre_ping=True)
+
+# Create session makers
+CRMSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=crm_engine)
 
 def get_crm_db():
     db = CRMSessionLocal()
