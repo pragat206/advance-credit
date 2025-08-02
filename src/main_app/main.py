@@ -113,6 +113,7 @@ def get_crm_db():
 
 def save_lead_to_crm(name, contact, email, message, source="website"):
     """Save lead to CRM database"""
+    db = None
     try:
         db = CRMSessionLocal()
         website_lead = WebsiteLead(
@@ -129,7 +130,8 @@ def save_lead_to_crm(name, contact, email, message, source="website"):
         print(f"❌ Error saving lead to CRM: {e}")
         return False
     finally:
-        db.close()
+        if db:
+            db.close()
 
 # Email Configuration
 # Note: For Gmail, you need to use an App Password instead of your regular password
