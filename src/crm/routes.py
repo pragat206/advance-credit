@@ -745,7 +745,7 @@ def team_new_get(request: Request, db: Session = Depends(get_db)):
     })
 
 @router.post("/teams/new", response_class=HTMLResponse)
-def team_new_post(request: Request, name: str = Form(...), description: str = Form(""), manager_id: str = Form(""), db: Session = Depends(get_db)):
+def team_new_post(request: Request, name: str = Form(...), manager_id: str = Form(""), db: Session = Depends(get_db)):
     # Manual authentication check
     user_id = request.session.get("user_id")
     if not user_id:
@@ -765,10 +765,9 @@ def team_new_post(request: Request, name: str = Form(...), description: str = Fo
             "error": "Team name already exists"
         })
     
-    # Create new team
+    # Create new team (without description field since Team model doesn't have it)
     team = Team(
         name=name,
-        description=description,
         manager_id=int(manager_id) if manager_id else None
     )
     db.add(team)
