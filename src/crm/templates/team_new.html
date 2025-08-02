@@ -1,0 +1,182 @@
+{% extends 'base.html' %}
+
+{% block title %}Create New Team - Advance Credit CRM{% endblock %}
+
+{% block content %}
+<div class="glass-card">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="page-title">Create New Team</h1>
+            <p class="page-subtitle">Add a new team to organize your employees.</p>
+        </div>
+        <div>
+            <a href="/crm/teams" class="btn btn-secondary-modern btn-modern">
+                <i class="bi bi-arrow-left me-2"></i>Back to Teams
+            </a>
+        </div>
+    </div>
+
+    {% if error %}
+    <div class="alert alert-danger alert-modern" role="alert">
+        <i class="bi bi-exclamation-triangle me-2"></i>{{ error }}
+    </div>
+    {% endif %}
+
+    <div class="row">
+        <div class="col-12 col-lg-8">
+            <div class="card card-modern">
+                <div class="card-body">
+                    <form method="POST" action="/crm/teams/new">
+                        <div class="mb-4">
+                            <label for="name" class="form-label fw-bold">Team Name *</label>
+                            <input type="text" class="form-control form-control-modern" id="name" name="name" required 
+                                   placeholder="Enter team name (e.g., Sales Team, Operations Team)">
+                            <div class="form-text">Choose a descriptive name for your team</div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="description" class="form-label fw-bold">Description</label>
+                            <textarea class="form-control form-control-modern" id="description" name="description" rows="3"
+                                      placeholder="Describe the team's purpose and responsibilities"></textarea>
+                            <div class="form-text">Optional description of the team's role</div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="manager_id" class="form-label fw-bold">Team Manager</label>
+                            <select class="form-select form-control-modern" id="manager_id" name="manager_id">
+                                <option value="">Select a manager (optional)</option>
+                                {% for employee in employees %}
+                                <option value="{{ employee.employee_id }}">
+                                    {{ employee.user.name }} - {{ employee.designation }}
+                                </option>
+                                {% endfor %}
+                            </select>
+                            <div class="form-text">Choose an employee to lead this team</div>
+                        </div>
+
+                        <div class="d-flex gap-3">
+                            <button type="submit" class="btn btn-primary-modern btn-modern">
+                                <i class="bi bi-plus-circle me-2"></i>Create Team
+                            </button>
+                            <a href="/crm/teams" class="btn btn-outline-secondary btn-modern">
+                                <i class="bi bi-x-circle me-2"></i>Cancel
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-lg-4">
+            <div class="card card-modern">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <i class="bi bi-info-circle me-2"></i>Team Guidelines
+                    </h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2">
+                            <i class="bi bi-check-circle text-success me-2"></i>
+                            <strong>Clear Naming:</strong> Use descriptive team names
+                        </li>
+                        <li class="mb-2">
+                            <i class="bi bi-check-circle text-success me-2"></i>
+                            <strong>Assign Manager:</strong> Choose a team leader
+                        </li>
+                        <li class="mb-2">
+                            <i class="bi bi-check-circle text-success me-2"></i>
+                            <strong>Define Purpose:</strong> Add clear description
+                        </li>
+                        <li class="mb-2">
+                            <i class="bi bi-check-circle text-success me-2"></i>
+                            <strong>Organize Work:</strong> Group related employees
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="card card-modern mt-3">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <i class="bi bi-lightning me-2"></i>Quick Actions
+                    </h5>
+                    <div class="d-grid gap-2">
+                        <a href="/crm/employees/new" class="btn btn-outline-primary btn-modern">
+                            <i class="bi bi-person-plus me-2"></i>Add Employee
+                        </a>
+                        <a href="/crm/users/new" class="btn btn-outline-info btn-modern">
+                            <i class="bi bi-person-plus me-2"></i>Create User
+                        </a>
+                        <a href="/crm/teams" class="btn btn-outline-secondary btn-modern">
+                            <i class="bi bi-people me-2"></i>View All Teams
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.card-modern {
+    background: var(--glass-bg);
+    backdrop-filter: blur(10px);
+    border-radius: 16px;
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--shadow-light);
+    transition: all 0.3s ease;
+}
+
+.card-modern:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-medium);
+}
+
+.alert-modern {
+    background: rgba(220, 53, 69, 0.1);
+    border: 1px solid rgba(220, 53, 69, 0.2);
+    border-radius: 12px;
+    color: #dc3545;
+}
+
+@media (max-width: 768px) {
+    .glass-card {
+        padding: 1rem;
+        margin-bottom: 1rem;
+    }
+    
+    .page-title {
+        font-size: 1.5rem;
+    }
+    
+    .page-subtitle {
+        font-size: 0.9rem;
+    }
+}
+</style>
+
+<script>
+// Auto-focus on team name field
+document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('name').focus();
+});
+
+// Form validation
+document.querySelector('form').addEventListener('submit', function(e) {
+    const name = document.getElementById('name').value.trim();
+    
+    if (!name) {
+        e.preventDefault();
+        alert('Please enter a team name');
+        document.getElementById('name').focus();
+        return false;
+    }
+    
+    if (name.length < 2) {
+        e.preventDefault();
+        alert('Team name must be at least 2 characters long');
+        document.getElementById('name').focus();
+        return false;
+    }
+});
+</script>
+{% endblock %} 
