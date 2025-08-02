@@ -98,9 +98,9 @@ def setup_default_teams(database_url):
         db = SessionLocal()
         
         teams_data = [
-            {"name": "Operations", "description": "Operations team handling customer service"},
-            {"name": "Sales", "description": "Sales team for lead conversion"},
-            {"name": "Digital", "description": "Digital marketing and online presence"}
+            {"name": "Operations"},
+            {"name": "Sales"},
+            {"name": "Digital"}
         ]
         
         for team_data in teams_data:
