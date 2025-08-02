@@ -10,7 +10,7 @@
             <h1 class="page-title">{{ team.name }} Team</h1>
             <p class="page-subtitle">Manage team members and performance</p>
         </div>
-        <a href="/teams" class="btn btn-modern btn-secondary-modern">
+        <a href="/crm/teams" class="btn btn-modern btn-secondary-modern">
             <i class="bi bi-arrow-left me-2"></i>Back to Teams
         </a>
     </div>
@@ -74,10 +74,10 @@
                                     </td>
                                     <td>
                                         <div class="btn-group" role="group">
-                                            <a href="/employees/{{ member.employee_id }}" class="btn btn-sm btn-modern btn-primary-modern" title="View Profile">
+                                            <a href="/crm/employees/{{ member.employee_id }}" class="btn btn-sm btn-modern btn-primary-modern" title="View Profile">
                                                 <i class="bi bi-eye"></i>
                                             </a>
-                                            <a href="/employees/{{ member.employee_id }}/edit" class="btn btn-sm btn-modern btn-warning-modern" title="Edit">
+                                            <a href="/crm/employees/{{ member.employee_id }}/edit" class="btn btn-sm btn-modern btn-warning-modern" title="Edit">
                                                 <i class="bi bi-pencil"></i>
                                             </a>
                                         </div>
@@ -94,7 +94,7 @@
                         </div>
                         <h5 class="text-muted">No Team Members</h5>
                         <p class="text-muted">This team currently has no members assigned.</p>
-                        <a href="/employees" class="btn btn-modern btn-primary-modern">
+                        <a href="/crm/employees" class="btn btn-modern btn-primary-modern">
                             <i class="bi bi-plus me-2"></i>Add Members
                         </a>
                     </div>
@@ -146,10 +146,10 @@
                 </div>
                 <div class="card-body">
                     <div class="d-grid gap-2">
-                        <a href="/teams/{{ team.team_id }}/performance" class="btn btn-modern btn-primary-modern">
+                        <a href="/crm/teams/{{ team.team_id }}/performance" class="btn btn-modern btn-primary-modern">
                             <i class="bi bi-graph-up me-2"></i>View Performance
                         </a>
-                        <a href="/employees" class="btn btn-modern btn-secondary-modern">
+                        <a href="/crm/employees" class="btn btn-modern btn-secondary-modern">
                             <i class="bi bi-plus me-2"></i>Add Member
                         </a>
                     </div>

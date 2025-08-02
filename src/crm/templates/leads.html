@@ -39,7 +39,7 @@
               <td>{{ lead.source }}</td>
               <td>{{ lead.employee.name if lead.employee else '' }}</td>
               <td>{{ lead.created_at.strftime('%Y-%m-%d') if lead.created_at else '' }}</td>
-              <td><a href="/leads/{{ lead.id }}" class="btn btn-sm btn-info">View</a></td>
+              <td><a href="/crm/leads/{{ lead.id }}" class="btn btn-sm btn-info">View</a></td>
             </tr>
             {% endfor %}
           </tbody>
@@ -205,7 +205,7 @@
             - The file must be in <b>CSV</b> or <b>Excel (.xlsx/.xls)</b> format.<br>
             - <b>Column names must match exactly</b> the following:<br>
             <code>name, contact, email, partner_id, assigned_to, message, status, is_verified, source, documentation</code><br>
-            - You can <a href="/leads/bulk-upload/template.csv" target="_blank">download a sample CSV template here</a> or <a href="/leads/bulk-upload/template.xlsx" target="_blank">download Excel template here</a>.
+            - You can <a href="/crm/leads/bulk-upload/template.csv" target="_blank">download a sample CSV template here</a> or <a href="/crm/leads/bulk-upload/template.xlsx" target="_blank">download Excel template here</a>.
           </div>
           <button type="submit" class="btn btn-dark">Upload</button>
         </form>
