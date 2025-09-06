@@ -132,13 +132,17 @@
         }
         
         .hero-section {
-            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--accent-blue) 100%);
+            background: url('/static/banners/calculator-banner.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
             color: var(--white);
             padding: 80px 0;
             position: relative;
             overflow: hidden;
             border-radius: 12px;
             margin-bottom: 3rem;
+            min-height: 400px;
         }
         
         .hero-section::before {
@@ -148,8 +152,31 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="50" cy="50" r="1" fill="white" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
-            opacity: 0.1;
+            background: linear-gradient(135deg, rgba(30, 58, 138, 0.7) 0%, rgba(30, 64, 175, 0.6) 100%);
+        }
+        
+        .hero-section h1,
+        .hero-section h2,
+        .hero-section p {
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+        }
+        
+        .hero-section .bi {
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        }
+        
+        @media (max-width: 991px) {
+            .hero-section {
+                text-align: center;
+            }
+            
+            .hero-section .text-end {
+                text-align: center !important;
+            }
+            
+            .hero-section .align-items-end {
+                align-items: center !important;
+            }
         }
         
         .form-control {
@@ -244,11 +271,12 @@
         <section class="hero-section position-relative">
             <div class="container position-relative">
                 <div class="row align-items-center">
-                    <div class="col-lg-6">
+                    <!-- Left Corner Text -->
+                    <div class="col-lg-4">
                         <div class="animate__animated animate__fadeInLeft">
-                            <h1 class="display-4 fw-bold mb-3">Smart EMI Planning</h1>
-                            <p class="lead mb-4">Plan your debt consolidation with precision. Calculate EMIs, understand total costs, and discover strategies to save thousands on interest payments.</p>
-                            <div class="d-flex flex-wrap gap-3">
+                            <h1 class="display-5 fw-bold mb-3">Smart EMI Planning</h1>
+                            <p class="lead mb-4">Plan your debt consolidation with precision. Calculate EMIs and understand total costs.</p>
+                            <div class="d-flex flex-column gap-2">
                                 <div class="d-flex align-items-center">
                                     <i class="bi bi-check-circle-fill text-success me-2"></i>
                                     <span>Accurate Calculations</span>
@@ -257,16 +285,34 @@
                                     <i class="bi bi-check-circle-fill text-success me-2"></i>
                                     <span>Early Repayment Tips</span>
                                 </div>
-                                <div class="d-flex align-items-center">
-                                    <i class="bi bi-check-circle-fill text-success me-2"></i>
-                                    <span>Interest Savings Guide</span>
-                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-6">
-                        <div class="text-center animate__animated animate__fadeInRight">
-                            <i class="bi bi-calculator text-white" style="font-size: 8rem; opacity: 0.8;"></i>
+                    
+                    <!-- Center Space for Calculator Image -->
+                    <div class="col-lg-4">
+                        <!-- This space is intentionally left empty for the calculator image in the banner -->
+                    </div>
+                    
+                    <!-- Right Corner Text -->
+                    <div class="col-lg-4">
+                        <div class="text-end animate__animated animate__fadeInRight">
+                            <h2 class="h4 fw-bold mb-3">Save Thousands on Interest</h2>
+                            <p class="mb-4">Discover strategies to reduce your loan burden and achieve financial freedom faster.</p>
+                            <div class="d-flex flex-column gap-2 align-items-end">
+                                <div class="d-flex align-items-center">
+                                    <span>Interest Savings Guide</span>
+                                    <i class="bi bi-check-circle-fill text-success ms-2"></i>
+                                </div>
+                                <div class="d-flex align-items-center">
+                                    <span>Debt Consolidation</span>
+                                    <i class="bi bi-check-circle-fill text-success ms-2"></i>
+                                </div>
+                                <div class="d-flex align-items-center">
+                                    <span>Financial Freedom</span>
+                                    <i class="bi bi-check-circle-fill text-success ms-2"></i>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -330,6 +376,7 @@
                                 <i class="bi bi-calendar2-week me-2 text-primary"></i>
                                 <input type="range" class="form-range flex-grow-1" id="tenure_slider" min="1" max="30" step="1" value="{{ result.tenure if result else 5 }}" oninput="updateTenureOutput()">
                                 <input type="number" class="form-control ms-3" id="tenure" name="tenure" min="1" max="360" step="1" style="width:90px;" value="{{ result.tenure if result else 5 }}" oninput="tenure_slider.value = this.value; updateTenureOutput()">
+                                <input type="hidden" id="tenure_unit" name="tenure_unit" value="years">
                                 <div class="form-check form-switch ms-3">
                                     <input class="form-check-input" type="checkbox" id="tenureUnitToggle" onchange="toggleTenureUnit()">
                                     <label class="form-check-label" for="tenureUnitToggle" id="tenureUnitLabel">Years</label>
@@ -387,7 +434,13 @@
                         <div class="col-6">
                             <div class="text-center p-2">
                                 <div class="small text-muted">Tenure</div>
-                                <div class="fw-bold">{{ result.tenure }} months</div>
+                                <div class="fw-bold">
+                                    {% if result.tenure >= 12 %}
+                                        {{ (result.tenure // 12) }} years {% if result.tenure % 12 %}({{ result.tenure % 12 }} months){% endif %}
+                                    {% else %}
+                                        {{ result.tenure }} months
+                                    {% endif %}
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -525,6 +578,7 @@ function updateTenureOutput() {
 }
 
 function toggleTenureUnit() {
+    const tenureUnitInput = document.getElementById('tenure_unit');
     if (tenureUnitToggle.checked) {
         tenureUnitLabel.textContent = 'Months';
         tenureSlider.min = 12;
@@ -532,6 +586,7 @@ function toggleTenureUnit() {
         tenureSlider.step = 1;
         tenureSlider.value = 60;
         tenureInput.value = 60;
+        tenureUnitInput.value = 'months';
     } else {
         tenureUnitLabel.textContent = 'Years';
         tenureSlider.min = 1;
@@ -539,6 +594,7 @@ function toggleTenureUnit() {
         tenureSlider.step = 1;
         tenureSlider.value = 5;
         tenureInput.value = 5;
+        tenureUnitInput.value = 'years';
     }
 }
 

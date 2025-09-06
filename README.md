@@ -1,207 +1,200 @@
-# 🏦 Advance Credit - Financial Services Platform
+# Advance Credit - Financial Advisory Platform
 
-A comprehensive FastAPI application combining a public-facing financial services website with an integrated CRM system for lead management and employee operations.
+A comprehensive financial advisory platform built with FastAPI, featuring a modern website and integrated CRM system for debt consolidation and loan management.
 
-## **🎯 Features**
+## 🚀 Features
 
-### **🌐 Main Website**
-- **Responsive Design**: Mobile, tablet, and desktop optimized
-- **Lead Capture**: Contact forms, loan applications, debt consultation
-- **Financial Calculators**: EMI calculator, debt relief calculator
-- **Social Integration**: WhatsApp chat, Instagram links
-- **Dynamic Content**: Partner logos, testimonials, team profiles
+### Website Features
+- **Modern Landing Page** with hero banners and value propositions
+- **Loan Products** showcase with detailed information
+- **Financial Services** overview and consultation booking
+- **About Us** with team information and company achievements
+- **Contact Form** with lead capture
+- **EMI Calculator** for debt consolidation calculations
+- **Partner Showcase** with banking partners
 
-### **🔐 CRM Portal** (`/crm`)
-- **Lead Management**: Website and social media leads
-- **Employee Management**: Profiles, roles, teams, billing
-- **Analytics Dashboard**: Performance metrics and insights
-- **Role-Based Access**: Admin and employee permissions
-- **Bulk Operations**: CSV upload, data export
+### CRM System
+- **Lead Management** with unified lead tracking
+- **Employee Management** with role-based access
+- **Team Management** with performance tracking
+- **Analytics Dashboard** with key metrics
+- **Billing System** for commission tracking
+- **Activity Logs** with JIRA-style interface
+- **Bulk Lead Import** via CSV upload
+- **Progress Tracking** with visual workflow
 
-## **🏗️ Project Structure**
+## 🛠️ Technology Stack
 
-```
-news_slider/
-├── src/                          # Main source code
-│   ├── main_app/                 # Main website application
-│   │   ├── __init__.py
-│   │   ├── main.py              # FastAPI app entry point
-│   │   ├── models.py            # Database models
-│   │   ├── database.py          # Database configuration
-│   │   ├── routes/              # Route modules
-│   │   │   ├── __init__.py
-│   │   │   ├── admin/           # Admin routes
-│   │   │   └── scrapers/        # Bank scrapers
-│   │   ├── templates/           # Website templates
-│   │   └── static/              # Website assets
-│   ├── crm/                     # CRM application
-│   │   ├── __init__.py
-│   │   ├── routes.py            # CRM routes
-│   │   ├── templates/           # CRM templates
-│   │   └── static/              # CRM assets
-│   └── shared/                  # Shared components
-│       ├── __init__.py
-│       └── models.py            # Shared database models
-├── deployment/                   # Deployment files
-│   ├── scripts/
-│   │   ├── deploy_crm.py        # CRM deployment script
-│   │   └── setup_database.py    # Database setup
-│   ├── requirements/
-│   │   ├── main.txt             # Main app requirements
-│   │   └── crm.txt              # CRM requirements
-│   └── config/
-│       ├── Procfile             # Render deployment
-│       ├── runtime.txt          # Python version
-│       └── build.sh             # Build script
-├── docs/                        # Documentation
-│   ├── README.md                # Main documentation
-│   ├── DEPLOYMENT_GUIDE.md      # Deployment guide
-│   └── API_DOCS.md              # API documentation
-├── tests/                       # Test files
-│   ├── __init__.py
-│   ├── test_main_app.py
-│   └── test_crm.py
-├── main.py                      # Application entry point
-├── requirements.txt              # Main dependencies
-├── .gitignore
-├── pyproject.toml
-└── poetry.lock
-```
+- **Backend**: FastAPI, Python 3.12+
+- **Database**: PostgreSQL (Production), SQLite (Development)
+- **Frontend**: HTML5, CSS3, JavaScript, Bootstrap 5
+- **Authentication**: JWT tokens with bcrypt
+- **ORM**: SQLAlchemy 2.0+
+- **Server**: Uvicorn/Gunicorn
 
-## **🚀 Quick Start**
+## 📦 Installation
 
-### **Local Development**
+### Prerequisites
+- Python 3.12+
+- PostgreSQL (for production)
+- Git
+
+### Local Development
 
 1. **Clone the repository**
    ```bash
    git clone <repository-url>
-   cd news_slider
+   cd advance-credit
    ```
 
-2. **Install dependencies**
+2. **Create virtual environment**
+   ```bash
+   python -m venv venv
+   source venv/bin/activate  # On Windows: venv\Scripts\activate
+   ```
+
+3. **Install dependencies**
    ```bash
    pip install -r requirements.txt
    ```
 
-3. **Run the application**
+4. **Set up environment variables**
    ```bash
-   python main.py
-   # or
-   uvicorn main:app --reload --port 8000
+   cp env.example .env
+   # Edit .env with your configuration
    ```
 
-4. **Access the application**
-   - Main Website: `http://localhost:8000`
-   - CRM Portal: `http://localhost:8000/crm`
+5. **Run the application**
+   ```bash
+   uvicorn src.main_app.main:app --reload --host 0.0.0.0 --port 8000
+   ```
 
-### **Production Deployment**
+### Production Deployment
 
-See [docs/DEPLOYMENT_GUIDE.md](docs/DEPLOYMENT_GUIDE.md) for detailed deployment instructions.
+1. **Set environment variables**
+   - `DATABASE_URL`: PostgreSQL connection string
+   - `CRM_DATABASE_URL`: CRM database connection string
+   - `SECRET_KEY`: JWT secret key
+   - `ENVIRONMENT`: Set to "production"
 
-## **🔧 Environment Variables**
+2. **Deploy with Gunicorn**
+   ```bash
+   gunicorn src.main_app.main:app -w 4 -k uvicorn.workers.UvicornWorker --bind 0.0.0.0:8000
+   ```
 
-### **Required Variables**
-```bash
-# Security
-SECRET_KEY=your-super-secret-key-here
+## 🗄️ Database Schema
 
+### Main Tables
+- **Users**: User authentication and profiles
+- **Leads**: Unified lead management
+- **Lead Assignments**: Lead assignment and tracking
+- **Employees**: Employee management
+- **Teams**: Team organization
+- **Activities**: Activity logging and timeline
+
+### Key Features
+- **Unified Lead System**: All leads (website, social, manual) in one place
+- **Workflow Tracking**: Visual progress tree with status management
+- **Activity Logging**: Comprehensive audit trail
+- **Role-based Access**: Admin, Manager, Employee roles
+
+## 🔧 Configuration
+
+### Environment Variables
+```env
 # Database
-DATABASE_URL=postgresql://user:password@host:port/database
-CRM_DATABASE_URL=postgresql://user:password@host:port/crm_database
+DATABASE_URL=postgresql://adv_cred_usr_prd:iZHC0gRJoBRkpoHULM7ZovXZ2HeH9eAj@dpg-d2u6t57fte5s73asjovg-a/advancecred_prd
+CRM_DATABASE_URL=postgresql://adv_cred_usr_prd:iZHC0gRJoBRkpoHULM7ZovXZ2HeH9eAj@dpg-d2u6t57fte5s73asjovg-a/advancecred_prd
 
-# CRM Session
-CRM_SESSION_SECRET=your-crm-session-secret
-```
+# Security
+SECRET_KEY=your-secret-key-here
+ENVIRONMENT=production
 
-### **Optional Variables**
-```bash
-# Email Configuration
-SMTP_SERVER=smtp.gmail.com
+# Email (optional)
+SMTP_HOST=smtp.gmail.com
 SMTP_PORT=587
 SMTP_USERNAME=your-email@gmail.com
 SMTP_PASSWORD=your-app-password
-FROM_EMAIL=noreply@advancecfa.com
-TO_EMAIL=support@advancecfa.com
-USE_TLS=True
-
-# Admin Configuration
-ADMIN_PASSWORD=secure-admin-password
 ```
 
-## **🔐 Default Access**
+## 📱 Usage
 
-### **CRM Admin**
-- **URL**: `/crm`
-- **Email**: `admin@advancecredit.com`
-- **Password**: `admin123`
+### Website
+- Visit the homepage for loan products and services
+- Use the EMI calculator for debt consolidation estimates
+- Submit contact forms for consultation requests
+- Browse partner information and team details
 
-**⚠️ Important**: Change the default password immediately after deployment!
+### CRM System
+- Access at `/crm/login` with employee credentials
+- Manage leads in the unified leads section
+- Track progress with visual workflow trees
+- Generate reports and analytics
+- Manage team members and assignments
 
-## **📱 Technology Stack**
+## 🚀 Deployment
 
-- **Backend**: FastAPI, SQLAlchemy, PostgreSQL/SQLite
-- **Frontend**: HTML, CSS, JavaScript, Bootstrap
-- **Authentication**: Session-based with role management
-- **Deployment**: Render.com, Docker-ready
-- **Database**: PostgreSQL (production), SQLite (development)
+### Render.com Deployment
+1. Connect your GitHub repository to Render
+2. Create a PostgreSQL database service
+3. Set environment variables in Render dashboard
+4. Deploy as a web service with the following settings:
+   - **Build Command**: `pip install -r requirements.txt`
+   - **Start Command**: `gunicorn src.main_app.main:app -w 4 -k uvicorn.workers.UvicornWorker --bind 0.0.0.0:$PORT`
 
-## **🔄 Database Setup**
+### Environment Variables for Render
+```
+DATABASE_URL=postgresql://adv_cred_usr_prd:iZHC0gRJoBRkpoHULM7ZovXZ2HeH9eAj@dpg-d2u6t57fte5s73asjovg-a/advancecred_prd
+CRM_DATABASE_URL=postgresql://adv_cred_usr_prd:iZHC0gRJoBRkpoHULM7ZovXZ2HeH9eAj@dpg-d2u6t57fte5s73asjovg-a/advancecred_prd
+SECRET_KEY=your-secret-key
+ENVIRONMENT=production
+```
 
-The application automatically creates all necessary tables and seeds initial data:
-- Default admin user
-- Initial teams (Operations, Sales, Digital)
-- Database schema for leads, employees, billing
+## 📊 Key Metrics
 
-## **📊 Features Overview**
+The platform tracks:
+- **500+ Families Helped**
+- **₹500Cr+ Debt Consolidated**
+- **1000+ Disbursements**
+- **50+ Bank Partners**
+- **4.8/5 Customer Rating**
 
-### **Main Website**
-- ✅ Responsive design across all devices
-- ✅ Lead capture forms with validation
-- ✅ Real-time EMI and debt relief calculators
-- ✅ WhatsApp and Instagram integration
-- ✅ Dynamic content management
-- ✅ SEO optimized pages
+## 🔒 Security Features
 
-### **CRM Portal**
-- ✅ Unified login with role-based access
-- ✅ Lead assignment and tracking
-- ✅ Employee and team management
-- ✅ Billing and commission tracking
-- ✅ Analytics and reporting
-- ✅ Bulk data operations
-- ✅ Export functionality
+- JWT-based authentication
+- Password hashing with bcrypt
+- Role-based access control
+- SQL injection protection
+- XSS protection
+- CSRF protection
 
-## **🛠️ Development**
+## 📈 Performance
 
-### **Adding New Features**
-1. Update models in `src/shared/models.py`
-2. Add routes in `src/main_app/main.py` or `src/crm/routes.py`
-3. Create templates in respective `templates/` directories
-4. Update static files as needed
+- Optimized database queries
+- Efficient caching strategies
+- Responsive design for all devices
+- Fast page load times
+- Scalable architecture
 
-### **Database Changes**
-- Models are auto-created on startup
-- For complex migrations, consider using Alembic
+## 🤝 Contributing
 
-### **Styling**
-- Main website: Bootstrap with custom CSS
-- CRM: Glass-morphism design with modern UI
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Test thoroughly
+5. Submit a pull request
 
-## **🔍 Testing**
+## 📄 License
 
-### **Pre-Deployment Checklist**
-- [ ] All forms submit successfully
-- [ ] Calculators work correctly
-- [ ] CRM login and navigation work
-- [ ] Lead assignment functions
-- [ ] Employee management works
-- [ ] Responsive design on all devices
-- [ ] Environment variables configured
+This project is proprietary software. All rights reserved.
 
-## **📞 Support**
+## 📞 Support
 
-For technical support or feature requests, contact your development team.
+For support and inquiries:
+- Email: support@advancecfa.com
+- Phone: +91-XXXX-XXXX
+- Website: https://advancecfa.com
 
 ---
 
-**🎉 Ready for production deployment!** 
+**Advance Credit** - Your trusted partner in financial transformation.

@@ -2,8 +2,68 @@
 
 {% block title %}Users - Advance Credit CRM{% endblock %}
 
+<style>
+    /* Fix modal backdrop blurring issue */
+    .modal-backdrop {
+        backdrop-filter: none !important;
+        background-color: rgba(0, 0, 0, 0.5) !important;
+    }
+    
+    .modal {
+        backdrop-filter: none !important;
+    }
+    
+    .modal-content {
+        backdrop-filter: none !important;
+        background: white !important;
+        border: none !important;
+        border-radius: 12px !important;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15) !important;
+    }
+    
+    /* Ensure modal appears above everything */
+    .modal {
+        z-index: 1050 !important;
+    }
+    
+    .modal-backdrop {
+        z-index: 1040 !important;
+    }
+    
+    /* Fix any potential conflicts with glass-card styling */
+    .modal .glass-card {
+        backdrop-filter: none !important;
+        background: white !important;
+    }
+</style>
+
 {% block content %}
 <div class="glass-card">
+    <!-- Success/Error Messages -->
+    {% if request.query_params.get('success') == 'user_deleted' %}
+    <div class="alert alert-success alert-modern mb-4">
+        <i class="bi bi-check-circle me-2"></i>User deleted successfully!
+    </div>
+    {% endif %}
+    
+    {% if request.query_params.get('error') == 'cannot_delete_self' %}
+    <div class="alert alert-danger alert-modern mb-4">
+        <i class="bi bi-exclamation-triangle me-2"></i>You cannot delete your own account!
+    </div>
+    {% endif %}
+    
+    {% if request.query_params.get('error') == 'user_not_found' %}
+    <div class="alert alert-danger alert-modern mb-4">
+        <i class="bi bi-exclamation-triangle me-2"></i>User not found!
+    </div>
+    {% endif %}
+    
+    {% if request.query_params.get('error') == 'delete_failed' %}
+    <div class="alert alert-danger alert-modern mb-4">
+        <i class="bi bi-exclamation-triangle me-2"></i>Failed to delete user. Please try again.
+    </div>
+    {% endif %}
+    
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
             <h1 class="page-title">Team Members</h1>
@@ -125,7 +185,7 @@
 function confirmDelete(userId, userName) {
     document.getElementById('deleteUserName').textContent = userName;
     document.getElementById('confirmDeleteBtn').onclick = function() {
-        window.location.href = `/users/${userId}/delete`;
+        window.location.href = `/crm/users/${userId}/delete`;
     };
     new bootstrap.Modal(document.getElementById('deleteModal')).show();
 }

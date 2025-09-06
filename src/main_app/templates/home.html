@@ -129,6 +129,7 @@
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
+            background-color: var(--primary-blue);
         }
         
         .hero-banner-slide.active {
@@ -142,7 +143,183 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: linear-gradient(135deg, rgba(30, 58, 138, 0.9) 0%, rgba(30, 64, 175, 0.8) 100%);
+            background: linear-gradient(135deg, rgba(30, 58, 138, 0.7) 0%, rgba(30, 64, 175, 0.6) 100%);
+        }
+        
+        /* Banner Carousel Section */
+        .banner-carousel-section {
+            background: var(--light-blue);
+            padding: 4rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .banner-carousel-container {
+            position: relative;
+            max-width: 1200px;
+            margin: 0 auto;
+            height: 500px;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(30, 58, 138, 0.15);
+        }
+        
+        .banner-carousel-slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 1.5s ease-in-out;
+            background-size: contain;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-color: var(--primary-blue);
+        }
+        
+        .banner-carousel-slide.active {
+            opacity: 1;
+        }
+        
+        .banner-carousel-slide-1 {
+            background-image: url('/static/banners/hero-banner1.png');
+        }
+        
+        .banner-carousel-slide-2 {
+            background-image: url('/static/banners/hero-banner2.png');
+        }
+        
+        .banner-carousel-slide-3 {
+            background-image: url('/static/banners/hero=banner-3.png');
+        }
+        
+        .banner-carousel-slide-4 {
+            background-image: url('/static/banners/hero-banner4.png');
+        }
+        
+        .banner-carousel-slide-5 {
+            background-image: url('/static/banners/loan-products-hero-banner.png');
+        }
+        
+        .banner-carousel-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(30, 58, 138, 0.1) 0%, rgba(30, 64, 175, 0.05) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .banner-carousel-content {
+            text-align: center;
+            color: var(--white);
+            z-index: 2;
+        }
+        
+        .banner-carousel-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.8);
+            color: var(--white);
+        }
+        
+        .banner-carousel-subtitle {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 1;
+            text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.8);
+            color: var(--white);
+        }
+        
+        .banner-carousel-indicators {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 12px;
+            z-index: 3;
+        }
+        
+        .banner-carousel-indicator {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.4);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        
+        .banner-carousel-indicator:hover {
+            background: rgba(255, 255, 255, 0.7);
+            transform: scale(1.1);
+        }
+        
+        .banner-carousel-indicator.active {
+            background: var(--white);
+            transform: scale(1.2);
+            border-color: var(--primary-blue);
+        }
+        
+        .banner-carousel-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-blue);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 3;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+        
+        .banner-carousel-nav:hover {
+            background: var(--white);
+            transform: translateY(-50%) scale(1.1);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .banner-carousel-nav.prev {
+            left: 20px;
+        }
+        
+        .banner-carousel-nav.next {
+            right: 20px;
+        }
+        
+        @media (max-width: 768px) {
+            .banner-carousel-container {
+                height: 350px;
+                margin: 0 15px;
+            }
+            
+            .banner-carousel-title {
+                font-size: 2rem;
+            }
+            
+            .banner-carousel-subtitle {
+                font-size: 1rem;
+            }
+            
+            .banner-carousel-nav {
+                width: 40px;
+                height: 40px;
+                font-size: 1.2rem;
+            }
         }
         
         .hero-banner-slide-1 {
@@ -237,11 +414,18 @@
             background: rgba(255, 255, 255, 0.3);
             cursor: pointer;
             transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        
+        .hero-banner-indicator:hover {
+            background: rgba(255, 255, 255, 0.6);
+            transform: scale(1.1);
         }
         
         .hero-banner-indicator.active {
             background: var(--white);
             transform: scale(1.2);
+            border-color: var(--primary-blue);
         }
         
         .hero-slide-content {
@@ -427,14 +611,6 @@
             align-items: center;
         }
         
-        .value-propositions-indicators::before,
-        .value-propositions-indicators::after {
-            content: 'Scroll to explore more services';
-            font-size: 0.875rem;
-            color: var(--gray-text);
-            font-weight: 500;
-            margin: 0 1rem;
-        }
         
         @media (max-width: 768px) {
             .value-propositions-indicators::before,
@@ -632,6 +808,34 @@
             bottom: 0;
             background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="emergency" width="20" height="20" patternUnits="userSpaceOnUse"><circle cx="10" cy="10" r="1" fill="white" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23emergency)"/></svg>');
             opacity: 0.1;
+        }
+        
+        /* Mobile fixes for emergency section */
+        @media (max-width: 768px) {
+            .emergency-section {
+                padding: 3rem 0 !important;
+            }
+            
+            .emergency-section .btn {
+                margin-bottom: 2rem;
+                width: 100%;
+            }
+            
+            .emergency-section .row {
+                margin-bottom: 1rem;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .emergency-section {
+                padding: 2.5rem 0 !important;
+            }
+            
+            .emergency-section .btn {
+                margin-bottom: 1.5rem;
+                padding: 12px 20px;
+                font-size: 1rem;
+            }
         }
         
         .loan-product-card {
@@ -1087,6 +1291,8 @@
                         <span class="trust-badge"><i class="bi bi-star me-2"></i>High Success Rate</span>
                     </div>
                 </div>
+                
+
             </div>
             <div class="col-lg-6">
                 <div class="debt-consolidation-form">
@@ -1128,23 +1334,58 @@
     </div>
 </section>
 
+<!-- Banner Carousel Section -->
+<section class="banner-carousel-section">
+    <div class="container">
+        <div class="banner-carousel-container">
+            <!-- Banner Slides -->
+            <div class="banner-carousel-slide banner-carousel-slide-1 active" data-slide="1"></div>
+            <div class="banner-carousel-slide banner-carousel-slide-2" data-slide="2"></div>
+            <div class="banner-carousel-slide banner-carousel-slide-3" data-slide="3"></div>
+            <div class="banner-carousel-slide banner-carousel-slide-4" data-slide="4"></div>
+            <div class="banner-carousel-slide banner-carousel-slide-5" data-slide="5"></div>
+            
+            <!-- Navigation Buttons -->
+            <button class="banner-carousel-nav prev" onclick="changeBannerSlide(-1)" aria-label="Previous banner">
+                <i class="bi bi-chevron-left"></i>
+            </button>
+            <button class="banner-carousel-nav next" onclick="changeBannerSlide(1)" aria-label="Next banner">
+                <i class="bi bi-chevron-right"></i>
+            </button>
+            
+            <!-- Indicators -->
+            <div class="banner-carousel-indicators">
+                <div class="banner-carousel-indicator active" data-slide="1"></div>
+                <div class="banner-carousel-indicator" data-slide="2"></div>
+                <div class="banner-carousel-indicator" data-slide="3"></div>
+                <div class="banner-carousel-indicator" data-slide="4"></div>
+                <div class="banner-carousel-indicator" data-slide="5"></div>
+            </div>
+        </div>
+    </div>
+</section>
+
 <!-- Stats Section -->
 <section class="stats-section">
     <div class="container">
         <div class="row">
-            <div class="col-md-3 stat-item">
-                <div class="stat-number">₹2.5Cr+</div>
+            <div class="col-lg-2 col-md-4 col-sm-6 stat-item">
+                <div class="stat-number">₹500Cr+</div>
                 <div class="stat-label">Debt Consolidated</div>
             </div>
-            <div class="col-md-3 stat-item">
+            <div class="col-lg-2 col-md-4 col-sm-6 stat-item">
+                <div class="stat-number">1000+</div>
+                <div class="stat-label">Disbursements</div>
+            </div>
+            <div class="col-lg-2 col-md-4 col-sm-6 stat-item">
                 <div class="stat-number">500+</div>
                 <div class="stat-label">Happy Families</div>
             </div>
-            <div class="col-md-3 stat-item">
+            <div class="col-lg-2 col-md-4 col-sm-6 stat-item">
                 <div class="stat-number">85%</div>
                 <div class="stat-label">EMI Reduction</div>
             </div>
-            <div class="col-md-3 stat-item">
+            <div class="col-lg-2 col-md-4 col-sm-6 stat-item">
                 <div class="stat-number">4.9★</div>
                 <div class="stat-label">Client Rating</div>
             </div>
@@ -1420,7 +1661,7 @@
 </section>
 
 <!-- Emergency Debt Relief Section -->
-<section class="py-5" style="background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%); color: white;">
+<section class="py-5 emergency-section" style="background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%); color: white;">
     <div class="container">
         <div class="row align-items-center">
             <div class="col-lg-6">
@@ -1877,6 +2118,8 @@
     </div>
 </section>
 
+
+
 <!-- Trusted Partners -->
 <section class="py-5">
     <div class="container">
@@ -2039,9 +2282,49 @@ function initHeroBanner() {
     });
 }
 
+// Banner Carousel Slider
+function initBannerCarousel() {
+    const bannerSlides = document.querySelectorAll('.banner-carousel-slide');
+    const bannerIndicators = document.querySelectorAll('.banner-carousel-indicator');
+    let currentBannerSlide = 0;
+    
+    function showBannerSlide(index) {
+        // Remove active class from all slides and indicators
+        bannerSlides.forEach(slide => slide.classList.remove('active'));
+        bannerIndicators.forEach(indicator => indicator.classList.remove('active'));
+        
+        // Add active class to current slide and indicator
+        bannerSlides[index].classList.add('active');
+        bannerIndicators[index].classList.add('active');
+    }
+    
+    function nextBannerSlide() {
+        currentBannerSlide = (currentBannerSlide + 1) % bannerSlides.length;
+        showBannerSlide(currentBannerSlide);
+    }
+    
+    // Auto-advance slides every 5 seconds
+    setInterval(nextBannerSlide, 5000);
+    
+    // Allow manual navigation via indicators
+    bannerIndicators.forEach((indicator, index) => {
+        indicator.addEventListener('click', () => {
+            currentBannerSlide = index;
+            showBannerSlide(currentBannerSlide);
+        });
+    });
+    
+    // Make changeBannerSlide function globally available
+    window.changeBannerSlide = function(direction) {
+        currentBannerSlide = (currentBannerSlide + direction + bannerSlides.length) % bannerSlides.length;
+        showBannerSlide(currentBannerSlide);
+    };
+}
+
 // Initialize hero banner when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
     initHeroBanner();
+    initBannerCarousel();
     initValuePropositionsSlider();
 });
 
@@ -2089,12 +2372,27 @@ async function calculateDebtRelief() {
     const totalLoanAmount = parseFloat(document.getElementById('totalLoanAmount').value) || 0;
     const currentEmi = parseFloat(document.getElementById('currentEmi').value) || 0;
     
-    if (totalLoanAmount === 0 || currentEmi === 0) {
-        alert('Please enter both total loan amount and current monthly EMI');
+    // Enhanced validation
+    if (totalLoanAmount <= 0 || currentEmi <= 0) {
+        alert('Please enter valid amounts for both total loan amount and current monthly EMI');
         return;
     }
     
-    // Fixed parameters for our offer
+    if (totalLoanAmount < 50000) {
+        alert('Minimum loan amount for consolidation is ₹50,000');
+        return;
+    }
+    
+    if (currentEmi < 2000) {
+        alert('Please enter a valid current EMI amount (minimum ₹2,000)');
+        return;
+    }
+    
+    // Calculate current effective interest rate and tenure
+    const currentTenure = calculateCurrentTenure(totalLoanAmount, currentEmi);
+    const currentRate = calculateCurrentRate(totalLoanAmount, currentEmi, currentTenure);
+    
+    // Our consolidation offer parameters
     const newInterestRate = 13; // 13% p.a.
     const newTenure = 5; // 5 years
     
@@ -2112,20 +2410,41 @@ async function calculateDebtRelief() {
     // Calculate savings
     const monthlySavings = currentEmi - newEmi;
     const annualSavings = monthlySavings * 12;
+    const totalInterestSavings = calculateTotalInterestSavings(totalLoanAmount, currentRate, currentTenure, newInterestRate, newTenure);
     
-    // Display results
+    // Display results with better formatting
     document.getElementById('monthlySavings').textContent = '₹' + Math.round(monthlySavings).toLocaleString();
     document.getElementById('newEmi').textContent = '₹' + Math.round(newEmi).toLocaleString();
     document.getElementById('totalSavings').textContent = '₹' + Math.round(annualSavings).toLocaleString();
     
-    // Update savings text
+    // Update savings text with more context
     const savingsText = document.getElementById('savingsText');
     if (monthlySavings > 0) {
         savingsText.textContent = '₹' + Math.round(monthlySavings).toLocaleString();
         savingsText.className = 'fw-bold text-success';
+        
+        // Update the success message with more details
+        const successMessage = document.querySelector('.alert-success div');
+        if (successMessage) {
+            successMessage.innerHTML = `
+                <strong>Great News!</strong> You could save <span class="fw-bold text-success">₹${Math.round(monthlySavings).toLocaleString()}</span> every month 
+                and <span class="fw-bold text-success">₹${Math.round(totalInterestSavings).toLocaleString()}</span> in total interest 
+                with our debt consolidation loan at 13% p.a. for 5 years.
+            `;
+        }
     } else {
         savingsText.textContent = '₹' + Math.round(Math.abs(monthlySavings)).toLocaleString() + ' more';
         savingsText.className = 'fw-bold text-danger';
+        
+        // Update message for negative savings
+        const successMessage = document.querySelector('.alert-success div');
+        if (successMessage) {
+            successMessage.innerHTML = `
+                <strong>Note:</strong> Your new EMI would be <span class="fw-bold text-warning">₹${Math.round(Math.abs(monthlySavings)).toLocaleString()}</span> higher, 
+                but you'll save <span class="fw-bold text-success">₹${Math.round(totalInterestSavings).toLocaleString()}</span> in total interest 
+                and complete your loan in 5 years instead of ${Math.round(currentTenure/12)} years.
+            `;
+        }
     }
     
     // Submit data to backend for lead capture
@@ -2155,6 +2474,56 @@ async function calculateDebtRelief() {
     
     // Scroll to results
     document.getElementById('calculationResult').scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+// Helper function to calculate current tenure based on loan amount and EMI
+function calculateCurrentTenure(loanAmount, emi) {
+    // Estimate tenure based on typical loan scenarios
+    // This is an approximation - in reality, we'd need the actual interest rate
+    const estimatedRate = 0.15; // Assume 15% average rate for existing loans
+    const monthlyRate = estimatedRate / 12;
+    
+    if (monthlyRate === 0) {
+        return loanAmount / emi;
+    }
+    
+    // Use the EMI formula to solve for tenure
+    // EMI = P * r * (1+r)^n / ((1+r)^n - 1)
+    // Solving for n (number of months)
+    const ratio = emi / (loanAmount * monthlyRate);
+    const tenure = Math.log(ratio / (ratio - 1)) / Math.log(1 + monthlyRate);
+    
+    return Math.max(12, Math.min(360, tenure)); // Between 1 year and 30 years
+}
+
+// Helper function to calculate current interest rate
+function calculateCurrentRate(loanAmount, emi, tenure) {
+    // This is a simplified calculation
+    // In reality, we'd need more sophisticated methods
+    const monthlyRate = 0.01; // Start with 1% monthly rate
+    const calculatedEmi = loanAmount * (monthlyRate * Math.pow(1 + monthlyRate, tenure)) / (Math.pow(1 + monthlyRate, tenure) - 1);
+    
+    // Adjust rate based on EMI difference
+    const rateAdjustment = (emi - calculatedEmi) / emi;
+    const adjustedRate = (monthlyRate + rateAdjustment * 0.005) * 12 * 100;
+    
+    return Math.max(8, Math.min(25, adjustedRate)); // Between 8% and 25%
+}
+
+// Helper function to calculate total interest savings
+function calculateTotalInterestSavings(loanAmount, currentRate, currentTenure, newRate, newTenure) {
+    const currentMonthlyRate = currentRate / (12 * 100);
+    const newMonthlyRate = newRate / (12 * 100);
+    
+    // Calculate total interest for current loan
+    const currentTotalPayment = currentTenure * (loanAmount * (currentMonthlyRate * Math.pow(1 + currentMonthlyRate, currentTenure)) / (Math.pow(1 + currentMonthlyRate, currentTenure) - 1));
+    const currentTotalInterest = currentTotalPayment - loanAmount;
+    
+    // Calculate total interest for new loan
+    const newTotalPayment = newTenure * 12 * (loanAmount * (newMonthlyRate * Math.pow(1 + newMonthlyRate, newTenure * 12)) / (Math.pow(1 + newMonthlyRate, newTenure * 12) - 1));
+    const newTotalInterest = newTotalPayment - loanAmount;
+    
+    return Math.max(0, currentTotalInterest - newTotalInterest);
 }
 </script>
 </body>

@@ -16,6 +16,30 @@
         </div>
     </div>
 
+    <!-- Error Message -->
+    {% if error %}
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <i class="bi bi-exclamation-triangle me-2"></i>
+        {{ error }}
+        {% if team_to_delete and team_members %}
+        <hr>
+        <p class="mb-2"><strong>Team Members:</strong></p>
+        <ul class="mb-2">
+            {% for member in team_members %}
+            <li>{{ member.user.name }} ({{ member.employee_code }})</li>
+            {% endfor %}
+        </ul>
+        <div class="d-flex gap-2">
+            <button class="btn btn-danger-modern btn-modern btn-sm" onclick="forceDeleteTeam({{ team_to_delete.team_id }}, '{{ team_to_delete.name }}')">
+                <i class="bi bi-trash me-1"></i>Force Delete Team
+            </button>
+            <a href="/crm/teams" class="btn btn-secondary btn-sm">Cancel</a>
+        </div>
+        {% endif %}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+    {% endif %}
+
     <!-- Team Stats -->
     <div class="row g-4 mb-4">
         <div class="col-lg-3 col-md-6">
@@ -221,9 +245,15 @@
 function deleteTeam(teamId, teamName) {
     document.getElementById('deleteTeamName').textContent = teamName;
     document.getElementById('confirmDeleteTeamBtn').onclick = function() {
-        window.location.href = `/teams/${teamId}/delete`;
+        window.location.href = `/crm/teams/${teamId}/delete`;
     };
     new bootstrap.Modal(document.getElementById('deleteTeamModal')).show();
+}
+
+function forceDeleteTeam(teamId, teamName) {
+    if (confirm(`Are you sure you want to force delete team "${teamName}"? This will remove all team assignments from employees.`)) {
+        window.location.href = `/crm/teams/${teamId}/force-delete`;
+    }
 }
 </script>
 {% endblock %} 

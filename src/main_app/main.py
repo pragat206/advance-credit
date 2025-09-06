@@ -28,6 +28,7 @@ from sqlalchemy.orm import sessionmaker
 
 # Include CRM routes with /crm prefix
 from src.crm.routes import router as crm_router
+from src.crm.manual_leads import router as manual_leads_router
 
 # Production environment check
 ENVIRONMENT = os.getenv("ENVIRONMENT", "development")
@@ -47,6 +48,7 @@ app.add_middleware(SessionMiddleware, secret_key=os.getenv("SECRET_KEY", "super-
 # Include routers
 app.include_router(admin_router)
 app.include_router(crm_router, prefix="/crm")
+app.include_router(manual_leads_router, prefix="/crm")
 
 # Mount static files
 app.mount("/static", StaticFiles(directory="src/main_app/static"), name="static")
@@ -117,19 +119,17 @@ def get_crm_db():
         db.close()
 
 def save_lead_to_crm(name, contact, email, message, source="website"):
-    """Save lead to CRM database"""
+    """Save lead to CRM database using unified lead service"""
     db = None
     try:
         db = CRMSessionLocal()
-        website_lead = WebsiteLead(
-            name=name,
-            contact=contact,
-            email=email,
-            message=message
-        )
-        db.add(website_lead)
-        db.commit()
-        print(f"✅ Lead saved to CRM: {name} - {contact}")
+        
+        # Import the lead service
+        from src.crm.lead_service import LeadService
+        
+        # Create unified lead
+        lead = LeadService.create_lead_from_website(db, name, contact, email, message)
+        print(f"✅ Lead saved to unified CRM: {name} - {contact} (Lead ID: {lead.lead_id})")
         return True
     except Exception as e:
         print(f"❌ Error saving lead to CRM: {e}")
@@ -827,10 +827,16 @@ def emi_get(request: Request):
 async def emi_post(request: Request, 
              loan_amount: float = Form(...), 
              tenure: int = Form(...), 
-             interest_rate: float = Form(...)):
+             interest_rate: float = Form(...),
+             tenure_unit: str = Form("years")):
     # EMI calculation
     monthly_rate = interest_rate / (12 * 100)
-    total_months = tenure
+    
+    # Convert tenure to months based on unit
+    if tenure_unit.lower() == "years":
+        total_months = tenure * 12
+    else:
+        total_months = tenure
     
     if monthly_rate == 0:
         emi = loan_amount / total_months
@@ -843,7 +849,7 @@ async def emi_post(request: Request,
     # No database interaction for EMI calculator
     result = {
         "loan_amount": f"{loan_amount:,.0f}",
-        "tenure": tenure,
+        "tenure": total_months,  # Always return in months for display
         "interest_rate": interest_rate,
         "emi": f"{emi:,.0f}",
         "total_payment": f"{total_payment:,.0f}",
@@ -1310,6 +1316,8 @@ def api_icici_bank_loans():
 @app.get("/about", response_class=HTMLResponse)
 def about(request: Request):
     return templates.TemplateResponse("about.html", {"request": request})
+
+
 
 @app.get('/api/bank-loans')
 def get_bank_loans():

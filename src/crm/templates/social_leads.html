@@ -10,6 +10,11 @@
             <p class="page-subtitle">Manage and track all leads from social media platforms.</p>
         </div>
         <div class="d-flex gap-2">
+            {% if request.session.user_role in ["admin", "manager"] %}
+            <a href="/crm/leads/add-social" class="btn btn-primary-modern btn-modern">
+                <i class="bi bi-plus-circle me-2"></i><span class="d-none d-md-inline">Add Lead</span>
+            </a>
+            {% endif %}
             <a href="/crm/social-leads/bulk-upload" class="btn btn-warning-modern btn-modern">
                 <i class="bi bi-upload me-2"></i><span class="d-none d-md-inline">Bulk Upload</span>
             </a>

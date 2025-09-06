@@ -1,111 +1,197 @@
 {% extends 'base.html' %}
+
+{% block title %}
+    {% if lead_type == "website" %}
+        Add Website Lead - Advance Credit CRM
+    {% else %}
+        Add Social Media Lead - Advance Credit CRM
+    {% endif %}
+{% endblock %}
+
 {% block content %}
-<div class="container mt-5" style="max-width: 700px;">
-  <div class="card shadow-sm">
-    <div class="card-body">
-      <a href="/crm/leads" class="btn btn-secondary mb-3">&larr; Back to Leads</a>
-      <h3 class="card-title mb-3 text-primary">Add New Lead</h3>
-      {% if error %}
-      <div class="alert alert-danger">{{ error }}</div>
-      {% endif %}
-      <form method="post">
-        <div class="row mb-3">
-          <div class="col">
-            <label class="form-label">Name</label>
-            <input type="text" class="form-control" name="name" required>
-          </div>
-          <div class="col">
-            <label class="form-label">Email</label>
-            <input type="email" class="form-control" name="email">
-          </div>
+<div class="glass-card">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="page-title">
+                {% if lead_type == "website" %}
+                    <i class="bi bi-globe me-2"></i>Add Website Lead
+                {% else %}
+                    <i class="bi bi-share me-2"></i>Add Social Media Lead
+                {% endif %}
+            </h1>
+            <p class="page-subtitle">
+                {% if lead_type == "website" %}
+                    Create a new website lead and assign it to an employee
+                {% else %}
+                    Create a new social media lead and assign it to an employee
+                {% endif %}
+            </p>
         </div>
-        <div class="row mb-3">
-          <div class="col">
-            <label class="form-label">Contact</label>
-            <input type="text" class="form-control" name="contact" required maxlength="10" pattern="\d{10}">
-          </div>
-          <div class="col">
-            <label class="form-label">Product</label>
-            <select class="form-select" name="loan_type">
-              <option value="">-- Select --</option>
-              <option value="PL">Personal Loan (PL)</option>
-              <option value="HL">Home Loan (HL)</option>
-              <option value="LAP">Loan Against Property (LAP)</option>
-              <option value="Others">Others</option>
-            </select>
-          </div>
-        </div>
-        <div class="row mb-3">
-          <div class="col">
-            <label class="form-label">Loan Amount</label>
-            <input type="number" class="form-control" name="loan_amount" min="0" step="any">
-          </div>
-          <div class="col">
-            <label class="form-label">Salary</label>
-            <input type="number" class="form-control" name="salary" min="0" step="any">
-          </div>
-        </div>
-        <div class="row mb-3">
-          <div class="col">
-            <label class="form-label">CIBIL</label>
-            <input type="text" class="form-control" name="credit_score">
-          </div>
-          <div class="col d-flex align-items-center">
-            <div class="form-check me-3">
-              <input class="form-check-input" type="checkbox" name="is_enquiry" value="1" id="isEnquiryCheck">
-              <label class="form-check-label" for="isEnquiryCheck">Is Enquiry</label>
-            </div>
-            <div class="form-check me-3">
-              <input class="form-check-input" type="checkbox" name="ongoing_loan" value="1" id="ongoingLoanCheck">
-              <label class="form-check-label" for="ongoingLoanCheck">Ongoing Loan</label>
-            </div>
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" name="salary_slip_available" value="1" id="salarySlipCheck">
-              <label class="form-check-label" for="salarySlipCheck">Salary Slip Available</label>
-            </div>
-          </div>
-        </div>
-        <div class="mb-3">
-          <label class="form-label">Remarks</label>
-          <textarea class="form-control" name="notes" rows="2"></textarea>
-        </div>
-        <div class="mb-3">
-          <label class="form-label">Assign To</label>
-          <select class="form-select" name="assigned_to">
-            <option value="">-- Unassigned --</option>
-            {% for emp in employees %}
-            <option value="{{ emp.id }}">{{ emp.name }}</option>
-            {% endfor %}
-          </select>
-        </div>
-        <div class="mb-3">
-          <label class="form-label">Message</label>
-          <textarea class="form-control" name="message" rows="3"></textarea>
-        </div>
-        <div class="mb-3">
-          <label class="form-label">Source</label>
-          <select class="form-select" name="source">
-            <option value="manual">Manual</option>
-            <option value="website">Website</option>
-            <option value="instagram">Instagram</option>
-            <option value="facebook">Facebook</option>
-            <option value="googlead">Google Ad</option>
-            <option value="other">Other</option>
-          </select>
-        </div>
-        <button type="submit" class="btn btn-success">Create Lead</button>
-      </form>
+        <a href="{% if lead_type == 'website' %}/crm/website-leads{% else %}/crm/social-leads{% endif %}" class="btn btn-secondary-modern btn-modern">
+            <i class="bi bi-arrow-left me-2"></i>Back to Leads
+        </a>
     </div>
-  </div>
+
+    {% if error %}
+    <div class="alert alert-danger alert-modern" role="alert">
+        <i class="bi bi-exclamation-triangle me-2"></i>{{ error }}
+    </div>
+    {% endif %}
+
+    <form method="POST" class="needs-validation" novalidate>
+        <div class="row g-4">
+            <!-- Basic Information -->
+            <div class="col-lg-8">
+                <div class="glass-card">
+                    <h5 class="mb-3"><i class="bi bi-person me-2"></i>Lead Information</h5>
+                    
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label for="name" class="form-label">Full Name *</label>
+                            <input type="text" class="form-control form-control-modern" id="name" name="name" required>
+                            <div class="invalid-feedback">Please provide a name.</div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <label for="contact" class="form-label">Contact Number *</label>
+                            <input type="tel" class="form-control form-control-modern" id="contact" name="contact" required>
+                            <div class="invalid-feedback">Please provide a contact number.</div>
+                        </div>
+
+                        {% if lead_type == "website" %}
+                        <div class="col-md-6">
+                            <label for="email" class="form-label">Email Address</label>
+                            <input type="email" class="form-control form-control-modern" id="email" name="email">
+                            <div class="invalid-feedback">Please provide a valid email address.</div>
+                        </div>
+                        
+                        <div class="col-12">
+                            <label for="message" class="form-label">Message/Query</label>
+                            <textarea class="form-control form-control-modern" id="message" name="message" rows="4" placeholder="Enter the lead's message or query..."></textarea>
+                        </div>
+                        {% else %}
+                        <div class="col-md-6">
+                            <label for="city" class="form-label">City</label>
+                            <input type="text" class="form-control form-control-modern" id="city" name="city" placeholder="Enter city name">
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <label for="platform_name" class="form-label">Platform *</label>
+                            <select class="form-select form-select-modern" id="platform_name" name="platform_name" required>
+                                <option value="">Select Platform</option>
+                                <option value="Instagram">Instagram</option>
+                                <option value="Facebook">Facebook</option>
+                                <option value="WhatsApp">WhatsApp</option>
+                                <option value="LinkedIn">LinkedIn</option>
+                                <option value="Twitter">Twitter</option>
+                                <option value="YouTube">YouTube</option>
+                                <option value="Other">Other</option>
+                            </select>
+                            <div class="invalid-feedback">Please select a platform.</div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <label for="any_ongoing_loan" class="form-label">Any Ongoing Loan?</label>
+                            <select class="form-select form-select-modern" id="any_ongoing_loan" name="any_ongoing_loan">
+                                <option value="false">No</option>
+                                <option value="true">Yes</option>
+                            </select>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <label for="loan_amount" class="form-label">Loan Amount (₹)</label>
+                            <input type="number" class="form-control form-control-modern" id="loan_amount" name="loan_amount" placeholder="Enter loan amount" min="0" step="1000">
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Assignment Information -->
+            <div class="col-lg-4">
+                <div class="glass-card">
+                    <h5 class="mb-3"><i class="bi bi-person-check me-2"></i>Assignment</h5>
+                    
+                    <div class="mb-3">
+                        <label for="assigned_employee_id" class="form-label">Assign to Employee</label>
+                        <select class="form-select form-select-modern" id="assigned_employee_id" name="assigned_employee_id">
+                            <option value="">Select Employee (Optional)</option>
+                            {% for employee in employees %}
+                            <option value="{{ employee.employee_id }}">
+                                {{ employee.employee_code }} - {{ employee.user.name }}
+                                {% if employee.designation %} ({{ employee.designation }}){% endif %}
+                            </option>
+                            {% endfor %}
+                        </select>
+                        <small class="form-text text-muted">
+                            Leave empty to create unassigned lead. You can assign it later.
+                        </small>
+                    </div>
+
+                    <div class="alert alert-info alert-modern" role="alert">
+                        <i class="bi bi-info-circle me-2"></i>
+                        <strong>Note:</strong> Only Admin and Manager roles can create leads. 
+                        {% if request.session.user_role == "admin" %}
+                            You can assign to any employee.
+                        {% else %}
+                            You can only assign to your team members.
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="glass-card">
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary-modern btn-modern">
+                            <i class="bi bi-plus-circle me-2"></i>
+                            {% if lead_type == "website" %}
+                                Create Website Lead
+                            {% else %}
+                                Create Social Media Lead
+                            {% endif %}
+                        </button>
+                        
+                        <a href="{% if lead_type == 'website' %}/crm/website-leads{% else %}/crm/social-leads{% endif %}" class="btn btn-outline-secondary-modern btn-modern">
+                            <i class="bi bi-x-circle me-2"></i>Cancel
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
 </div>
+
 <script>
-document.querySelector('form').addEventListener('submit', function(e) {
-    const contact = document.querySelector('input[name="contact"]').value;
-    if (!/^\d{10}$/.test(contact)) {
-        e.preventDefault();
-        alert('Please enter a valid 10-digit contact number.');
-        return;
+// Form validation
+(function() {
+    'use strict';
+    window.addEventListener('load', function() {
+        var forms = document.getElementsByClassName('needs-validation');
+        var validation = Array.prototype.filter.call(forms, function(form) {
+            form.addEventListener('submit', function(event) {
+                if (form.checkValidity() === false) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
+                form.classList.add('was-validated');
+            }, false);
+        });
+    }, false);
+})();
+
+// Auto-format phone number
+document.getElementById('contact').addEventListener('input', function(e) {
+    let value = e.target.value.replace(/\D/g, '');
+    if (value.length > 10) {
+        value = value.substring(0, 10);
     }
+    e.target.value = value;
+});
+
+// Auto-format loan amount
+document.getElementById('loan_amount').addEventListener('input', function(e) {
+    let value = e.target.value.replace(/\D/g, '');
+    e.target.value = value;
 });
 </script>
 {% endblock %} 

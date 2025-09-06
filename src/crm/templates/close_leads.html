@@ -1,0 +1,305 @@
+{% extends "base.html" %}
+
+{% block title %}Closed Leads - CRM{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <!-- Page Header -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h1 class="h3 mb-0 text-dark fw-bold">
+                        <i class="bi bi-archive me-2"></i>Closed Leads
+                    </h1>
+                    <p class="text-muted mb-0">Review and manage closed cases</p>
+                </div>
+                <div class="d-flex gap-2">
+                    <a href="/crm/dashboard" class="btn btn-outline-secondary">
+                        <i class="bi bi-arrow-left me-1"></i>Back to Dashboard
+                    </a>
+                    <a href="/crm/unified-leads" class="btn btn-primary">
+                        <i class="bi bi-list me-1"></i>Active Leads
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="flex-shrink-0">
+                            <div class="bg-success bg-opacity-10 rounded-circle p-3">
+                                <i class="bi bi-check-circle text-success fs-4"></i>
+                            </div>
+                        </div>
+                        <div class="flex-grow-1 ms-3">
+                            <h6 class="card-title mb-1 text-muted">Success</h6>
+                            <h4 class="mb-0 fw-bold text-success">
+                                {{ success_count }}
+                            </h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="flex-shrink-0">
+                            <div class="bg-warning bg-opacity-10 rounded-circle p-3">
+                                <i class="bi bi-x-circle text-warning fs-4"></i>
+                            </div>
+                        </div>
+                        <div class="flex-grow-1 ms-3">
+                            <h6 class="card-title mb-1 text-muted">Not Doable</h6>
+                            <h4 class="mb-0 fw-bold text-warning">
+                                {{ not_doable_count }}
+                            </h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="flex-shrink-0">
+                            <div class="bg-primary bg-opacity-10 rounded-circle p-3">
+                                <i class="bi bi-currency-rupee text-primary fs-4"></i>
+                            </div>
+                        </div>
+                        <div class="flex-grow-1 ms-3">
+                            <h6 class="card-title mb-1 text-muted">Total Amount</h6>
+                            <h4 class="mb-0 fw-bold text-primary">
+                                ₹{{ "{:,.0f}".format(total_amount) }}
+                            </h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="flex-shrink-0">
+                            <div class="bg-info bg-opacity-10 rounded-circle p-3">
+                                <i class="bi bi-calendar-check text-info fs-4"></i>
+                            </div>
+                        </div>
+                        <div class="flex-grow-1 ms-3">
+                            <h6 class="card-title mb-1 text-muted">This Month</h6>
+                            <h4 class="mb-0 fw-bold text-info">
+                                {{ close_leads | length }}
+                            </h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Closed Leads Table -->
+    <div class="card border-0 shadow-sm">
+        <div class="card-header bg-white border-0 py-3">
+            <div class="d-flex justify-content-between align-items-center">
+                <h5 class="mb-0 fw-bold text-dark">
+                    <i class="bi bi-table me-2"></i>Closed Leads History
+                </h5>
+                <div class="d-flex gap-2">
+                    <div class="input-group input-group-sm" style="width: 300px;">
+                        <span class="input-group-text bg-light border-end-0">
+                            <i class="bi bi-search text-muted"></i>
+                        </span>
+                        <input type="text" class="form-control border-start-0" id="searchInput" placeholder="Search closed leads...">
+                    </div>
+                    <select class="form-select form-select-sm" id="statusFilter" style="width: 150px;">
+                        <option value="">All Status</option>
+                        <option value="success">Success</option>
+                        <option value="not_doable">Not Doable</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover mb-0" id="closeLeadsTable">
+                    <thead class="table-light">
+                        <tr>
+                            <th class="border-0 px-4 py-3 fw-semibold text-muted">Lead ID</th>
+                            <th class="border-0 px-4 py-3 fw-semibold text-muted">Name</th>
+                            <th class="border-0 px-4 py-3 fw-semibold text-muted">Contact</th>
+                            <th class="border-0 px-4 py-3 fw-semibold text-muted">Amount</th>
+                            <th class="border-0 px-4 py-3 fw-semibold text-muted">Status</th>
+                            <th class="border-0 px-4 py-3 fw-semibold text-muted">Closed By</th>
+                            <th class="border-0 px-4 py-3 fw-semibold text-muted">Closed Date</th>
+                            <th class="border-0 px-4 py-3 fw-semibold text-muted">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for lead in close_leads %}
+                        <tr class="align-middle">
+                            <td class="px-4 py-3">
+                                <span class="badge bg-light text-dark fw-semibold">#{{ lead.lead_id }}</span>
+                            </td>
+                            <td class="px-4 py-3">
+                                <div class="d-flex align-items-center">
+                                    <div class="flex-shrink-0">
+                                        <div class="bg-primary bg-opacity-10 rounded-circle p-2">
+                                            <i class="bi bi-person text-primary"></i>
+                                        </div>
+                                    </div>
+                                    <div class="flex-grow-1 ms-3">
+                                        <h6 class="mb-0 fw-semibold text-dark">{{ lead.name }}</h6>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="px-4 py-3">
+                                <span class="text-muted">{{ lead.contact }}</span>
+                            </td>
+                            <td class="px-4 py-3">
+                                {% if lead.amount %}
+                                <span class="fw-semibold text-success">₹{{ "{:,.0f}".format(lead.amount) }}</span>
+                                {% else %}
+                                <span class="text-muted">-</span>
+                                {% endif %}
+                            </td>
+                            <td class="px-4 py-3">
+                                {% if lead.close_type == 'approved' %}
+                                <span class="badge bg-success bg-opacity-10 text-success fw-semibold">
+                                    <i class="bi bi-check-circle me-1"></i>Approved & Closed
+                                </span>
+                                {% elif lead.close_type == 'rejected' %}
+                                <span class="badge bg-danger bg-opacity-10 text-danger fw-semibold">
+                                    <i class="bi bi-x-circle me-1"></i>Rejected & Closed
+                                </span>
+                                {% elif lead.close_type == 'not_doable' %}
+                                <span class="badge bg-warning bg-opacity-10 text-warning fw-semibold">
+                                    <i class="bi bi-exclamation-triangle me-1"></i>Not Doable
+                                </span>
+                                {% elif lead.close_type == 'cancelled' %}
+                                <span class="badge bg-secondary bg-opacity-10 text-secondary fw-semibold">
+                                    <i class="bi bi-x-octagon me-1"></i>Cancelled
+                                </span>
+                                {% elif lead.close_type == 'duplicate' %}
+                                <span class="badge bg-info bg-opacity-10 text-info fw-semibold">
+                                    <i class="bi bi-files me-1"></i>Duplicate
+                                </span>
+                                {% elif lead.close_message == 'disbursed' %}
+                                <span class="badge bg-success bg-opacity-10 text-success fw-semibold">
+                                    <i class="bi bi-cash-coin me-1"></i>Disbursed
+                                </span>
+                                {% else %}
+                                <span class="badge bg-secondary bg-opacity-10 text-secondary fw-semibold">
+                                    <i class="bi bi-archive me-1"></i>Closed
+                                </span>
+                                {% endif %}
+                            </td>
+                            <td class="px-4 py-3">
+                                <span class="text-muted">{{ lead.closed_by }}</span>
+                            </td>
+                            <td class="px-4 py-3">
+                                <span class="text-muted">{{ lead.closed_at }}</span>
+                            </td>
+                            <td class="px-4 py-3">
+                                <div class="btn-group btn-group-sm" role="group">
+                                    <button type="button" class="btn btn-outline-primary" 
+                                            onclick="viewCloseDetails({{ lead.close_id }})"
+                                            title="View Details">
+                                        <i class="bi bi-eye"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-outline-info" 
+                                            onclick="reopenLead({{ lead.lead_id }})"
+                                            title="Reopen Lead">
+                                        <i class="bi bi-arrow-clockwise"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td colspan="8" class="text-center py-5">
+                                <div class="text-muted">
+                                    <i class="bi bi-archive fs-1 mb-3 d-block"></i>
+                                    <h5>No closed leads found</h5>
+                                    <p class="mb-0">Closed leads will appear here once cases are completed.</p>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Close Details Modal -->
+<div class="modal fade" id="closeDetailsModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content border-0 shadow">
+            <div class="modal-header bg-light border-0">
+                <h5 class="modal-title fw-bold">
+                    <i class="bi bi-info-circle me-2"></i>Close Details
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body" id="closeDetailsContent">
+                <!-- Content will be loaded here -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Search functionality
+document.getElementById('searchInput').addEventListener('input', function() {
+    const searchTerm = this.value.toLowerCase();
+    const rows = document.querySelectorAll('#closeLeadsTable tbody tr');
+    
+    rows.forEach(row => {
+        const text = row.textContent.toLowerCase();
+        row.style.display = text.includes(searchTerm) ? '' : 'none';
+    });
+});
+
+// Status filter
+document.getElementById('statusFilter').addEventListener('change', function() {
+    const filterValue = this.value.toLowerCase();
+    const rows = document.querySelectorAll('#closeLeadsTable tbody tr');
+    
+    rows.forEach(row => {
+        if (!filterValue) {
+            row.style.display = '';
+            return;
+        }
+        
+        const statusCell = row.querySelector('td:nth-child(5)');
+        const status = statusCell.textContent.toLowerCase();
+        row.style.display = status.includes(filterValue) ? '' : 'none';
+    });
+});
+
+// View close details
+function viewCloseDetails(closeId) {
+    // This would typically fetch details from an API
+    const modal = new bootstrap.Modal(document.getElementById('closeDetailsModal'));
+    modal.show();
+}
+
+// Reopen lead
+function reopenLead(leadId) {
+    if (confirm('Are you sure you want to reopen this lead? This will move it back to active leads.')) {
+        // This would typically make an API call to reopen the lead
+        console.log('Reopening lead:', leadId);
+    }
+}
+</script>
+{% endblock %}

@@ -1,0 +1,582 @@
+{% extends "base.html" %}
+
+{% block title %}Unified Leads - CRM{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <!-- Page Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="page-title">
+                <i class="bi bi-people me-2"></i>Lead Management
+            </h1>
+            <p class="page-subtitle">Manage and track all your leads in one place</p>
+        </div>
+        <div class="d-flex gap-2">
+            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createLeadModal">
+                <i class="bi bi-plus-circle me-2"></i>New Lead
+            </button>
+            <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#bulkUploadModal">
+                <i class="bi bi-upload me-2"></i>Bulk Upload
+            </button>
+            {% if request.session.get('user_role') == 'admin' %}
+            <button class="btn btn-outline-secondary" onclick="migrateLeads()">
+                <i class="bi bi-arrow-repeat me-2"></i>Migrate
+            </button>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Filters Card -->
+    <div class="card mb-4">
+        <div class="card-header">
+            <h5 class="mb-0">
+                <i class="bi bi-funnel me-2"></i>Filters
+            </h5>
+        </div>
+        <div class="card-body">
+            <form method="GET" class="row g-3">
+                <div class="col-md-3">
+                    <label class="form-label">Status</label>
+                    <select name="status" class="form-select">
+                        <option value="">All Statuses</option>
+                        {% for key, value in statuses.items() %}
+                        <option value="{{ key }}" {% if current_filters.status == key %}selected{% endif %}>
+                            {{ value }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Source</label>
+                    <select name="source" class="form-select">
+                        <option value="">All Sources</option>
+                        <option value="website" {% if current_filters.source == 'website' %}selected{% endif %}>Website</option>
+                        <option value="social" {% if current_filters.source == 'social' %}selected{% endif %}>Social Media</option>
+                        <option value="manual" {% if current_filters.source == 'manual' %}selected{% endif %}>Manual</option>
+                        <option value="referral" {% if current_filters.source == 'referral' %}selected{% endif %}>Referral</option>
+                        <option value="walk_in" {% if current_filters.source == 'walk_in' %}selected{% endif %}>Walk-in</option>
+                    </select>
+                </div>
+                {% if request.session.get('user_role') in ['admin', 'manager'] %}
+                <div class="col-md-3">
+                    <label class="form-label">Employee</label>
+                    <select name="employee" class="form-select">
+                        <option value="">All Employees</option>
+                        {% for employee in employees %}
+                        <option value="{{ employee.employee_id }}" {% if current_filters.employee == employee.employee_id|string %}selected{% endif %}>
+                            {{ employee.user.name }} ({{ employee.employee_code }})
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                {% endif %}
+                <div class="col-md-3 d-flex align-items-end">
+                    <button type="submit" class="btn btn-primary me-2">
+                        <i class="bi bi-search me-2"></i>Apply
+                    </button>
+                    <a href="/crm/unified-leads" class="btn btn-outline-secondary">
+                        <i class="bi bi-x-circle me-2"></i>Clear
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Leads Table Card -->
+    <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">
+                <i class="bi bi-table me-2"></i>Leads ({{ leads|length }})
+            </h5>
+            <div class="d-flex gap-2">
+                <button class="btn btn-sm btn-outline-primary" onclick="exportLeads()">
+                    <i class="bi bi-download me-1"></i>Export
+                </button>
+            </div>
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead>
+                        <tr>
+                            <th style="width: 60px;">ID</th>
+                            <th style="width: 200px;">Name & Contact</th>
+                            <th style="width: 100px;">Source</th>
+                            <th style="width: 120px;">Status</th>
+                            <th style="width: 120px;">Assignee</th>
+                            <th style="width: 100px;">Priority</th>
+                            <th style="width: 100px;">Created</th>
+                            <th style="width: 100px;">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for lead in leads %}
+                        <tr data-lead-id="{{ lead.lead_id }}" {% if lead.assignment %}data-assignment-id="{{ lead.assignment.assignment_id }}" data-assignment-status="{{ lead.assignment.status }}"{% endif %}>
+                            <td>
+                                <span class="badge bg-secondary">#{{ lead.lead_id }}</span>
+                            </td>
+                            <td>
+                                <div>
+                                    <strong>{{ lead.name }}</strong>
+                                    <br><small class="text-primary">{{ lead.contact }}</small>
+                                    {% if lead.email %}
+                                    <br><small class="text-muted">{{ lead.email }}</small>
+                                    {% endif %}
+                                </div>
+                            </td>
+                            <td>
+                                <span class="badge bg-info">{{ lead.source|title }}</span>
+                            </td>
+                            <td>
+                                {% if lead.assignment %}
+                                    {% set status_colors = {
+                                        'assigned': 'bg-warning',
+                                        'pd': 'bg-info',
+                                        'login': 'bg-primary',
+                                        'login_query': 'bg-secondary',
+                                        'approved': 'bg-success',
+                                        'disbursed': 'bg-success',
+                                        'closed': 'bg-dark',
+                                        'rejected': 'bg-danger'
+                                    } %}
+                                    <span class="badge {{ status_colors.get(lead.assignment.status, 'bg-secondary') }}">
+                                        {{ statuses.get(lead.assignment.status, lead.assignment.status|title) }}
+                                    </span>
+                                {% else %}
+                                    <span class="badge bg-light text-dark">Unassigned</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if lead.assignment and lead.assignment.employee %}
+                                    <span class="text-primary">{{ lead.assignment.employee.user.name }}</span>
+                                {% else %}
+                                    <span class="text-muted">-</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if lead.assignment %}
+                                    {% if lead.assignment.is_doable %}
+                                        <span class="badge bg-success">Doable</span>
+                                    {% else %}
+                                        <span class="badge bg-danger">Not Doable</span>
+                                    {% endif %}
+                                {% else %}
+                                    <span class="text-muted">-</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <small class="text-muted">{{ lead.created_at.strftime('%d/%m/%Y') }}</small>
+                            </td>
+                            <td>
+                                <div class="btn-group" role="group">
+                                    <a href="/crm/unified-leads/{{ lead.lead_id }}" class="btn btn-sm btn-outline-primary" title="View Details">
+                                        <i class="bi bi-eye"></i>
+                                    </a>
+                                    {% if not lead.assignment %}
+                                    <button class="btn btn-sm btn-outline-success" onclick="assignLead({{ lead.lead_id }})" title="Assign Lead">
+                                        <i class="bi bi-person-plus"></i>
+                                    </button>
+                                    {% endif %}
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Create Lead Modal -->
+<div class="modal fade" id="createLeadModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    <i class="bi bi-plus-circle me-2"></i>Create New Lead
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form id="createLeadForm" method="POST" action="/crm/unified-leads/create-manual">
+                <div class="modal-body">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label">Name *</label>
+                            <input type="text" class="form-control" name="name" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Contact *</label>
+                            <input type="tel" class="form-control" name="contact" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Email</label>
+                            <input type="email" class="form-control" name="email">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">City</label>
+                            <input type="text" class="form-control" name="city">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Date of Birth</label>
+                            <input type="date" class="form-control" name="date_of_birth">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Loan Amount</label>
+                            <input type="number" class="form-control" name="loan_amount" placeholder="Enter amount">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Loan Type</label>
+                            <select class="form-select" name="loan_type">
+                                <option value="">Select Type</option>
+                                <option value="personal">Personal Loan</option>
+                                <option value="business">Business Loan</option>
+                                <option value="home">Home Loan</option>
+                                <option value="vehicle">Vehicle Loan</option>
+                                <option value="education">Education Loan</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Occupation</label>
+                            <input type="text" class="form-control" name="occupation">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Ongoing Loans</label>
+                            <select class="form-select" name="any_ongoing_loan">
+                                <option value="">Select</option>
+                                <option value="yes">Yes</option>
+                                <option value="no">No</option>
+                            </select>
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label">Message/Notes</label>
+                            <textarea class="form-control" name="message" rows="3" placeholder="Additional notes..."></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-check-circle me-2"></i>Create Lead
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Assign Lead Modal -->
+<div class="modal fade" id="assignLeadModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    <i class="bi bi-person-plus me-2"></i>Assign Lead
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form id="assignLeadForm">
+                <div class="modal-body">
+                    <input type="hidden" id="assignLeadId" name="lead_id">
+                    <div class="mb-3">
+                        <label class="form-label">Select Employee *</label>
+                        <select class="form-select" name="employee_id" required>
+                            <option value="">Choose Employee</option>
+                            {% for employee in employees %}
+                            <option value="{{ employee.employee_id }}">
+                                {{ employee.user.name }} ({{ employee.employee_code }})
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Notes</label>
+                        <textarea class="form-control" name="notes" rows="3" placeholder="Assignment notes..."></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-check-circle me-2"></i>Assign
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Bulk Upload Modal -->
+<div class="modal fade" id="bulkUploadModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    <i class="bi bi-upload me-2"></i>Bulk Upload Leads
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <h6 class="text-primary">CSV Format Requirements:</h6>
+                        <ul class="list-unstyled small">
+                            <li><i class="bi bi-check-circle text-success me-2"></i>Name (required)</li>
+                            <li><i class="bi bi-check-circle text-success me-2"></i>Contact (required)</li>
+                            <li><i class="bi bi-check-circle text-info me-2"></i>Email (optional)</li>
+                            <li><i class="bi bi-check-circle text-info me-2"></i>City (optional)</li>
+                            <li><i class="bi bi-check-circle text-info me-2"></i>Date of Birth (optional)</li>
+                            <li><i class="bi bi-check-circle text-info me-2"></i>Loan Amount (optional)</li>
+                            <li><i class="bi bi-check-circle text-info me-2"></i>Loan Type (optional)</li>
+                            <li><i class="bi bi-check-circle text-info me-2"></i>Occupation (optional)</li>
+                            <li><i class="bi bi-check-circle text-info me-2"></i>Message (optional)</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <h6 class="text-primary">Download Template:</h6>
+                        <p class="small text-muted mb-3">Use this template to ensure correct format</p>
+                        <a href="/crm/unified-leads/bulk-upload/template.csv" class="btn btn-outline-success btn-sm">
+                            <i class="bi bi-download me-2"></i>Download CSV Template
+                        </a>
+                    </div>
+                </div>
+                
+                <form id="bulkUploadForm" enctype="multipart/form-data">
+                    <div class="mb-3">
+                        <label class="form-label">Select CSV File</label>
+                        <input type="file" class="form-control" name="file" accept=".csv" required>
+                        <div class="form-text">Only CSV files are allowed. Maximum file size: 10MB</div>
+                    </div>
+                    <div class="mb-3">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="skip_duplicates" id="skipDuplicates" checked>
+                            <label class="form-check-label" for="skipDuplicates">
+                                Skip duplicate contacts (recommended)
+                            </label>
+                        </div>
+                    </div>
+                </form>
+                
+                <div id="uploadProgress" class="d-none">
+                    <div class="progress mb-3">
+                        <div class="progress-bar" role="progressbar" style="width: 0%"></div>
+                    </div>
+                    <div class="text-center">
+                        <small class="text-muted">Processing leads...</small>
+                    </div>
+                </div>
+                
+                <div id="uploadResults" class="d-none">
+                    <div class="alert alert-success">
+                        <h6><i class="bi bi-check-circle me-2"></i>Upload Complete!</h6>
+                        <div id="uploadStats"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" onclick="uploadBulkLeads()">
+                    <i class="bi bi-upload me-2"></i>Upload Leads
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Load disbursed amounts for all leads
+    function loadAllDisbursedAmounts() {
+        const disbursedCells = document.querySelectorAll('.disbursed-amount');
+        disbursedCells.forEach(cell => {
+            const assignmentId = cell.getAttribute('data-assignment-id');
+            if (assignmentId) {
+                fetch(`/crm/assignments/${assignmentId}/disbursements`)
+                    .then(response => response.json())
+                    .then(data => {
+                        const totalAmount = data.total_disbursed || 0;
+                        if (totalAmount > 0) {
+                            cell.innerHTML = `<span class="text-success">₹${totalAmount.toLocaleString()}</span>`;
+                        } else {
+                            cell.innerHTML = '<span class="text-muted">-</span>';
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error loading disbursed amount:', error);
+                        cell.innerHTML = '<span class="text-muted">-</span>';
+                    });
+            }
+        });
+    }
+
+    // Assign lead function
+    function assignLead(leadId) {
+        document.getElementById('assignLeadId').value = leadId;
+        const modal = new bootstrap.Modal(document.getElementById('assignLeadModal'));
+        modal.show();
+    }
+
+    // Handle assign lead form submission
+    document.getElementById('assignLeadForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const formData = new FormData(this);
+        const leadId = formData.get('lead_id');
+        
+        fetch(`/crm/unified-leads/${leadId}/assign`, {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                location.reload();
+            } else {
+                alert('Error: ' + data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('An error occurred while assigning the lead.');
+        });
+    });
+
+    // Handle create lead form submission
+    document.getElementById('createLeadForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const formData = new FormData(this);
+        
+        fetch('/crm/unified-leads/create-manual', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                location.reload();
+            } else {
+                alert('Error: ' + data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('An error occurred while creating the lead.');
+        });
+    });
+
+    // Migrate leads function
+    function migrateLeads() {
+        if (confirm('Are you sure you want to migrate existing leads? This action cannot be undone.')) {
+            fetch('/crm/unified-leads/migrate', {
+                method: 'POST'
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Migration completed successfully!');
+                    location.reload();
+                } else {
+                    alert('Error: ' + data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred during migration.');
+            });
+        }
+    }
+
+    // Export leads function
+    function exportLeads() {
+        const currentUrl = new URL(window.location);
+        const exportUrl = `/crm/unified-leads/export?${currentUrl.searchParams.toString()}`;
+        window.open(exportUrl, '_blank');
+    }
+
+    // Bulk upload function
+    function uploadBulkLeads() {
+        const form = document.getElementById('bulkUploadForm');
+        const formData = new FormData(form);
+        const fileInput = form.querySelector('input[type="file"]');
+        
+        if (!fileInput.files[0]) {
+            alert('Please select a CSV file to upload.');
+            return;
+        }
+        
+        // Show progress
+        document.getElementById('uploadProgress').classList.remove('d-none');
+        document.getElementById('uploadResults').classList.add('d-none');
+        
+        // Simulate progress
+        const progressBar = document.querySelector('.progress-bar');
+        let progress = 0;
+        const progressInterval = setInterval(() => {
+            progress += 10;
+            progressBar.style.width = progress + '%';
+            if (progress >= 90) {
+                clearInterval(progressInterval);
+            }
+        }, 200);
+        
+        fetch('/crm/unified-leads/bulk-upload', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            clearInterval(progressInterval);
+            progressBar.style.width = '100%';
+            
+            setTimeout(() => {
+                document.getElementById('uploadProgress').classList.add('d-none');
+                document.getElementById('uploadResults').classList.remove('d-none');
+                
+                const stats = document.getElementById('uploadStats');
+                stats.innerHTML = `
+                    <div class="row text-center">
+                        <div class="col-4">
+                            <div class="h5 text-success">${data.success_count || 0}</div>
+                            <small class="text-muted">Successfully Added</small>
+                        </div>
+                        <div class="col-4">
+                            <div class="h5 text-warning">${data.skipped_count || 0}</div>
+                            <small class="text-muted">Skipped (Duplicates)</small>
+                        </div>
+                        <div class="col-4">
+                            <div class="h5 text-danger">${data.error_count || 0}</div>
+                            <small class="text-muted">Errors</small>
+                        </div>
+                    </div>
+                `;
+                
+                if (data.success_count > 0) {
+                    setTimeout(() => {
+                        location.reload();
+                    }, 2000);
+                }
+            }, 500);
+        })
+        .catch(error => {
+            clearInterval(progressInterval);
+            document.getElementById('uploadProgress').classList.add('d-none');
+            alert('Error uploading file: ' + error.message);
+        });
+    }
+
+    // Initialize page
+    document.addEventListener('DOMContentLoaded', function() {
+        loadAllDisbursedAmounts();
+        
+        // Auto-hide alerts
+        setTimeout(function() {
+            const alerts = document.querySelectorAll('.alert');
+            alerts.forEach(alert => {
+                const bsAlert = new bootstrap.Alert(alert);
+                bsAlert.close();
+            });
+        }, 5000);
+    });
+</script>
+{% endblock %}

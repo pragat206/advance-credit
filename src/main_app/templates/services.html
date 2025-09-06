@@ -30,6 +30,34 @@
             border-bottom: 1px solid #e5e7eb;
         }
         
+        .hero-section {
+            background: linear-gradient(135deg, rgba(30, 58, 138, 0.9) 0%, rgba(30, 64, 175, 0.9) 100%), 
+                        url('https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: var(--white);
+            padding: 120px 0 80px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="50" cy="50" r="1" fill="white" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+            opacity: 0.3;
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+        
         .navbar-brand {
             color: var(--primary-blue) !important;
             font-weight: 700;
@@ -357,6 +385,18 @@
 <body>
 {% include 'navbar.html' %}
 <div class="page-content">
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 mx-auto text-center hero-content">
+                    <h1 class="display-4 fw-bold mb-4">Financial Advisory Services</h1>
+                    <p class="lead mb-0">Transform your financial health with expert debt consolidation. Free yourself from multiple EMIs and build a stronger financial future with our personalized solutions.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <div class="container">
         <div class="hero-services text-center text-light mb-5">
             <img src="/static/ac-logo-1.svg" alt="Advance Credit Logo" style="width: 70px; height: 70px; background: #fff; border-radius: 50%; margin-bottom: 18px; padding: 4px;">

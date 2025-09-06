@@ -1,0 +1,306 @@
+{% extends 'base.html' %}
+
+{% block title %}My Employment - Advance Credit CRM{% endblock %}
+
+{% block content %}
+<div class="glass-card">
+    <!-- Page Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="page-title">My Employment</h1>
+            <p class="page-subtitle">Your employment details, salary information, and performance metrics.</p>
+        </div>
+    </div>
+
+    <!-- Employee Information -->
+    <div class="row g-4 mb-4">
+        <div class="col-lg-8">
+            <div class="glass-card">
+                <h5 class="text-primary mb-3">
+                    <i class="bi bi-person-badge me-2"></i>Employment Details
+                </h5>
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <div class="info-group">
+                            <label class="info-label">Employee Code</label>
+                            <div class="info-value">{{ employee.employee_code }}</div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="info-group">
+                            <label class="info-label">Designation</label>
+                            <div class="info-value">{{ employee.designation or 'Not specified' }}</div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="info-group">
+                            <label class="info-label">Department</label>
+                            <div class="info-value">{{ employee.department or 'Not specified' }}</div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="info-group">
+                            <label class="info-label">Joining Date</label>
+                            <div class="info-value">{{ employee.joining_date.strftime('%B %d, %Y') }}</div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="info-group">
+                            <label class="info-label">Basic Salary</label>
+                            <div class="info-value">₹{{ "{:,.2f}".format(employee.salary) }}</div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="info-group">
+                            <label class="info-label">Commission Rate</label>
+                            <div class="info-value">{{ "{:.1f}%".format(employee.commission_rate) }}</div>
+                        </div>
+                    </div>
+                    {% if employee.team %}
+                    <div class="col-md-6">
+                        <div class="info-group">
+                            <label class="info-label">Team</label>
+                            <div class="info-value">{{ employee.team.name }}</div>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Performance Statistics -->
+        <div class="col-lg-4">
+            <div class="glass-card">
+                <h5 class="text-primary mb-3">
+                    <i class="bi bi-graph-up me-2"></i>Performance Metrics
+                </h5>
+                <div class="row g-3">
+                    <div class="col-12">
+                        <div class="stats-card text-center">
+                            <div class="stats-icon primary">
+                                <i class="bi bi-person-check"></i>
+                            </div>
+                            <h4 class="mb-1">{{ total_leads }}</h4>
+                            <p class="text-muted mb-0">Total Leads</p>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="stats-card text-center">
+                            <div class="stats-icon success">
+                                <i class="bi bi-check-circle"></i>
+                            </div>
+                            <h4 class="mb-1">{{ converted_leads }}</h4>
+                            <p class="text-muted mb-0">Converted Leads</p>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="stats-card text-center">
+                            <div class="stats-icon warning">
+                                <i class="bi bi-percent"></i>
+                            </div>
+                            <h4 class="mb-1">{{ "{:.1f}%".format(conversion_rate) }}</h4>
+                            <p class="text-muted mb-0">Conversion Rate</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Salary Slips -->
+    <div class="glass-card mb-4">
+        <h5 class="text-primary mb-3">
+            <i class="bi bi-cash-stack me-2"></i>Salary Slips
+        </h5>
+        {% if billings %}
+        <div class="table-responsive">
+            <table class="table table-modern">
+                <thead>
+                    <tr>
+                        <th>Month/Year</th>
+                        <th>Basic Salary</th>
+                        <th>Commission</th>
+                        <th>Deductions</th>
+                        <th>Net Salary</th>
+                        <th>Status</th>
+                        <th>Payment Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for billing in billings %}
+                    <tr>
+                        <td>{{ billing.month }}/{{ billing.year }}</td>
+                        <td>₹{{ "{:,.2f}".format(billing.basic_salary) }}</td>
+                        <td>₹{{ "{:,.2f}".format(billing.commission_earned) }}</td>
+                        <td>₹{{ "{:,.2f}".format(billing.deductions) }}</td>
+                        <td><strong>₹{{ "{:,.2f}".format(billing.net_salary) }}</strong></td>
+                        <td>
+                            <span class="badge {% if billing.payment_status == 'paid' %}bg-success{% elif billing.payment_status == 'pending' %}bg-warning{% else %}bg-danger{% endif %}">
+                                {{ billing.payment_status.title() }}
+                            </span>
+                        </td>
+                        <td>
+                            {% if billing.payment_date %}
+                                {{ billing.payment_date.strftime('%B %d, %Y') }}
+                            {% else %}
+                                <span class="text-muted">Not paid yet</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="text-center py-4">
+            <i class="bi bi-inbox text-muted" style="font-size: 3rem;"></i>
+            <h5 class="text-muted mt-3">No Salary Slips Available</h5>
+            <p class="text-muted">Your salary slips will appear here once they are generated.</p>
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- Commission History -->
+    <div class="glass-card mb-4">
+        <h5 class="text-primary mb-3">
+            <i class="bi bi-trophy me-2"></i>Commission History
+        </h5>
+        {% if commissions %}
+        <div class="table-responsive">
+            <table class="table table-modern">
+                <thead>
+                    <tr>
+                        <th>Month/Year</th>
+                        <th>Commission Amount</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for commission in commissions %}
+                    <tr>
+                        <td>{{ commission.month }}/{{ commission.year }}</td>
+                        <td><strong>₹{{ "{:,.2f}".format(commission.amount) }}</strong></td>
+                        <td>{{ commission.created_at.strftime('%B %d, %Y') }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="text-center py-4">
+            <i class="bi bi-trophy text-muted" style="font-size: 3rem;"></i>
+            <h5 class="text-muted mt-3">No Commission History</h5>
+            <p class="text-muted">Your commission history will appear here once you earn commissions.</p>
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- Recent Lead Assignments -->
+    <div class="glass-card">
+        <h5 class="text-primary mb-3">
+            <i class="bi bi-list-task me-2"></i>Recent Lead Assignments
+        </h5>
+        {% if assignments %}
+        <div class="table-responsive">
+            <table class="table table-modern">
+                <thead>
+                    <tr>
+                        <th>Lead Type</th>
+                        <th>Lead ID</th>
+                        <th>Assigned Date</th>
+                        <th>Status</th>
+                        <th>Last Updated</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for assignment in assignments[:10] %}
+                    <tr>
+                        <td>
+                            <span class="badge {% if assignment.lead_type == 'website' %}bg-primary{% else %}bg-success{% endif %}">
+                                {{ assignment.lead_type.title() }}
+                            </span>
+                        </td>
+                        <td>
+                            <a href="{% if assignment.lead_type == 'website' %}/crm/website-leads/{{ assignment.lead_id }}{% else %}/crm/social-leads/{{ assignment.lead_id }}{% endif %}" 
+                               class="text-decoration-none">
+                                Lead #{{ assignment.lead_id }}
+                            </a>
+                        </td>
+                        <td>{{ assignment.assigned_at.strftime('%B %d, %Y') }}</td>
+                        <td>
+                            <span class="badge status-{{ assignment.status }}">
+                                {{ assignment.status.title() }}
+                            </span>
+                        </td>
+                        <td>{{ assignment.last_updated.strftime('%B %d, %Y') }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% if assignments|length > 10 %}
+        <div class="text-center mt-3">
+            <p class="text-muted">Showing 10 most recent assignments out of {{ assignments|length }} total</p>
+        </div>
+        {% endif %}
+        {% else %}
+        <div class="text-center py-4">
+            <i class="bi bi-list-task text-muted" style="font-size: 3rem;"></i>
+            <h5 class="text-muted mt-3">No Lead Assignments</h5>
+            <p class="text-muted">You haven't been assigned any leads yet.</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<style>
+.info-group {
+    margin-bottom: 1rem;
+}
+
+.info-label {
+    font-weight: 600;
+    color: #6c757d;
+    font-size: 0.875rem;
+    margin-bottom: 0.25rem;
+}
+
+.info-value {
+    color: #212529;
+    font-size: 1rem;
+}
+
+.table-modern {
+    background: transparent;
+    border: none;
+}
+
+.table-modern th {
+    border: none;
+    background: rgba(102, 126, 234, 0.1);
+    color: #667eea;
+    font-weight: 600;
+    padding: 1rem;
+}
+
+.table-modern td {
+    border: none;
+    padding: 1rem;
+    border-bottom: 1px solid rgba(102, 126, 234, 0.1);
+}
+
+.table-modern tbody tr:hover {
+    background: rgba(102, 126, 234, 0.05);
+}
+
+.status-assigned { background-color: #e3f2fd; color: #1976d2; }
+.status-pd { background-color: #fff3e0; color: #f57c00; }
+.status-login { background-color: #e8f5e8; color: #388e3c; }
+.status-login_query { background-color: #f3e5f5; color: #7b1fa2; }
+.status-underwriter { background-color: #fff8e1; color: #fbc02d; }
+.status-approved { background-color: #e8f5e8; color: #2e7d32; }
+.status-rejected { background-color: #ffebee; color: #d32f2f; }
+.status-closed { background-color: #f5f5f5; color: #6c757d; }
+.status-disbursed { background-color: #d4edda; color: #155724; }
+</style>
+{% endblock %}

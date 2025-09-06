@@ -10,6 +10,11 @@
             <p class="page-subtitle">Manage and track all leads from your website forms.</p>
         </div>
         <div class="d-flex gap-2">
+            {% if request.session.user_role in ["admin", "manager"] %}
+            <a href="/crm/leads/add-website" class="btn btn-primary-modern btn-modern">
+                <i class="bi bi-plus-circle me-2"></i><span class="d-none d-md-inline">Add Lead</span>
+            </a>
+            {% endif %}
             <button class="btn btn-success-modern btn-modern" onclick="exportToCSV()">
                 <i class="bi bi-download me-2"></i><span class="d-none d-md-inline">Export CSV</span>
             </button>

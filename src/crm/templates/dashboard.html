@@ -3,9 +3,41 @@
 {% block title %}Dashboard - Advance Credit CRM{% endblock %}
 
 {% block content %}
-<div class="glass-card">
-    <h1 class="page-title">Dashboard</h1>
-    <p class="page-subtitle">Welcome back! Here's an overview of your CRM performance.</p>
+<div class="container-fluid">
+    <!-- Page Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="page-title">
+                {% if persona == "admin" %}
+                    <i class="bi bi-shield-check me-2"></i>Admin Dashboard
+                {% elif persona == "manager" %}
+                    <i class="bi bi-people me-2"></i>Manager Dashboard
+                {% else %}
+                    <i class="bi bi-person me-2"></i>Employee Dashboard
+                {% endif %}
+            </h1>
+            <p class="page-subtitle">
+                {% if persona == "admin" %}
+                    Welcome back, {{ current_user.name }}! Here's your complete CRM overview.
+                {% elif persona == "manager" %}
+                    Welcome back, {{ current_user.name }}! Here's your team's performance overview.
+                {% else %}
+                    Welcome back, {{ current_user.name }}! Here's your lead management overview.
+                {% endif %}
+            </p>
+        </div>
+        
+        <!-- Role Badge -->
+        <div class="role-badge">
+            {% if persona == "admin" %}
+                <span class="badge bg-danger">Administrator</span>
+            {% elif persona == "manager" %}
+                <span class="badge bg-warning">Manager</span>
+            {% else %}
+                <span class="badge bg-info">Employee</span>
+            {% endif %}
+        </div>
+    </div>
 
     <!-- Stats Cards -->
     <div class="row g-4 mb-4">
@@ -27,6 +59,8 @@
                 <p class="text-muted mb-0">Social Media Leads</p>
             </div>
         </div>
+        
+        {% if persona == "admin" %}
         <div class="col-lg-3 col-md-6">
             <div class="stats-card">
                 <div class="stats-icon success">
@@ -45,110 +79,309 @@
                 <p class="text-muted mb-0">Total Leads</p>
             </div>
         </div>
-    </div>
-
-    <!-- Quick Actions -->
-    <div class="row g-3 mb-4">
-        <div class="col-12">
-            <h4 class="mb-3"><i class="bi bi-lightning me-2"></i>Quick Actions</h4>
-        </div>
-        <div class="col-md-3">
-            <a href="/crm/website-leads" class="btn btn-primary-modern btn-modern w-100">
-                <i class="bi bi-globe me-2"></i>View Website Leads
-            </a>
-        </div>
-        <div class="col-md-3">
-            <a href="/crm/social-leads" class="btn btn-success-modern btn-modern w-100">
-                <i class="bi bi-share me-2"></i>View Social Leads
-            </a>
-        </div>
-        <div class="col-md-3">
-            <a href="/crm/users" class="btn btn-warning-modern btn-modern w-100">
-                <i class="bi bi-people me-2"></i>Manage Users
-            </a>
-        </div>
-        <div class="col-md-3">
-            <a href="/crm/analytics" class="btn btn-danger-modern btn-modern w-100">
-                <i class="bi bi-graph-up me-2"></i>View Analytics
-            </a>
-        </div>
-    </div>
-
-    <!-- Recent Leads -->
-    <div class="row">
-        <div class="col-lg-6">
-            <div class="glass-card">
-                <h5 class="mb-3"><i class="bi bi-globe me-2"></i>Recent Website Leads</h5>
-                {% if recent_website_leads %}
-                <div class="table-responsive">
-                    <table class="table table-modern">
-                        <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>Contact</th>
-                                <th>Date</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for lead in recent_website_leads %}
-                            <tr>
-                                <td>{{ lead.name }}</td>
-                                <td>{{ lead.contact }}</td>
-                                <td>{{ lead.created_at.strftime('%d %b %Y') }}</td>
-                                <td>
-                                    <a href="/crm/website-leads/{{ lead.lead_id }}" class="btn btn-sm btn-primary-modern btn-modern">
-                                        <i class="bi bi-eye"></i>
-                                    </a>
-                                </td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
+        {% elif persona == "manager" %}
+        <div class="col-lg-3 col-md-6">
+            <div class="stats-card">
+                <div class="stats-icon success">
+                    <i class="bi bi-people"></i>
                 </div>
-                {% else %}
-                <p class="text-muted">No recent website leads.</p>
-                {% endif %}
+                <h3 class="h4 mb-2">{{ team_members|length }}</h3>
+                <p class="text-muted mb-0">Team Members</p>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6">
+            <div class="stats-card">
+                <div class="stats-icon warning">
+                    <i class="bi bi-graph-up"></i>
+                </div>
+                <h3 class="h4 mb-2">{{ total_leads }}</h3>
+                <p class="text-muted mb-0">Team Leads</p>
+            </div>
+        </div>
+        {% else %}
+        <div class="col-lg-3 col-md-6">
+            <div class="stats-card">
+                <div class="stats-icon success">
+                    <i class="bi bi-check-circle"></i>
+                </div>
+                <h3 class="h4 mb-2">{{ assigned_leads_count }}</h3>
+                <p class="text-muted mb-0">My Leads</p>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6">
+            <div class="stats-card">
+                <div class="stats-icon warning">
+                    <i class="bi bi-clock"></i>
+                </div>
+                <h3 class="h4 mb-2">{{ pending_leads_count }}</h3>
+                <p class="text-muted mb-0">Pending</p>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- Quick Action Cards -->
+    <div class="row g-4">
+        <!-- Active Leads Card -->
+        <div class="col-lg-4">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body text-center p-4">
+                    <div class="mb-3">
+                        <div class="bg-primary bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 80px; height: 80px;">
+                            <i class="bi bi-list-check text-primary fs-1"></i>
+                        </div>
+                    </div>
+                    <h5 class="card-title mb-2">Active Leads</h5>
+                    <p class="text-muted mb-3">Manage and track all active leads in the system</p>
+                    <a href="/crm/unified-leads" class="btn btn-primary">
+                        <i class="bi bi-arrow-right me-2"></i>View Active Leads
+                    </a>
+                </div>
             </div>
         </div>
 
-        <div class="col-lg-6">
-            <div class="glass-card">
-                <h5 class="mb-3"><i class="bi bi-share me-2"></i>Recent Social Media Leads</h5>
-                {% if recent_social_leads %}
-                <div class="table-responsive">
-                    <table class="table table-modern">
-                        <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>Platform</th>
-                                <th>Date</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for lead in recent_social_leads %}
-                            <tr>
-                                <td>{{ lead.name }}</td>
-                                <td>
-                                    <span class="badge badge-modern bg-primary">{{ lead.platform_name }}</span>
-                                </td>
-                                <td>{{ lead.created_at.strftime('%d %b %Y') }}</td>
-                                <td>
-                                    <a href="/crm/social-leads/{{ lead.lead_id }}" class="btn btn-sm btn-primary-modern btn-modern">
-                                        <i class="bi bi-eye"></i>
-                                    </a>
-                                </td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
+        <!-- Closed Leads Card -->
+        <div class="col-lg-4">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body text-center p-4">
+                    <div class="mb-3">
+                        <div class="bg-success bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 80px; height: 80px;">
+                            <i class="bi bi-archive text-success fs-1"></i>
+                        </div>
+                    </div>
+                    <h5 class="card-title mb-2">Closed Cases</h5>
+                    <p class="text-muted mb-3">Review completed and closed lead cases</p>
+                    <a href="/crm/close-leads" class="btn btn-success">
+                        <i class="bi bi-arrow-right me-2"></i>View Closed Cases
+                    </a>
                 </div>
-                {% else %}
-                <p class="text-muted">No recent social media leads.</p>
-                {% endif %}
+            </div>
+        </div>
+
+        <!-- Analytics Card -->
+        <div class="col-lg-4">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body text-center p-4">
+                    <div class="mb-3">
+                        <div class="bg-info bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 80px; height: 80px;">
+                            <i class="bi bi-graph-up text-info fs-1"></i>
+                        </div>
+                    </div>
+                    <h5 class="card-title mb-2">Analytics</h5>
+                    <p class="text-muted mb-3">View detailed analytics and performance reports</p>
+                    <a href="/crm/analytics" class="btn btn-info">
+                        <i class="bi bi-arrow-right me-2"></i>View Analytics
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Activity -->
+    <div class="row g-4 mt-4">
+        <div class="col-12">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-transparent border-0">
+                    <h5 class="mb-0">
+                        <i class="bi bi-activity me-2"></i>Recent Activity
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-center p-3 bg-light rounded">
+                                <div class="flex-shrink-0">
+                                    <div class="bg-primary bg-opacity-10 rounded-circle p-2">
+                                        <i class="bi bi-plus-circle text-primary"></i>
+                                    </div>
+                                </div>
+                                <div class="flex-grow-1 ms-3">
+                                    <h6 class="mb-1">New Leads Today</h6>
+                                    <p class="text-muted mb-0">{{ recent_leads|length }} leads added</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-center p-3 bg-light rounded">
+                                <div class="flex-shrink-0">
+                                    <div class="bg-success bg-opacity-10 rounded-circle p-2">
+                                        <i class="bi bi-check-circle text-success"></i>
+                                    </div>
+                                </div>
+                                <div class="flex-grow-1 ms-3">
+                                    <h6 class="mb-1">Cases Closed</h6>
+                                    <p class="text-muted mb-0">{{ close_leads|length if close_leads else 0 }} cases closed</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="col-lg-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="bi bi-lightning me-2"></i>Quick Actions
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="d-grid gap-2">
+                        <a href="/crm/unified-leads" class="btn btn-primary">
+                            <i class="bi bi-people me-2"></i>View All Leads
+                        </a>
+                        <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#createLeadModal">
+                            <i class="bi bi-plus-circle me-2"></i>Create New Lead
+                        </button>
+                        <a href="/crm/analytics" class="btn btn-outline-secondary">
+                            <i class="bi bi-graph-up me-2"></i>View Analytics
+                        </a>
+                        {% if persona in ['admin', 'manager'] %}
+                        <a href="/crm/users" class="btn btn-outline-secondary">
+                            <i class="bi bi-person me-2"></i>Manage Users
+                        </a>
+                        <a href="/crm/teams" class="btn btn-outline-secondary">
+                            <i class="bi bi-people-fill me-2"></i>Manage Teams
+                        </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Status Summary -->
+            <div class="card mt-4">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="bi bi-pie-chart me-2"></i>Lead Status Summary
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex flex-column gap-2">
+                        {% for status, count in status_summary.items() %}
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="text-muted">{{ status|title }}</span>
+                            <span class="badge bg-primary">{{ count }}</span>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </div>
+
+<!-- Create Lead Modal -->
+<div class="modal fade" id="createLeadModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    <i class="bi bi-plus-circle me-2"></i>Create New Lead
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form id="createLeadForm" method="POST" action="/crm/unified-leads/create-manual">
+                <div class="modal-body">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label">Name *</label>
+                            <input type="text" class="form-control" name="name" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Contact *</label>
+                            <input type="tel" class="form-control" name="contact" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Email</label>
+                            <input type="email" class="form-control" name="email">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">City</label>
+                            <input type="text" class="form-control" name="city">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Loan Amount</label>
+                            <input type="number" class="form-control" name="loan_amount" placeholder="Enter amount">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Loan Type</label>
+                            <select class="form-select" name="loan_type">
+                                <option value="">Select Type</option>
+                                <option value="personal">Personal Loan</option>
+                                <option value="business">Business Loan</option>
+                                <option value="home">Home Loan</option>
+                                <option value="vehicle">Vehicle Loan</option>
+                                <option value="education">Education Loan</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Occupation</label>
+                            <input type="text" class="form-control" name="occupation">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Ongoing Loans</label>
+                            <select class="form-select" name="any_ongoing_loan">
+                                <option value="">Select</option>
+                                <option value="yes">Yes</option>
+                                <option value="no">No</option>
+                            </select>
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label">Message/Notes</label>
+                            <textarea class="form-control" name="message" rows="3" placeholder="Additional notes..."></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-check-circle me-2"></i>Create Lead
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Handle create lead form submission
+    document.getElementById('createLeadForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const formData = new FormData(this);
+        
+        fetch('/crm/unified-leads/create-manual', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                location.reload();
+            } else {
+                alert('Error: ' + data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('An error occurred while creating the lead.');
+        });
+    });
+
+    // Auto-hide alerts
+    setTimeout(function() {
+        const alerts = document.querySelectorAll('.alert');
+        alerts.forEach(alert => {
+            const bsAlert = new bootstrap.Alert(alert);
+            bsAlert.close();
+        });
+    }, 5000);
+</script>
 {% endblock %} 

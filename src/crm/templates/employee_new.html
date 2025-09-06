@@ -73,6 +73,15 @@
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">Team</label>
+                                <!-- Debug info -->
+                                <div class="text-muted small mb-2">
+                                    Debug: Found {{ teams|length }} teams
+                                    {% if teams %}
+                                        {% for team in teams %}
+                                            - {{ team.name }} (ID: {{ team.team_id }})
+                                        {% endfor %}
+                                    {% endif %}
+                                </div>
                                 <select class="form-select form-control-modern" name="team_id">
                                     <option value="">No Team</option>
                                     {% for team in teams %}
