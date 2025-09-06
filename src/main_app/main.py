@@ -9,9 +9,7 @@ from pathlib import Path
 import smtplib
 from email.message import EmailMessage
 import os
-from src.main_app.routes.scrapers.tata_scraper import fetch_tata_capital_loans
-from src.main_app.routes.scrapers.axis_scraper import fetch_axis_bank_loans
-from src.main_app.routes.scrapers.icici_scraper import fetch_icici_bank_loans
+# Scraper imports removed - using static data instead
 import time
 from starlette.middleware.sessions import SessionMiddleware
 from src.main_app.routes.admin.routes import router as admin_router
@@ -700,22 +698,7 @@ def save_faqs(faqs):
     with open(FAQS_PATH, "w", encoding="utf-8") as f:
         json.dump(faqs, f, indent=2, ensure_ascii=False)
 
-def get_cached_partner_loans(partner):
-    now = time.time()
-    entry = PARTNER_CACHE[partner]
-    if entry['data'] is not None and now - entry['ts'] < CACHE_TTL:
-        return entry['data']
-    # Fetch fresh data
-    if partner == 'axis':
-        data = fetch_axis_bank_loans()
-    elif partner == 'icici':
-        data = fetch_icici_bank_loans()
-    elif partner == 'tata':
-        data = fetch_tata_capital_loans()
-    else:
-        data = []
-    PARTNER_CACHE[partner] = {'data': data, 'ts': now}
-    return data
+# Partner loan caching removed - using static data instead
 
 def ensure_loan_features(loans, partner_name=None):
     for loan in loans:
@@ -1301,17 +1284,7 @@ async def debt_calculator(
     
     return JSONResponse({"success": True, "message": "Assessment submitted successfully"})
 
-@app.get("/api/partner-loans/tata-capital")
-def api_tata_capital_loans():
-    return fetch_tata_capital_loans()
-
-@app.get("/api/partner-loans/axis-bank")
-def api_axis_bank_loans():
-    return fetch_axis_bank_loans()
-
-@app.get("/api/partner-loans/icici-bank")
-def api_icici_bank_loans():
-    return fetch_icici_bank_loans()
+# API endpoints for partner loans removed - using static data instead
 
 @app.get("/about", response_class=HTMLResponse)
 def about(request: Request):

@@ -103,8 +103,8 @@ A comprehensive financial advisory platform built with FastAPI, featuring a mode
 ### Environment Variables
 ```env
 # Database
-DATABASE_URL=postgresql://adv_cred_usr_prd:iZHC0gRJoBRkpoHULM7ZovXZ2HeH9eAj@dpg-d2u6t57fte5s73asjovg-a/advancecred_prd
-CRM_DATABASE_URL=postgresql://adv_cred_usr_prd:iZHC0gRJoBRkpoHULM7ZovXZ2HeH9eAj@dpg-d2u6t57fte5s73asjovg-a/advancecred_prd
+DATABASE_URL=postgresql://username:password@host:port/database_name
+CRM_DATABASE_URL=postgresql://username:password@host:port/database_name
 
 # Security
 SECRET_KEY=your-secret-key-here
@@ -144,8 +144,8 @@ SMTP_PASSWORD=your-app-password
 
 ### Environment Variables for Render
 ```
-DATABASE_URL=postgresql://adv_cred_usr_prd:iZHC0gRJoBRkpoHULM7ZovXZ2HeH9eAj@dpg-d2u6t57fte5s73asjovg-a/advancecred_prd
-CRM_DATABASE_URL=postgresql://adv_cred_usr_prd:iZHC0gRJoBRkpoHULM7ZovXZ2HeH9eAj@dpg-d2u6t57fte5s73asjovg-a/advancecred_prd
+DATABASE_URL=postgresql://username:password@host:port/database_name
+CRM_DATABASE_URL=postgresql://username:password@host:port/database_name
 SECRET_KEY=your-secret-key
 ENVIRONMENT=production
 ```
