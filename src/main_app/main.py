@@ -108,6 +108,98 @@ else:
 # Create session makers
 CRMSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=crm_engine)
 
+# Create database tables
+def create_tables():
+    """Create database tables if they don't exist"""
+    try:
+        # Import models to ensure they're registered
+        from src.main_app.models import Base as MainBase
+        from src.shared.crm_models import Base as CRMBase
+        
+        # Create main app tables
+        MainBase.metadata.create_all(bind=main_engine)
+        print("✅ Main app database tables created")
+        
+        # Create CRM tables
+        CRMBase.metadata.create_all(bind=crm_engine)
+        print("✅ CRM database tables created")
+        
+    except Exception as e:
+        print(f"❌ Error creating database tables: {e}")
+
+# Initialize database tables
+create_tables()
+
+# Populate initial data
+def populate_initial_data():
+    """Populate database with initial data if tables are empty"""
+    try:
+        db = SessionLocal()
+        
+        # Check if partners table is empty
+        partner_count = db.query(Partner).count()
+        if partner_count == 0:
+            # Add sample partners
+            partners_data = [
+                {
+                    "name": "Axis Bank",
+                    "logo_url": "/static/partners/Axis_Bank_logo.png",
+                    "url": "https://www.axisbank.com/",
+                    "description": "India's Leading Private Bank",
+                    "is_active": True
+                },
+                {
+                    "name": "ICICI Bank", 
+                    "logo_url": "/static/partners/ICICI_Bank_Logo.png",
+                    "url": "https://www.icicibank.com/",
+                    "description": "Trusted Financial Partner",
+                    "is_active": True
+                },
+                {
+                    "name": "Tata Capital",
+                    "logo_url": "/static/partners/tata_capital_logo.png", 
+                    "url": "https://www.tatacapital.com/",
+                    "description": "Empowering Your Dreams",
+                    "is_active": True
+                },
+                {
+                    "name": "HDFC Bank",
+                    "logo_url": "/static/partners/HDFC-Bank-logo.png",
+                    "url": "https://www.hdfcbank.com/",
+                    "description": "India's Most Valuable Bank", 
+                    "is_active": True
+                },
+                {
+                    "name": "Yes Bank",
+                    "logo_url": "/static/partners/Yes_Bank.png",
+                    "url": "https://www.yesbank.in/",
+                    "description": "Progressive Banking",
+                    "is_active": True
+                },
+                {
+                    "name": "Bajaj Finserv",
+                    "logo_url": "/static/partners/Bajaj-Finance-logo.png",
+                    "url": "https://www.bajajfinserv.in/",
+                    "description": "Innovative Lending Solutions",
+                    "is_active": True
+                }
+            ]
+            
+            for partner_data in partners_data:
+                partner = Partner(**partner_data)
+                db.add(partner)
+            
+            db.commit()
+            print("✅ Initial partners data populated")
+        
+        db.close()
+        
+    except Exception as e:
+        print(f"❌ Error populating initial data: {e}")
+
+# Populate initial data
+populate_initial_data()
+
 def get_crm_db():
     db = CRMSessionLocal()
     try:
