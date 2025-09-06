@@ -12,7 +12,7 @@ import os
 # Scraper imports removed - using static data instead
 import time
 from starlette.middleware.sessions import SessionMiddleware
-from src.main_app.routes.admin.routes import router as admin_router
+# Admin router removed - no admin functionality needed
 from src.main_app.database import get_db, SessionLocal
 from src.main_app.models import FAQ, Partner, Product, BankLoan
 from sqlalchemy.orm import Session
@@ -44,7 +44,6 @@ app = FastAPI(
 app.add_middleware(SessionMiddleware, secret_key=os.getenv("SECRET_KEY", "super-secret-key-change-this"))
 
 # Include routers
-app.include_router(admin_router)
 app.include_router(crm_router, prefix="/crm")
 app.include_router(manual_leads_router, prefix="/crm")
 
