@@ -1,0 +1,98 @@
+{% extends 'admin_base.html' %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h3 class="fw-bold accent mb-0">Manage FAQs</h3>
+  <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addFaqModal"><i class="bi bi-plus-lg"></i> Add FAQ</button>
+</div>
+<table class="table table-dark table-hover align-middle glass-card">
+  <thead>
+    <tr>
+      <th scope="col">Question</th>
+      <th scope="col">Answer</th>
+      <th scope="col">Location</th>
+      <th scope="col">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for faq in faqs %}
+    <tr>
+      <td>{{ faq.question }}</td>
+      <td>{{ faq.answer }}</td>
+      <td>{{ faq.location|capitalize }}</td>
+      <td>
+        <button class="btn btn-sm btn-success me-2" data-bs-toggle="modal" data-bs-target="#editFaqModal{{ faq.id }}"><i class="bi bi-pencil"></i> Edit</button>
+        <form method="post" action="/admin/faqs/{{ faq.id }}/delete" style="display:inline;" onsubmit="return confirm('Delete this FAQ?');">
+          <button type="submit" class="btn btn-sm btn-danger"><i class="bi bi-trash"></i> Delete</button>
+        </form>
+      </td>
+    </tr>
+    <!-- Edit FAQ Modal -->
+    <div class="modal fade" id="editFaqModal{{ faq.id }}" tabindex="-1" aria-labelledby="editFaqModalLabel{{ faq.id }}" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content glass-card">
+          <form method="post" action="/admin/faqs/{{ faq.id }}/edit">
+            <div class="modal-header border-0">
+              <h5 class="modal-title accent" id="editFaqModalLabel{{ faq.id }}">Edit FAQ</h5>
+              <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <div class="mb-3">
+                <label for="question{{ faq.id }}" class="form-label">Question</label>
+                <input type="text" class="form-control" id="question{{ faq.id }}" name="question" value="{{ faq.question }}" required>
+              </div>
+              <div class="mb-3">
+                <label for="answer{{ faq.id }}" class="form-label">Answer</label>
+                <textarea class="form-control" id="answer{{ faq.id }}" name="answer" rows="2" required>{{ faq.answer }}</textarea>
+              </div>
+              <div class="mb-3">
+                <label for="location{{ faq.id }}" class="form-label">Location</label>
+                <select class="form-select" id="location{{ faq.id }}" name="location" required>
+                  <option value="home" {% if faq.location == 'home' %}selected{% endif %}>Home</option>
+                  <option value="partners" {% if faq.location == 'partners' %}selected{% endif %}>Partners</option>
+                </select>
+              </div>
+            </div>
+            <div class="modal-footer border-0">
+              <button type="submit" class="btn btn-success w-100">Save Changes</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </tbody>
+</table>
+<!-- Add FAQ Modal -->
+<div class="modal fade" id="addFaqModal" tabindex="-1" aria-labelledby="addFaqModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content glass-card">
+      <form method="post" action="/admin/faqs">
+        <div class="modal-header border-0">
+          <h5 class="modal-title accent" id="addFaqModalLabel">Add New FAQ</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label for="question" class="form-label">Question</label>
+            <input type="text" class="form-control" id="question" name="question" required>
+          </div>
+          <div class="mb-3">
+            <label for="answer" class="form-label">Answer</label>
+            <textarea class="form-control" id="answer" name="answer" rows="2" required></textarea>
+          </div>
+          <div class="mb-3">
+            <label for="location" class="form-label">Location</label>
+            <select class="form-select" id="location" name="location" required>
+              <option value="home">Home</option>
+              <option value="partners">Partners</option>
+            </select>
+          </div>
+        </div>
+        <div class="modal-footer border-0">
+          <button type="submit" class="btn btn-success w-100">Add FAQ</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %} 

@@ -1,0 +1,95 @@
+{% extends 'admin_base.html' %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h3 class="fw-bold accent mb-0">Manage Services</h3>
+  <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addServiceModal"><i class="bi bi-plus-lg"></i> Add Service</button>
+</div>
+<table class="table table-dark table-hover align-middle glass-card">
+  <thead>
+    <tr>
+      <th scope="col">Name</th>
+      <th scope="col">Description</th>
+      <th scope="col">Icon</th>
+      <th scope="col">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for service in services %}
+    <tr>
+      <td>{{ service.name }}</td>
+      <td>{{ service.description }}</td>
+      <td>{{ service.icon }}</td>
+      <td>
+        <a href="/admin/services/{{ service.id }}/edit" class="btn btn-sm btn-success me-2"><i class="bi bi-pencil"></i> Edit</a>
+        <form method="post" action="/admin/services/{{ service.id }}/delete" style="display:inline;" onsubmit="return confirm('Delete this service?');">
+          <button type="submit" class="btn btn-sm btn-danger"><i class="bi bi-trash"></i> Delete</button>
+        </form>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+<!-- Add Service Modal -->
+<div class="modal fade" id="addServiceModal" tabindex="-1" aria-labelledby="addServiceModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content glass-card">
+      <form method="post" action="/admin/services">
+        <div class="modal-header border-0">
+          <h5 class="modal-title accent" id="addServiceModalLabel">Add New Service</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label for="name" class="form-label">Name</label>
+            <input type="text" class="form-control" id="name" name="name" required>
+          </div>
+          <div class="mb-3">
+            <label for="description" class="form-label">Description</label>
+            <textarea class="form-control" id="description" name="description" rows="2"></textarea>
+          </div>
+          <div class="mb-3">
+            <label for="icon" class="form-label">Icon (Bootstrap icon name)</label>
+            <input type="text" class="form-control" id="icon" name="icon">
+          </div>
+        </div>
+        <div class="modal-footer border-0">
+          <button type="submit" class="btn btn-success w-100">Add Service</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% if edit_service %}
+<!-- Edit Service Modal -->
+<div class="modal fade show" id="editServiceModal" tabindex="-1" aria-labelledby="editServiceModalLabel" aria-modal="true" style="display:block; background:rgba(0,0,0,0.5);">
+  <div class="modal-dialog">
+    <div class="modal-content glass-card">
+      <form method="post" action="/admin/services/{{ edit_service.id }}/edit">
+        <div class="modal-header border-0">
+          <h5 class="modal-title accent" id="editServiceModalLabel">Edit Service</h5>
+          <a href="/admin/services" class="btn-close btn-close-white" aria-label="Close"></a>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label for="edit_name" class="form-label">Name</label>
+            <input type="text" class="form-control" id="edit_name" name="name" value="{{ edit_service.name }}" required>
+          </div>
+          <div class="mb-3">
+            <label for="edit_description" class="form-label">Description</label>
+            <textarea class="form-control" id="edit_description" name="description" rows="2">{{ edit_service.description }}</textarea>
+          </div>
+          <div class="mb-3">
+            <label for="edit_icon" class="form-label">Icon (Bootstrap icon name)</label>
+            <input type="text" class="form-control" id="edit_icon" name="icon" value="{{ edit_service.icon }}">
+          </div>
+        </div>
+        <div class="modal-footer border-0">
+          <button type="submit" class="btn btn-success w-100">Save Changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<script>document.body.classList.add('modal-open');</script>
+{% endif %}
+{% endblock %} 
