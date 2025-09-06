@@ -101,46 +101,46 @@
                                 <h6 class="text-info mb-3">
                                     <i class="bi bi-chevron-right me-2" id="optionalFieldsIcon"></i>Additional Details
                                     <small class="text-muted">(Click to expand)</small>
-                                </h6>
+                            </h6>
                             </button>
                         </div>
                     </div>
                     
                     <div class="collapse" id="optionalFields">
                         <div class="row g-3 mb-4">
-                            <div class="col-md-6">
+                        <div class="col-md-6">
                                 <label class="form-label fw-bold">Monthly Income</label>
-                                <p class="mb-0">
+                            <p class="mb-0">
                                     {% if lead.additional_data and lead.additional_data.monthly_income %}
                                         <i class="bi bi-currency-rupee me-1"></i>₹{{ "{:,.0f}".format(lead.additional_data.monthly_income) }}
-                                    {% else %}
-                                        <span class="text-muted">Not specified</span>
-                                    {% endif %}
-                                </p>
-                            </div>
-                            <div class="col-md-6">
+                                {% else %}
+                                    <span class="text-muted">Not specified</span>
+                                {% endif %}
+                            </p>
+                        </div>
+                        <div class="col-md-6">
                                 <label class="form-label fw-bold">Credit Score</label>
-                                <p class="mb-0">
+                            <p class="mb-0">
                                     {% if lead.additional_data and lead.additional_data.credit_score %}
                                         <i class="bi bi-graph-up me-1"></i>{{ lead.additional_data.credit_score }}
-                                    {% else %}
-                                        <span class="text-muted">Not specified</span>
-                                    {% endif %}
-                                </p>
-                            </div>
-                            <div class="col-md-6">
+                                {% else %}
+                                    <span class="text-muted">Not specified</span>
+                                {% endif %}
+                            </p>
+                        </div>
+                        <div class="col-md-6">
                                 <label class="form-label fw-bold">Employment Type</label>
-                                <p class="mb-0">
+                            <p class="mb-0">
                                     {% if lead.additional_data and lead.additional_data.employment_type %}
                                         <span class="badge bg-primary">{{ lead.additional_data.employment_type|title }}</span>
-                                    {% else %}
+                                {% else %}
                                         <span class="text-muted">Not specified</span>
-                                    {% endif %}
-                                </p>
-                            </div>
-                            <div class="col-md-6">
+                                {% endif %}
+                            </p>
+                        </div>
+                        <div class="col-md-6">
                                 <label class="form-label fw-bold">Preferred Contact Time</label>
-                                <p class="mb-0">
+                            <p class="mb-0">
                                     {% if lead.additional_data and lead.additional_data.preferred_contact_time %}
                                         <i class="bi bi-clock me-1"></i>{{ lead.additional_data.preferred_contact_time|title }}
                                     {% else %}
@@ -153,10 +153,10 @@
                                 <p class="mb-0">
                                     {% if lead.additional_data and lead.additional_data.source_details %}
                                         <i class="bi bi-tag me-1"></i>{{ lead.additional_data.source_details }}
-                                    {% else %}
-                                        <span class="text-muted">Not specified</span>
-                                    {% endif %}
-                                </p>
+                                {% else %}
+                                    <span class="text-muted">Not specified</span>
+                                {% endif %}
+                            </p>
                             </div>
                         </div>
                     </div>
@@ -416,17 +416,17 @@
                                         <div class="activity-meta">
                                             <span class="activity-user">{{ activity.employee_name if activity.employee_name else 'System' }}</span>
                                             <span class="activity-action">
-                                                {% if activity.activity_type == 'created' %}
+                                    {% if activity.activity_type == 'created' %}
                                                     created this lead
-                                                {% elif activity.activity_type == 'status_changed' %}
+                                    {% elif activity.activity_type == 'status_changed' %}
                                                     changed status
-                                                {% elif activity.activity_type == 'comment_added' %}
+                                    {% elif activity.activity_type == 'comment_added' %}
                                                     added a comment
-                                                {% elif activity.activity_type == 'comment_deleted' %}
+                                    {% elif activity.activity_type == 'comment_deleted' %}
                                                     deleted a comment
-                                                {% elif activity.activity_type == 'lead_updated' %}
+                                    {% elif activity.activity_type == 'lead_updated' %}
                                                     updated lead information
-                                                {% elif activity.activity_type == 'assigned' %}
+                                    {% elif activity.activity_type == 'assigned' %}
                                                     assigned this lead
                                                 {% elif activity.activity_type == 'pd_amount_updated' %}
                                                     updated PD amount
@@ -436,16 +436,16 @@
                                                     created disbursement
                                                 {% elif activity.activity_type == 'lead_closed' %}
                                                     closed this lead
-                                                {% else %}
+                                    {% else %}
                                                     performed an action
-                                                {% endif %}
+                                    {% endif %}
                                             </span>
-                                        </div>
+                                </div>
                                         <div class="activity-time">
                                             <time datetime="{{ activity.created_at.isoformat() if activity.created_at else '' }}">
                                                 {{ activity.created_at.strftime('%d %b %Y at %H:%M') if activity.created_at else '' }}
                                             </time>
-                                        </div>
+                                    </div>
                                     </div>
                                     
                                     <div class="activity-body">
@@ -453,18 +453,18 @@
                                             {{ activity.description }}
                                         </div>
                                         
-                                        {% if activity.activity_data and activity.activity_data|length > 0 %}
+                                    {% if activity.activity_data and activity.activity_data|length > 0 %}
                                         <div class="activity-details">
-                                            {% for key, value in activity.activity_data.items() %}
+                                        {% for key, value in activity.activity_data.items() %}
                                                 {% if key not in ['comment', 'close_type'] and value %}
                                                     <div class="activity-field">
                                                         <span class="field-label">{{ key.replace('_', ' ').title() }}:</span>
                                                         <span class="field-value">{{ value }}</span>
                                                     </div>
-                                                {% endif %}
-                                            {% endfor %}
-                                        </div>
-                                        {% endif %}
+                                            {% endif %}
+                                        {% endfor %}
+                                    </div>
+                                    {% endif %}
                                         
                                         {% if activity.activity_data and activity.activity_data.get('comment') %}
                                         <div class="activity-comment">
@@ -579,7 +579,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
+                                                </div>
                                     </div>
                                 </div>
                                 {% endif %}
