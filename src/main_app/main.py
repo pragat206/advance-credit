@@ -134,7 +134,7 @@ def create_tables():
     try:
         # Import models to ensure they're registered
         from src.main_app.models import Base as MainBase
-        from src.shared.crm_models import Base as CRMBase
+        from src.shared.crm_models import CRMBase
         
         # Create main app tables
         MainBase.metadata.create_all(bind=main_engine)
