@@ -40,6 +40,26 @@ app = FastAPI(
     debug=DEBUG
 )
 
+# Startup event to initialize database
+@app.on_event("startup")
+async def startup_event():
+    """Initialize database tables and data on startup"""
+    print("🚀 Starting Advance Credit application...")
+    
+    # Create database tables
+    if create_tables():
+        print("✅ Database tables initialized successfully")
+        
+        # Populate initial data
+        if populate_initial_data():
+            print("✅ Initial data populated successfully")
+        else:
+            print("⚠️ Warning: Failed to populate initial data")
+    else:
+        print("❌ Failed to initialize database tables")
+    
+    print("🎉 Application startup completed!")
+
 # Add session middleware
 app.add_middleware(SessionMiddleware, secret_key=os.getenv("SECRET_KEY", "super-secret-key-change-this"))
 
@@ -108,7 +128,7 @@ else:
 # Create session makers
 CRMSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=crm_engine)
 
-# Create database tables
+# Database initialization functions
 def create_tables():
     """Create database tables if they don't exist"""
     try:
@@ -124,13 +144,12 @@ def create_tables():
         CRMBase.metadata.create_all(bind=crm_engine)
         print("✅ CRM database tables created")
         
+        return True
+        
     except Exception as e:
         print(f"❌ Error creating database tables: {e}")
+        return False
 
-# Initialize database tables
-create_tables()
-
-# Populate initial data
 def populate_initial_data():
     """Populate database with initial data if tables are empty"""
     try:
@@ -193,12 +212,11 @@ def populate_initial_data():
             print("✅ Initial partners data populated")
         
         db.close()
+        return True
         
     except Exception as e:
         print(f"❌ Error populating initial data: {e}")
-
-# Populate initial data
-populate_initial_data()
+        return False
 
 def get_crm_db():
     db = CRMSessionLocal()
