@@ -157,7 +157,12 @@ def create_tables():
 def populate_initial_data():
     """Populate database with initial data if tables are empty"""
     try:
+        # Import CRM models for user creation
+        from src.shared.crm_models import User, Employee, Team
+        import bcrypt
+        
         db = SessionLocal()
+        crm_db = CRMSessionLocal()
         
         # Check if partners table is empty
         partner_count = db.query(Partner).count()
@@ -215,11 +220,49 @@ def populate_initial_data():
             db.commit()
             print("✅ Initial partners data populated")
         
+        # Check if users table is empty and create admin user
+        user_count = crm_db.query(User).count()
+        if user_count == 0:
+            # Create default admin user
+            admin_password = "admin123"  # Default password
+            password_hash = bcrypt.hashpw(admin_password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
+            
+            admin_user = User(
+                name="Admin User",
+                email="admin@advancecredit.com",
+                phone="9999999999",
+                password_hash=password_hash,
+                role="admin",
+                is_active=True
+            )
+            crm_db.add(admin_user)
+            crm_db.commit()
+            
+            # Create admin employee record
+            admin_employee = Employee(
+                user_id=admin_user.user_id,
+                employee_code="ADMIN001",
+                designation="System Administrator",
+                department="IT",
+                salary=0.0,
+                commission_rate=0.0,
+                is_active=True
+            )
+            crm_db.add(admin_employee)
+            crm_db.commit()
+            
+            print("✅ Default admin user created")
+            print("📧 Admin Email: admin@advancecredit.com")
+            print("🔑 Admin Password: admin123")
+        
         db.close()
+        crm_db.close()
         return True
         
     except Exception as e:
         print(f"❌ Error populating initial data: {e}")
+        import traceback
+        traceback.print_exc()
         return False
 
 def get_crm_db():
