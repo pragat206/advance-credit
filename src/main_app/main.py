@@ -136,10 +136,12 @@ def create_tables():
         from src.main_app.models import Base as MainBase
         from src.shared.crm_models import CRMBase
         
+        print("🔧 Creating main app database tables...")
         # Create main app tables
         MainBase.metadata.create_all(bind=main_engine)
         print("✅ Main app database tables created")
         
+        print("🔧 Creating CRM database tables...")
         # Create CRM tables
         CRMBase.metadata.create_all(bind=crm_engine)
         print("✅ CRM database tables created")
@@ -148,6 +150,8 @@ def create_tables():
         
     except Exception as e:
         print(f"❌ Error creating database tables: {e}")
+        import traceback
+        traceback.print_exc()
         return False
 
 def populate_initial_data():

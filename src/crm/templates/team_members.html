@@ -1,0 +1,161 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ team.name }} - Team Members{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <!-- Page Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="page-title">{{ team.name }} Team</h1>
+            <p class="page-subtitle">Manage team members and performance</p>
+        </div>
+        <a href="/crm/teams" class="btn btn-modern btn-secondary-modern">
+            <i class="bi bi-arrow-left me-2"></i>Back to Teams
+        </a>
+    </div>
+
+    <!-- Team Info -->
+    <div class="row mb-4">
+        <div class="col-lg-8">
+            <div class="glass-card">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="bi bi-people me-2"></i>
+                        Team Members ({{ members|length }})
+                    </h5>
+                </div>
+                <div class="card-body">
+                    {% if members %}
+                    <div class="table-responsive">
+                        <table class="table table-modern">
+                            <thead>
+                                <tr>
+                                    <th>Employee</th>
+                                    <th>Designation</th>
+                                    <th>Department</th>
+                                    <th>Contact</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for member in members %}
+                                <tr>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <div class="stats-icon success me-3" style="width: 40px; height: 40px; font-size: 1rem;">
+                                                <i class="bi bi-person"></i>
+                                            </div>
+                                            <div>
+                                                <strong>{{ member.user.name }}</strong>
+                                                <br>
+                                                <small class="text-muted">{{ member.employee_code }}</small>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span class="badge badge-modern bg-primary">{{ member.designation }}</span>
+                                    </td>
+                                    <td>{{ member.department }}</td>
+                                    <td>
+                                        <div>
+                                            <small class="text-muted">{{ member.user.email }}</small>
+                                            <br>
+                                            <small class="text-muted">{{ member.user.phone }}</small>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        {% if member.is_active %}
+                                        <span class="badge badge-modern bg-success">Active</span>
+                                        {% else %}
+                                        <span class="badge badge-modern bg-danger">Inactive</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        <div class="btn-group" role="group">
+                                            <a href="/crm/employees/{{ member.employee_id }}" class="btn btn-sm btn-modern btn-primary-modern" title="View Profile">
+                                                <i class="bi bi-eye"></i>
+                                            </a>
+                                            <a href="/crm/employees/{{ member.employee_id }}/edit" class="btn btn-sm btn-modern btn-warning-modern" title="Edit">
+                                                <i class="bi bi-pencil"></i>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% else %}
+                    <div class="text-center py-5">
+                        <div class="stats-icon warning mb-3" style="width: 80px; height: 80px; font-size: 2rem; margin: 0 auto;">
+                            <i class="bi bi-people"></i>
+                        </div>
+                        <h5 class="text-muted">No Team Members</h5>
+                        <p class="text-muted">This team currently has no members assigned.</p>
+                        <a href="/crm/employees" class="btn btn-modern btn-primary-modern">
+                            <i class="bi bi-plus me-2"></i>Add Members
+                        </a>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-4">
+            <div class="glass-card">
+                <div class="card-header">
+                    <h6 class="mb-0">
+                        <i class="bi bi-info-circle me-2"></i>
+                        Team Information
+                    </h6>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <small class="text-muted">Team Name</small>
+                        <div class="fw-bold">{{ team.name }}</div>
+                    </div>
+                    <div class="mb-3">
+                        <small class="text-muted">Description</small>
+                        <div class="fw-bold">{{ team.description or 'No description available' }}</div>
+                    </div>
+                    <div class="mb-3">
+                        <small class="text-muted">Manager</small>
+                        <div class="fw-bold">
+                            {% if team.manager %}
+                            {{ team.manager.user.name }}
+                            {% else %}
+                            <span class="text-muted">No manager assigned</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <small class="text-muted">Created</small>
+                        <div class="fw-bold">{{ team.created_at.strftime('%B %d, %Y') }}</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="glass-card mt-4">
+                <div class="card-header">
+                    <h6 class="mb-0">
+                        <i class="bi bi-graph-up me-2"></i>
+                        Quick Actions
+                    </h6>
+                </div>
+                <div class="card-body">
+                    <div class="d-grid gap-2">
+                        <a href="/crm/teams/{{ team.team_id }}/performance" class="btn btn-modern btn-primary-modern">
+                            <i class="bi bi-graph-up me-2"></i>View Performance
+                        </a>
+                        <a href="/crm/employees" class="btn btn-modern btn-secondary-modern">
+                            <i class="bi bi-plus me-2"></i>Add Member
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 
