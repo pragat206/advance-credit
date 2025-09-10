@@ -1081,10 +1081,29 @@ async def contact(
     contact: str = Form(...),
     email: str = Form(None),
     query: str = Form(...),
-    source: str = Form("homepage")
+    source: str = Form("homepage"),
+    website_url: str = Form(""),  # Honeypot field for bot protection
+    terms_consent: str = Form(None)  # Terms and conditions consent
 ):
+    # Bot protection: Check honeypot field
+    if website_url and website_url.strip():
+        print(f"🚫 Bot detected - honeypot field filled: {website_url}")
+        raise HTTPException(status_code=400, detail="Invalid submission")
+    
+    # Check terms consent
+    if not terms_consent:
+        print(f"🚫 Terms and conditions not accepted by: {name}")
+        raise HTTPException(status_code=400, detail="Terms and conditions must be accepted")
+    
+    # Basic validation
+    if len(name.strip()) < 2:
+        raise HTTPException(status_code=400, detail="Name must be at least 2 characters")
+    
+    if len(query.strip()) < 10:
+        raise HTTPException(status_code=400, detail="Message must be at least 10 characters")
+    
     # Save directly to CRM database (no file logging)
-    message = f"Query: {query}\nSource: {source}"
+    message = f"Query: {query}\nSource: {source}\nTerms Accepted: Yes"
     save_lead_to_crm(name, contact, email, message, source)
     
     # Return success message with nice styling

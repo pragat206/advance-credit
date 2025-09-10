@@ -2290,9 +2290,20 @@ def assign_unified_lead(request: Request, lead_id: int, employee_id: int = Form(
         # Update lead status
         lead.status = 'assigned'
         
-        print(f"DEBUG: Committing to database")
         db.commit()
-        print(f"DEBUG: Commit successful")
+        db.refresh(assignment)
+        
+        # Log activity
+        LeadService.log_activity(
+            db=db,
+            lead_id=lead_id,
+            employee_id=current_employee.employee_id,
+            activity_type='assigned',
+            description=f'Lead assigned to {employee.user.name}',
+            activity_data={'assigned_to': employee_id, 'notes': notes}
+        )
+        
+        print(f"DEBUG: Final commit successful")
         
         db.refresh(assignment)
         print(f"DEBUG: Assignment successful - ID: {assignment.assignment_id}")
@@ -3178,5 +3189,120 @@ def toggle_priority(request: Request, lead_id: int, db: Session = Depends(get_db
             "message": f"Priority updated to {new_priority}",
             "priority": new_priority
         })
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+# Admin Delete Lead Functionality
+@router.post("/unified-leads/{lead_id}/delete", response_class=JSONResponse)
+def delete_unified_lead(request: Request, lead_id: int, db: Session = Depends(get_db)):
+    """Delete a lead (admin only)"""
+    if not request.session.get("user_id"):
+        raise HTTPException(status_code=401, detail="Unauthorized")
+    
+    user_role = request.session.get("user_role")
+    if user_role != "admin":
+        raise HTTPException(status_code=403, detail="Only admin can delete leads")
+    
+    try:
+        # Get the lead
+        lead = db.query(Lead).filter(Lead.lead_id == lead_id).first()
+        if not lead:
+            raise HTTPException(status_code=404, detail="Lead not found")
+        
+        # Get current employee for logging
+        current_employee = get_current_employee(request, db)
+        
+        # Log the deletion before actually deleting
+        if current_employee:
+            LeadService.log_activity(
+                db=db,
+                lead_id=lead_id,
+                employee_id=current_employee.employee_id,
+                activity_type='lead_deleted',
+                description=f'Lead deleted by admin',
+                activity_data={'deleted_lead_name': lead.name, 'deleted_lead_contact': lead.contact}
+            )
+        
+        # Delete related records first (due to foreign key constraints)
+        # Delete comments
+        if lead.assignments:
+            for assignment in lead.assignments:
+                db.query(LeadComment).filter(LeadComment.assignment_id == assignment.assignment_id).delete()
+                db.query(Disbursement).filter(Disbursement.assignment_id == assignment.assignment_id).delete()
+        
+        # Delete assignments
+        db.query(LeadAssignment).filter(LeadAssignment.lead_id == lead_id).delete()
+        
+        # Delete activities
+        db.query(LeadActivity).filter(LeadActivity.lead_id == lead_id).delete()
+        
+        # Finally delete the lead
+        db.delete(lead)
+        db.commit()
+        
+        return JSONResponse({
+            "success": True,
+            "message": f"Lead {lead_id} deleted successfully"
+        })
+        
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(status_code=500, detail=str(e))
+
+# Password Change Functionality
+@router.get("/change-password", response_class=HTMLResponse)
+def change_password_get(request: Request):
+    """Display change password form"""
+    if not request.session.get("user_id"):
+        return RedirectResponse("/crm/login", status_code=status.HTTP_302_FOUND)
+    
+    return templates.TemplateResponse("change_password.html", {"request": request})
+
+@router.post("/change-password", response_class=JSONResponse)
+def change_password_post(
+    request: Request,
+    current_password: str = Form(...),
+    new_password: str = Form(...),
+    confirm_password: str = Form(...),
+    db: Session = Depends(get_db)
+):
+    """Change user password"""
+    if not request.session.get("user_id"):
+        raise HTTPException(status_code=401, detail="Unauthorized")
+    
+    user_id = request.session.get("user_id")
+    
+    # Validate passwords
+    if new_password != confirm_password:
+        raise HTTPException(status_code=400, detail="New passwords do not match")
+    
+    if len(new_password) < 6:
+        raise HTTPException(status_code=400, detail="New password must be at least 6 characters long")
+    
+    try:
+        # Get user
+        user = db.query(User).filter(User.user_id == user_id).first()
+        if not user:
+            raise HTTPException(status_code=404, detail="User not found")
+        
+        # Verify current password
+        import bcrypt
+        if not bcrypt.checkpw(current_password.encode('utf-8'), user.password_hash.encode('utf-8')):
+            raise HTTPException(status_code=400, detail="Current password is incorrect")
+        
+        # Hash new password
+        new_password_hash = bcrypt.hashpw(new_password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
+        
+        # Update password
+        user.password_hash = new_password_hash
+        db.commit()
+        
+        return JSONResponse({
+            "success": True,
+            "message": "Password changed successfully"
+        })
+        
+    except HTTPException:
+        raise
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

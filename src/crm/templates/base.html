@@ -347,6 +347,63 @@
                 border-radius: 0.5rem;
                 border: 1px solid var(--border-color);
             }
+            
+            /* Mobile table improvements */
+            .table th, .table td {
+                padding: 0.5rem 0.25rem;
+                font-size: 0.875rem;
+            }
+            
+            /* Mobile button improvements */
+            .btn-group-sm .btn {
+                padding: 0.25rem 0.5rem;
+                font-size: 0.75rem;
+            }
+            
+            /* Mobile form improvements */
+            .form-control, .form-select {
+                font-size: 16px; /* Prevents zoom on iOS */
+            }
+            
+            /* Mobile modal improvements */
+            .modal-dialog {
+                margin: 0.5rem;
+            }
+            
+            /* Mobile card improvements */
+            .card-header {
+                padding: 0.75rem 1rem;
+            }
+            
+            /* Mobile text improvements */
+            .h1, .h2, .h3, .h4, .h5, .h6 {
+                word-break: break-word;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .container-fluid {
+                padding-left: 0.5rem;
+                padding-right: 0.5rem;
+            }
+            
+            .card-body {
+                padding: 0.75rem;
+            }
+            
+            .btn {
+                font-size: 0.875rem;
+                padding: 0.5rem 0.75rem;
+            }
+            
+            .table th, .table td {
+                padding: 0.375rem 0.25rem;
+                font-size: 0.8rem;
+            }
+            
+            .dropdown-menu {
+                font-size: 0.875rem;
+            }
         }
 
         /* ===== ANIMATIONS ===== */
@@ -733,6 +790,9 @@
                             <li><a class="dropdown-item" href="/crm/profile">
                                 <i class="bi bi-person me-2"></i>Profile
                             </a></li>
+                            <li><a class="dropdown-item" href="/crm/change-password">
+                                <i class="bi bi-shield-lock me-2"></i>Change Password
+                            </a></li>
                             <li><hr class="dropdown-divider"></li>
                             <li><a class="dropdown-item" href="/crm/logout">
                                 <i class="bi bi-box-arrow-right me-2"></i>Logout
@@ -788,4 +848,3 @@
     {% block scripts %}{% endblock %}
 </body>
 </html>
-

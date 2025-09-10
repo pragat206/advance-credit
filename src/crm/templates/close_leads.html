@@ -172,33 +172,17 @@
                                 {% endif %}
                             </td>
                             <td class="px-4 py-3">
-                                {% if lead.close_type == 'approved' %}
+                                {% if 'Success' in lead.close_message %}
                                 <span class="badge bg-success bg-opacity-10 text-success fw-semibold">
-                                    <i class="bi bi-check-circle me-1"></i>Approved & Closed
+                                    <i class="bi bi-check-circle me-1"></i>Success
                                 </span>
-                                {% elif lead.close_type == 'rejected' %}
-                                <span class="badge bg-danger bg-opacity-10 text-danger fw-semibold">
-                                    <i class="bi bi-x-circle me-1"></i>Rejected & Closed
-                                </span>
-                                {% elif lead.close_type == 'not_doable' %}
+                                {% elif 'Not Doable' in lead.close_message %}
                                 <span class="badge bg-warning bg-opacity-10 text-warning fw-semibold">
                                     <i class="bi bi-exclamation-triangle me-1"></i>Not Doable
                                 </span>
-                                {% elif lead.close_type == 'cancelled' %}
-                                <span class="badge bg-secondary bg-opacity-10 text-secondary fw-semibold">
-                                    <i class="bi bi-x-octagon me-1"></i>Cancelled
-                                </span>
-                                {% elif lead.close_type == 'duplicate' %}
-                                <span class="badge bg-info bg-opacity-10 text-info fw-semibold">
-                                    <i class="bi bi-files me-1"></i>Duplicate
-                                </span>
-                                {% elif lead.close_message == 'disbursed' %}
-                                <span class="badge bg-success bg-opacity-10 text-success fw-semibold">
-                                    <i class="bi bi-cash-coin me-1"></i>Disbursed
-                                </span>
                                 {% else %}
                                 <span class="badge bg-secondary bg-opacity-10 text-secondary fw-semibold">
-                                    <i class="bi bi-archive me-1"></i>Closed
+                                    <i class="bi bi-archive me-1"></i>{{ lead.close_message }}
                                 </span>
                                 {% endif %}
                             </td>
