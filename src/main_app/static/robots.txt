@@ -2,7 +2,7 @@ User-agent: *
 Allow: /
 
 # Sitemap
-Sitemap: https://advancecredit.in/sitemap.xml
+Sitemap: https://advancecred.com/sitemap.xml
 
 # Disallow admin and CRM areas
 Disallow: /crm/
