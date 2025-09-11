@@ -10,8 +10,15 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav ms-auto align-items-lg-center">
-        <li class="nav-item">
-          <a class="nav-link {% if request.url.path == '/products' %}active{% endif %}" href="/products">Loan Products</a>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle {% if request.url.path in ['/products', '/debt-consolidation', '/personal-loan'] %}active{% endif %}" href="#" id="loansDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Loan Products
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="loansDropdown">
+            <li><a class="dropdown-item" href="/products">All Products</a></li>
+            <li><a class="dropdown-item" href="/personal-loan">Personal Loan</a></li>
+            <li><a class="dropdown-item" href="/debt-consolidation">Debt Consolidation</a></li>
+          </ul>
         </li>
         <li class="nav-item">
           <a class="nav-link {% if request.url.path == '/emi' %}active{% endif %}" href="/emi">EMI Calculator</a>

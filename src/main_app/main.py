@@ -1465,6 +1465,29 @@ async def debt_calculator(
 def about(request: Request):
     return templates.TemplateResponse("about.html", {"request": request})
 
+@app.get("/debt-consolidation", response_class=HTMLResponse)
+def debt_consolidation(request: Request):
+    return templates.TemplateResponse("debt-consolidation.html", {"request": request})
+
+@app.get("/personal-loan", response_class=HTMLResponse)
+def personal_loan(request: Request):
+    return templates.TemplateResponse("personal-loan.html", {"request": request})
+
+@app.get("/multiple-emi-consolidation", response_class=HTMLResponse)
+def multiple_emi_consolidation(request: Request):
+    return templates.TemplateResponse("multiple-emi-consolidation.html", {"request": request})
+
+@app.get("/sitemap.xml", response_class=HTMLResponse)
+def sitemap():
+    """Generate sitemap for SEO"""
+    return templates.TemplateResponse("sitemap.xml", {"request": None})
+
+@app.get("/robots.txt", response_class=HTMLResponse)
+def robots():
+    """Serve robots.txt for SEO"""
+    from fastapi.responses import FileResponse
+    return FileResponse("src/main_app/static/robots.txt", media_type="text/plain")
+
 
 
 @app.get('/api/bank-loans')

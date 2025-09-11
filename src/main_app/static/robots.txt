@@ -1,0 +1,21 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://advancecredit.in/sitemap.xml
+
+# Disallow admin and CRM areas
+Disallow: /crm/
+Disallow: /admin/
+
+# Allow important pages
+Allow: /services
+Allow: /products
+Allow: /emi
+Allow: /contact
+Allow: /about
+Allow: /partners
+
+# Crawl delay
+Crawl-delay: 1
+
