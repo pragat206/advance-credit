@@ -1083,12 +1083,35 @@ async def contact(
     query: str = Form(...),
     source: str = Form("homepage"),
     website_url: str = Form(""),  # Honeypot field for bot protection
+    phone_alt: str = Form(""),  # Additional honeypot field
+    company_name: str = Form(""),  # Additional honeypot field
+    form_timestamp: str = Form(""),  # Time-based validation
     terms_consent: str = Form(None)  # Terms and conditions consent
 ):
-    # Bot protection: Check honeypot field
+    # Enhanced Bot protection: Check honeypot fields
     if website_url and website_url.strip():
-        print(f"🚫 Bot detected - honeypot field filled: {website_url}")
+        print(f"🚫 Bot detected - website_url honeypot filled: {website_url}")
         raise HTTPException(status_code=400, detail="Invalid submission")
+    
+    if phone_alt and phone_alt.strip():
+        print(f"🚫 Bot detected - phone_alt honeypot filled: {phone_alt}")
+        raise HTTPException(status_code=400, detail="Invalid submission")
+    
+    if company_name and company_name.strip():
+        print(f"🚫 Bot detected - company_name honeypot filled: {company_name}")
+        raise HTTPException(status_code=400, detail="Invalid submission")
+    
+    # Time-based validation (form must be filled after at least 3 seconds)
+    if form_timestamp:
+        try:
+            timestamp = int(form_timestamp)
+            current_time = int(datetime.now().timestamp() * 1000)
+            if current_time - timestamp < 3000:  # Less than 3 seconds
+                print(f"🚫 Bot detected - form filled too quickly by: {name}")
+                raise HTTPException(status_code=400, detail="Please take your time to fill the form properly")
+        except (ValueError, TypeError):
+            print(f"🚫 Bot detected - invalid timestamp from: {name}")
+            raise HTTPException(status_code=400, detail="Invalid form submission")
     
     # Check terms consent
     if not terms_consent:

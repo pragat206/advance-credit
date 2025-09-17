@@ -2355,6 +2355,18 @@
                 </div>
                 <div class="modal-body">
                     <input type="hidden" id="contactSource" name="source" value="homepage">
+                    
+                    <!-- Bot Protection Fields -->
+                    <div style="position: absolute; left: -9999px; opacity: 0; pointer-events: none;" aria-hidden="true">
+                        <label for="website_url_modal">Website URL (leave blank):</label>
+                        <input type="text" id="website_url_modal" name="website_url" tabindex="-1" autocomplete="off">
+                        <label for="phone_alt">Phone (leave blank):</label>
+                        <input type="text" id="phone_alt" name="phone_alt" tabindex="-1" autocomplete="off">
+                    </div>
+                    
+                    <!-- Time-based validation -->
+                    <input type="hidden" id="form_timestamp" name="form_timestamp" value="">
+                    
                     <div class="mb-3">
                         <label for="name" class="form-label">Name <span class="text-primary">*</span></label>
                         <input type="text" class="form-control" id="name" name="name" required>
@@ -2371,9 +2383,19 @@
                         <label for="query" class="form-label">Tell us about your financial situation <span class="text-primary">*</span></label>
                         <textarea class="form-control" id="query" name="query" rows="3" required placeholder="e.g., I have multiple EMIs totaling ₹40,000 monthly, looking to consolidate..."></textarea>
                     </div>
+                    
+                    <!-- Terms and Conditions -->
+                    <div class="mb-3">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="terms_consent_modal" name="terms_consent" required>
+                            <label class="form-check-label" for="terms_consent_modal">
+                                <small>I agree to the <a href="#" data-bs-toggle="modal" data-bs-target="#termsModal" style="color: #1e3a8a; text-decoration: underline;">Terms and Conditions and Privacy Policy</a> *</small>
+                            </label>
+                        </div>
+                    </div>
                 </div>
                 <div class="modal-footer border-0">
-                    <button type="submit" class="btn btn-primary w-100">Get Free Assessment</button>
+                    <button type="submit" class="btn btn-primary w-100" id="submitBtnModal">Get Free Assessment</button>
                 </div>
             </form>
         </div>
@@ -2395,6 +2417,115 @@
 {% include 'footer.html' %}
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+// Bot Protection and Form Validation
+document.addEventListener('DOMContentLoaded', function() {
+    // Set form timestamp when modal opens
+    const contactModal = document.getElementById('contactModal');
+    const formTimestamp = document.getElementById('form_timestamp');
+    
+    contactModal.addEventListener('show.bs.modal', function() {
+        formTimestamp.value = Date.now();
+    });
+    
+    // Enhanced form validation
+    const contactForm = document.getElementById('contactForm');
+    const submitBtn = document.getElementById('submitBtnModal');
+    
+    contactForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        // Bot protection checks
+        const websiteUrl = document.getElementById('website_url_modal').value;
+        const phoneAlt = document.getElementById('phone_alt').value;
+        const timestamp = parseInt(formTimestamp.value);
+        const currentTime = Date.now();
+        
+        // Check honeypot fields
+        if (websiteUrl || phoneAlt) {
+            console.log('Bot detected - honeypot fields filled');
+            alert('Invalid submission detected. Please try again.');
+            return;
+        }
+        
+        // Check form timing (must be filled after at least 3 seconds)
+        if (currentTime - timestamp < 3000) {
+            console.log('Bot detected - form filled too quickly');
+            alert('Please take your time to fill the form properly.');
+            return;
+        }
+        
+        // Check terms consent
+        const termsConsent = document.getElementById('terms_consent_modal').checked;
+        if (!termsConsent) {
+            alert('Please accept the Terms and Conditions to continue.');
+            return;
+        }
+        
+        // Validate phone number
+        const contact = document.getElementById('contact').value;
+        if (!/^\d{10}$/.test(contact)) {
+            alert('Please enter a valid 10-digit phone number.');
+            return;
+        }
+        
+        // Validate name (should not contain numbers or special characters)
+        const name = document.getElementById('name').value;
+        if (!/^[a-zA-Z\s]+$/.test(name) || name.length < 2) {
+            alert('Please enter a valid name (letters and spaces only, minimum 2 characters).');
+            return;
+        }
+        
+        // Disable submit button to prevent double submission
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<i class="bi bi-hourglass-split me-2"></i>Submitting...';
+        
+        // Submit the form
+        const formData = new FormData(contactForm);
+        fetch('/contact', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => {
+            if (response.ok) {
+                // Show success message
+                const toast = document.getElementById('successToast');
+                toast.style.display = 'block';
+                const bsToast = new bootstrap.Toast(toast);
+                bsToast.show();
+                
+                // Close modal
+                const modal = bootstrap.Modal.getInstance(contactModal);
+                modal.hide();
+                
+                // Reset form
+                contactForm.reset();
+                formTimestamp.value = '';
+            } else {
+                throw new Error('Form submission failed');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('There was an error submitting your request. Please try again.');
+        })
+        .finally(() => {
+            // Re-enable submit button
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = 'Get Free Assessment';
+        });
+    });
+    
+    // Update source when modal is opened from different buttons
+    document.querySelectorAll('[data-bs-target="#contactModal"]').forEach(button => {
+        button.addEventListener('click', function() {
+            const source = this.getAttribute('data-source') || 'homepage';
+            document.getElementById('contactSource').value = source;
+        });
+    });
+});
+</script>
 <script>
 // Fade-in animation
 function onVisible(element, callback) {

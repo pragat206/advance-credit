@@ -313,11 +313,18 @@
                         </div>
                         
                         <form action="/contact" method="POST" id="contactForm">
-                            <!-- Honeypot field for bot protection (hidden from users) -->
+                            <!-- Enhanced Bot Protection Fields -->
                             <div style="position: absolute; left: -9999px; opacity: 0; pointer-events: none;" aria-hidden="true">
                                 <label for="website_url">Website URL (leave blank):</label>
                                 <input type="text" id="website_url" name="website_url" tabindex="-1" autocomplete="off">
+                                <label for="phone_alt_contact">Phone (leave blank):</label>
+                                <input type="text" id="phone_alt_contact" name="phone_alt" tabindex="-1" autocomplete="off">
+                                <label for="company_name">Company Name (leave blank):</label>
+                                <input type="text" id="company_name" name="company_name" tabindex="-1" autocomplete="off">
                             </div>
+                            
+                            <!-- Time-based validation -->
+                            <input type="hidden" id="form_timestamp_contact" name="form_timestamp" value="">
                             
                             <div class="row">
                                 <div class="col-md-6 mb-4">
@@ -605,6 +612,99 @@
                 } else {
                     this.setCustomValidity('');
                 }
+            });
+            
+            // Enhanced Bot Protection
+            const contactForm = document.getElementById('contactForm');
+            const formTimestamp = document.getElementById('form_timestamp_contact');
+            const submitBtn = document.getElementById('submitBtn');
+            
+            // Set timestamp when form is first interacted with
+            let formStartTime = null;
+            contactForm.addEventListener('focusin', function() {
+                if (!formStartTime) {
+                    formStartTime = Date.now();
+                    formTimestamp.value = formStartTime;
+                }
+            });
+            
+            // Enhanced form submission with bot protection
+            contactForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Bot protection checks
+                const websiteUrl = document.getElementById('website_url').value;
+                const phoneAlt = document.getElementById('phone_alt_contact').value;
+                const companyName = document.getElementById('company_name').value;
+                const timestamp = parseInt(formTimestamp.value);
+                const currentTime = Date.now();
+                
+                // Check honeypot fields
+                if (websiteUrl || phoneAlt || companyName) {
+                    console.log('Bot detected - honeypot fields filled');
+                    alert('Invalid submission detected. Please try again.');
+                    return;
+                }
+                
+                // Check form timing (must be filled after at least 3 seconds)
+                if (currentTime - timestamp < 3000) {
+                    console.log('Bot detected - form filled too quickly');
+                    alert('Please take your time to fill the form properly.');
+                    return;
+                }
+                
+                // Check terms consent
+                const termsConsent = document.getElementById('terms_consent').checked;
+                if (!termsConsent) {
+                    alert('Please accept the Terms and Conditions to continue.');
+                    return;
+                }
+                
+                // Validate phone number
+                const contact = document.getElementById('contact').value;
+                if (!/^\d{10}$/.test(contact)) {
+                    alert('Please enter a valid 10-digit phone number.');
+                    return;
+                }
+                
+                // Validate name (should not contain numbers or special characters)
+                const name = document.getElementById('name').value;
+                if (!/^[a-zA-Z\s]+$/.test(name) || name.length < 2) {
+                    alert('Please enter a valid name (letters and spaces only, minimum 2 characters).');
+                    return;
+                }
+                
+                // Disable submit button to prevent double submission
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<i class="bi bi-hourglass-split me-2"></i>Submitting...';
+                
+                // Submit the form
+                const formData = new FormData(contactForm);
+                fetch('/contact', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => {
+                    if (response.ok) {
+                        // Show success message
+                        alert('Thank you! Your message has been sent successfully. We will get back to you within 24 hours.');
+                        // Reset form
+                        contactForm.reset();
+                        formTimestamp.value = '';
+                        formStartTime = null;
+                    } else {
+                        throw new Error('Form submission failed');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('There was an error submitting your request. Please try again.');
+                })
+                .finally(() => {
+                    // Re-enable submit button
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = '<i class="bi bi-send me-2"></i>Send Message';
+                });
             });
         });
     </script>

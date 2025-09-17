@@ -374,7 +374,12 @@ if (document.getElementById('statusUpdateForm')) {
             
             if (result.success) {
                 alert(result.message);
-                location.reload();
+                // If status is closed, redirect to closed leads page
+                if (newStatus === 'closed') {
+                    window.location.href = '/crm/close-leads';
+                } else {
+                    location.reload();
+                }
             } else {
                 alert('Error: ' + result.detail);
             }
@@ -457,7 +462,7 @@ if (document.getElementById('assignForm')) {
         if (notes) formData.append('notes', notes);
         
         try {
-            const response = await fetch(`/crm/leads/${leadType}/${leadId}/assign`, {
+            const response = await fetch(`/crm/unified-leads/${leadId}/assign`, {
                 method: 'POST',
                 body: formData
             });
@@ -491,7 +496,8 @@ async function toggleDoable() {
         
         if (result.success) {
             alert(result.message);
-            location.reload();
+            // If lead is marked as not doable, redirect to closed leads page
+            window.location.href = '/crm/close-leads';
         } else {
             alert('Error: ' + result.detail);
         }
