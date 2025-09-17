@@ -455,8 +455,11 @@
                 // Update the count
                 const countElement = document.querySelector('.card-header h5');
                 if (countElement) {
-                    const currentCount = parseInt(countElement.textContent.match(/\((\d+)\)/)[1]);
-                    countElement.innerHTML = countElement.innerHTML.replace(/\(\d+\)/, `(${currentCount - 1})`);
+                    const match = countElement.textContent.match(/\((\d+)\)/);
+                    if (match && match[1]) {
+                        const currentCount = parseInt(match[1]);
+                        countElement.innerHTML = countElement.innerHTML.replace(/\(\d+\)/, `(${currentCount - 1})`);
+                    }
                 }
             } else {
                 alert('Error: ' + (data.detail || data.message || 'Unknown error'));

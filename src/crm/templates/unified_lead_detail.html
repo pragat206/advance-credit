@@ -295,14 +295,16 @@
                             </span>
                         </button>
                         
-                        {% if not assignment %}
-                            <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#assignLeadModal">
-                                <i class="bi bi-person-plus me-1"></i>Assign Lead
-                            </button>
-                        {% else %}
-                            <button class="btn btn-sm btn-outline-warning" data-bs-toggle="modal" data-bs-target="#reassignLeadModal">
-                                <i class="bi bi-arrow-repeat me-1"></i>Reassign
-                            </button>
+                        {% if request.session.get("user_role") in ["admin", "manager"] %}
+                            {% if not assignment %}
+                                <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#assignLeadModal">
+                                    <i class="bi bi-person-plus me-1"></i>Assign Lead
+                                </button>
+                            {% else %}
+                                <button class="btn btn-sm btn-outline-warning" data-bs-toggle="modal" data-bs-target="#reassignLeadModal">
+                                    <i class="bi bi-arrow-repeat me-1"></i>Reassign
+                                </button>
+                            {% endif %}
                         {% endif %}
                     </div>
                 </div>
@@ -341,9 +343,11 @@
                             <i class="bi bi-person-x text-muted fs-1 mb-3"></i>
                             <h6 class="text-muted">Lead Not Assigned</h6>
                             <p class="text-muted mb-0">This lead has not been assigned to any employee yet.</p>
+                            {% if request.session.get("user_role") in ["admin", "manager"] %}
                             <button class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#assignLeadModal">
                                 <i class="bi bi-person-plus me-2"></i>Assign Lead
                             </button>
+                            {% endif %}
                         </div>
                     {% endif %}
                 </div>

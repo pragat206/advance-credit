@@ -2196,6 +2196,9 @@ def unified_lead_detail(request: Request, lead_id: int, db: Session = Depends(ge
     employees = []
     if user_role in ["admin", "manager"]:
         employees = db.query(Employee).join(User).filter(Employee.is_active == True).all()
+    else:
+        # For other users, still pass empty list to avoid template errors
+        employees = []
     
     # Get workflow progress for visualization
     workflow_progress = LeadService.get_workflow_progress(lead, assignment)
