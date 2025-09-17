@@ -1469,6 +1469,11 @@ window.addEventListener('load', function() {
         e.preventDefault();
         const commentText = document.getElementById('commentText').value;
         
+        if (!commentText.trim()) {
+            alert('Please enter a comment.');
+            return;
+        }
+        
         const url = `/crm/unified-leads/{{ lead.lead_id }}/add-comment`;
         const body = `comment=${encodeURIComponent(commentText)}`;
         
@@ -1479,17 +1484,23 @@ window.addEventListener('load', function() {
             },
             body: body
         })
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        })
         .then(data => {
             if (data.success) {
+                alert('Comment added successfully!');
                 location.reload();
             } else {
-                alert('Error: ' + data.message);
+                alert('Error: ' + (data.detail || data.message || 'Unknown error'));
             }
         })
         .catch(error => {
             console.error('Error:', error);
-            alert('An error occurred while adding the comment.');
+            alert('An error occurred while adding the comment: ' + error.message);
         });
     });
 
@@ -1498,19 +1509,28 @@ window.addEventListener('load', function() {
         if (!confirm('Are you sure you want to delete this comment?')) return;
         
         fetch(`/crm/comments/${commentId}/delete`, {
-            method: 'POST'
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            }
         })
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        })
         .then(data => {
             if (data.success) {
+                alert('Comment deleted successfully!');
                 location.reload();
             } else {
-                alert('Error: ' + data.message);
+                alert('Error: ' + (data.detail || data.message || 'Unknown error'));
             }
         })
         .catch(error => {
             console.error('Error:', error);
-            alert('An error occurred while deleting the comment.');
+            alert('An error occurred while deleting the comment: ' + error.message);
         });
     }
 
@@ -1559,17 +1579,28 @@ window.addEventListener('load', function() {
             },
             body: body
         })
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        })
         .then(data => {
             if (data.success) {
-                location.reload();
+                alert('Status updated successfully!');
+                // If status is closed, redirect to closed leads page
+                if (newStatus === 'closed') {
+                    window.location.href = '/crm/close-leads';
+                } else {
+                    location.reload();
+                }
             } else {
-                alert('Error: ' + data.message);
+                alert('Error: ' + (data.detail || data.message || 'Unknown error'));
             }
         })
         .catch(error => {
             console.error('Error:', error);
-            alert('An error occurred while updating the status.');
+            alert('An error occurred while updating the status: ' + error.message);
         });
     });
 
@@ -1580,6 +1611,11 @@ window.addEventListener('load', function() {
         e.preventDefault();
         const amount = document.getElementById('pdAmount').value;
         
+        if (!amount || amount <= 0) {
+            alert('Please enter a valid amount.');
+            return;
+        }
+        
         fetch(`/crm/assignments/{{ assignment.assignment_id }}/update-pd-amount`, {
             method: 'POST',
             headers: {
@@ -1587,17 +1623,23 @@ window.addEventListener('load', function() {
             },
             body: `amount=${encodeURIComponent(amount)}`
         })
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        })
         .then(data => {
             if (data.success) {
+                alert('PD amount updated successfully!');
                 location.reload();
             } else {
-                alert('Error: ' + data.message);
+                alert('Error: ' + (data.detail || data.message || 'Unknown error'));
             }
         })
         .catch(error => {
             console.error('Error:', error);
-            alert('An error occurred while updating the PD amount.');
+            alert('An error occurred while updating the PD amount: ' + error.message);
         });
     });
 
@@ -1611,17 +1653,23 @@ window.addEventListener('load', function() {
             method: 'POST',
             body: formData
         })
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        })
         .then(data => {
             if (data.success) {
+                alert('Disbursement created successfully!');
                 location.reload();
             } else {
-                alert('Error: ' + data.message);
+                alert('Error: ' + (data.detail || data.message || 'Unknown error'));
             }
         })
         .catch(error => {
             console.error('Error:', error);
-            alert('An error occurred while creating the disbursement.');
+            alert('An error occurred while creating the disbursement: ' + error.message);
         });
     });
 
@@ -1642,17 +1690,23 @@ window.addEventListener('load', function() {
                     method: 'POST',
                     body: formData
                 })
-                .then(response => response.json())
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json();
+                })
                 .then(data => {
                     if (data.success) {
+                        alert('Lead assigned successfully!');
                         location.reload();
                     } else {
-                        alert('Error: ' + data.message);
+                        alert('Error: ' + (data.detail || data.message || 'Unknown error'));
                     }
                 })
                 .catch(error => {
                     console.error('Error:', error);
-                    alert('An error occurred while assigning the lead.');
+                    alert('An error occurred while assigning the lead: ' + error.message);
                 });
             });
         }
@@ -1671,17 +1725,23 @@ window.addEventListener('load', function() {
                     method: 'POST',
                     body: formData
                 })
-                .then(response => response.json())
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json();
+                })
                 .then(data => {
                     if (data.success) {
+                        alert('Lead reassigned successfully!');
                         location.reload();
                     } else {
-                        alert('Error: ' + data.message);
+                        alert('Error: ' + (data.detail || data.message || 'Unknown error'));
                     }
                 })
                 .catch(error => {
                     console.error('Error:', error);
-                    alert('An error occurred while reassigning the lead.');
+                    alert('An error occurred while reassigning the lead: ' + error.message);
                 });
             });
         }
@@ -1698,17 +1758,23 @@ window.addEventListener('load', function() {
             method: 'POST',
             body: formData
         })
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        })
         .then(data => {
             if (data.success) {
+                alert('Details updated successfully!');
                 location.reload();
             } else {
-                alert('Error: ' + data.message);
+                alert('Error: ' + (data.detail || data.message || 'Unknown error'));
             }
         })
         .catch(error => {
             console.error('Error:', error);
-            alert('An error occurred while updating the details.');
+            alert('An error occurred while updating the details: ' + error.message);
         });
     });
     {% endif %}
@@ -1740,6 +1806,9 @@ window.addEventListener('load', function() {
         })
         .then(response => {
             console.log('Response received:', response.status);
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
             return response.json();
         })
         .then(data => {
@@ -1748,7 +1817,7 @@ window.addEventListener('load', function() {
                 alert('Lead updated successfully!');
                 location.reload();
             } else {
-                alert('Error: ' + (data.message || 'Unknown error'));
+                alert('Error: ' + (data.detail || data.message || 'Unknown error'));
             }
         })
         .catch(error => {
@@ -1777,7 +1846,12 @@ window.addEventListener('load', function() {
                 priority: newPriority
             })
         })
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        })
         .then(data => {
             if (data.success) {
                 // Update button text
@@ -1808,12 +1882,12 @@ window.addEventListener('load', function() {
                     }
                 }, 3000);
             } else {
-                alert('Error: ' + data.message);
+                alert('Error: ' + (data.detail || data.message || 'Unknown error'));
             }
         })
         .catch(error => {
             console.error('Error:', error);
-            alert('An error occurred while updating the priority.');
+            alert('An error occurred while updating the priority: ' + error.message);
         })
         .finally(() => {
             // Restore button state
@@ -1925,20 +1999,28 @@ window.addEventListener('load', function() {
     window.deleteLead = function(leadId) {
         if (confirm('Are you sure you want to delete this lead? This action cannot be undone.')) {
             fetch(`/crm/unified-leads/${leadId}/delete`, {
-                method: 'POST'
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
             })
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
             .then(data => {
                 if (data.success) {
                     alert('Lead deleted successfully!');
                     window.location.href = '/crm/unified-leads';
                 } else {
-                    alert('Error: ' + data.message);
+                    alert('Error: ' + (data.detail || data.message || 'Unknown error'));
                 }
             })
             .catch(error => {
                 console.error('Error:', error);
-                alert('An error occurred while deleting the lead.');
+                alert('An error occurred while deleting the lead: ' + error.message);
             });
         }
     };
@@ -2052,12 +2134,15 @@ window.addEventListener('load', function() {
         console.log('Submitting close lead form...');
         console.log('Form data:', Object.fromEntries(formData));
         
-        fetch(`/crm/leads/{{ lead.lead_id }}/close`, {
+        fetch(`/crm/unified-leads/{{ lead.lead_id }}/close`, {
             method: 'POST',
             body: formData
         })
         .then(response => {
             console.log('Response status:', response.status);
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
             return response.json();
         })
         .then(data => {
@@ -2066,7 +2151,7 @@ window.addEventListener('load', function() {
                 alert('Lead closed successfully!');
                 window.location.href = '/crm/close-leads';
             } else {
-                alert('Error: ' + data.message);
+                alert('Error: ' + (data.detail || data.message || 'Unknown error'));
             }
         })
         .catch(error => {
