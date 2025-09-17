@@ -1,0 +1,303 @@
+{% extends "base.html" %}
+
+{% block title %}Employees - CRM{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <!-- Page Header -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h1 class="h3 mb-0 text-dark fw-bold">
+                        <i class="bi bi-people-fill me-2"></i>Employee Management
+                    </h1>
+                    <p class="text-muted mb-0">Manage your team members and their information</p>
+                </div>
+                <div class="d-flex gap-2">
+                    <a href="/crm/dashboard" class="btn btn-outline-secondary">
+                        <i class="bi bi-arrow-left me-1"></i>Back to Dashboard
+                    </a>
+                    <a href="/crm/employees/new" class="btn btn-primary">
+                        <i class="bi bi-person-plus me-1"></i>Add Employee
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="flex-shrink-0">
+                            <div class="bg-primary bg-opacity-10 rounded-circle p-3">
+                                <i class="bi bi-people text-primary fs-4"></i>
+                            </div>
+                        </div>
+                        <div class="flex-grow-1 ms-3">
+                            <h6 class="card-title mb-1 text-muted">Total Employees</h6>
+                            <h4 class="mb-0 fw-bold text-primary">{{ total_employees }}</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="flex-shrink-0">
+                            <div class="bg-success bg-opacity-10 rounded-circle p-3">
+                                <i class="bi bi-person-check text-success fs-4"></i>
+                            </div>
+                        </div>
+                        <div class="flex-grow-1 ms-3">
+                            <h6 class="card-title mb-1 text-muted">Active Employees</h6>
+                            <h4 class="mb-0 fw-bold text-success">{{ active_employees }}</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="flex-shrink-0">
+                            <div class="bg-info bg-opacity-10 rounded-circle p-3">
+                                <i class="bi bi-clipboard-data text-info fs-4"></i>
+                            </div>
+                        </div>
+                        <div class="flex-grow-1 ms-3">
+                            <h6 class="card-title mb-1 text-muted">Assigned Leads</h6>
+                            <h4 class="mb-0 fw-bold text-info">{{ assigned_leads }}</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="flex-shrink-0">
+                            <div class="bg-warning bg-opacity-10 rounded-circle p-3">
+                                <i class="bi bi-currency-rupee text-warning fs-4"></i>
+                            </div>
+                        </div>
+                        <div class="flex-grow-1 ms-3">
+                            <h6 class="card-title mb-1 text-muted">Total Salary</h6>
+                            <h4 class="mb-0 fw-bold text-warning">₹{{ "{:,.0f}".format(total_salary) }}</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Employees Table -->
+    <div class="card border-0 shadow-sm">
+        <div class="card-header bg-white border-0 py-3">
+            <div class="d-flex justify-content-between align-items-center">
+                <h5 class="mb-0 fw-bold text-dark">
+                    <i class="bi bi-table me-2"></i>Employee Directory
+                </h5>
+                <div class="d-flex gap-2">
+                    <div class="input-group input-group-sm" style="width: 300px;">
+                        <span class="input-group-text bg-light border-end-0">
+                            <i class="bi bi-search text-muted"></i>
+                        </span>
+                        <input type="text" class="form-control border-start-0" id="searchInput" placeholder="Search employees...">
+                    </div>
+                    <select class="form-select form-select-sm" id="statusFilter" style="width: 150px;">
+                        <option value="">All Status</option>
+                        <option value="active">Active</option>
+                        <option value="inactive">Inactive</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover mb-0" id="employeesTable">
+                    <thead class="table-light">
+                        <tr>
+                            <th class="border-0 px-4 py-3 fw-semibold text-muted">Employee ID</th>
+                            <th class="border-0 px-4 py-3 fw-semibold text-muted">Name</th>
+                            <th class="border-0 px-4 py-3 fw-semibold text-muted">Email</th>
+                            <th class="border-0 px-4 py-3 fw-semibold text-muted">Role</th>
+                            <th class="border-0 px-4 py-3 fw-semibold text-muted">Team</th>
+                            <th class="border-0 px-4 py-3 fw-semibold text-muted">Salary</th>
+                            <th class="border-0 px-4 py-3 fw-semibold text-muted">Status</th>
+                            <th class="border-0 px-4 py-3 fw-semibold text-muted">Joined</th>
+                            <th class="border-0 px-4 py-3 fw-semibold text-muted">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for employee in employees %}
+                        <tr class="align-middle">
+                            <td class="px-4 py-3">
+                                <span class="badge bg-light text-dark fw-semibold">{{ employee.employee_code }}</span>
+                            </td>
+                            <td class="px-4 py-3">
+                                <div class="d-flex align-items-center">
+                                    <div class="flex-shrink-0">
+                                        <div class="bg-primary bg-opacity-10 rounded-circle p-2">
+                                            <i class="bi bi-person text-primary"></i>
+                                        </div>
+                                    </div>
+                                    <div class="flex-grow-1 ms-3">
+                                        <h6 class="mb-0 fw-semibold text-dark">{{ employee.user.name }}</h6>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="px-4 py-3">
+                                <span class="text-muted">{{ employee.user.email }}</span>
+                            </td>
+                            <td class="px-4 py-3">
+                                {% if employee.user.role == 'admin' %}
+                                <span class="badge bg-danger bg-opacity-10 text-danger fw-semibold">
+                                    <i class="bi bi-shield-check me-1"></i>Admin
+                                </span>
+                                {% elif employee.user.role == 'manager' %}
+                                <span class="badge bg-warning bg-opacity-10 text-warning fw-semibold">
+                                    <i class="bi bi-person-gear me-1"></i>Manager
+                                </span>
+                                {% else %}
+                                <span class="badge bg-info bg-opacity-10 text-info fw-semibold">
+                                    <i class="bi bi-person me-1"></i>Employee
+                                </span>
+                                {% endif %}
+                            </td>
+                            <td class="px-4 py-3">
+                                {% if employee.team %}
+                                <span class="text-muted">{{ employee.team.name }}</span>
+                                {% else %}
+                                <span class="text-muted">-</span>
+                                {% endif %}
+                            </td>
+                            <td class="px-4 py-3">
+                                {% if employee.salary %}
+                                <span class="fw-semibold text-success">₹{{ "{:,.0f}".format(employee.salary) }}</span>
+                                {% else %}
+                                <span class="text-muted">-</span>
+                                {% endif %}
+                            </td>
+                            <td class="px-4 py-3">
+                                {% if employee.is_active %}
+                                <span class="badge bg-success bg-opacity-10 text-success fw-semibold">
+                                    <i class="bi bi-check-circle me-1"></i>Active
+                                </span>
+                                {% else %}
+                                <span class="badge bg-secondary bg-opacity-10 text-secondary fw-semibold">
+                                    <i class="bi bi-x-circle me-1"></i>Inactive
+                                </span>
+                                {% endif %}
+                            </td>
+                            <td class="px-4 py-3">
+                                <span class="text-muted">{{ employee.created_at.strftime('%d/%m/%Y') }}</span>
+                            </td>
+                            <td class="px-4 py-3">
+                                <div class="btn-group btn-group-sm" role="group">
+                                    <a href="/crm/employees/{{ employee.employee_id }}" class="btn btn-outline-primary" title="View Details">
+                                        <i class="bi bi-eye"></i>
+                                        <span class="d-none d-lg-inline ms-1">View</span>
+                                    </a>
+                                    <a href="/crm/employees/{{ employee.employee_id }}/edit" class="btn btn-outline-secondary" title="Edit Employee">
+                                        <i class="bi bi-pencil"></i>
+                                        <span class="d-none d-lg-inline ms-1">Edit</span>
+                                    </a>
+                                    {% if employee.is_active %}
+                                    <button type="button" class="btn btn-outline-warning" onclick="toggleEmployeeStatus({{ employee.employee_id }}, false)" title="Deactivate">
+                                        <i class="bi bi-person-x"></i>
+                                        <span class="d-none d-lg-inline ms-1">Deactivate</span>
+                                    </button>
+                                    {% else %}
+                                    <button type="button" class="btn btn-outline-success" onclick="toggleEmployeeStatus({{ employee.employee_id }}, true)" title="Activate">
+                                        <i class="bi bi-person-check"></i>
+                                        <span class="d-none d-lg-inline ms-1">Activate</span>
+                                    </button>
+                                    {% endif %}
+                                </div>
+                            </td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td colspan="9" class="text-center py-5">
+                                <div class="text-muted">
+                                    <i class="bi bi-people fs-1 mb-3 d-block"></i>
+                                    <h5>No employees found</h5>
+                                    <p class="mb-0">Start by adding your first employee to the system.</p>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Search functionality
+document.getElementById('searchInput').addEventListener('input', function() {
+    const searchTerm = this.value.toLowerCase();
+    const rows = document.querySelectorAll('#employeesTable tbody tr');
+    
+    rows.forEach(row => {
+        const text = row.textContent.toLowerCase();
+        row.style.display = text.includes(searchTerm) ? '' : 'none';
+    });
+});
+
+// Status filter
+document.getElementById('statusFilter').addEventListener('change', function() {
+    const filterValue = this.value.toLowerCase();
+    const rows = document.querySelectorAll('#employeesTable tbody tr');
+    
+    rows.forEach(row => {
+        if (!filterValue) {
+            row.style.display = '';
+            return;
+        }
+        
+        const statusCell = row.querySelector('td:nth-child(7)');
+        const status = statusCell.textContent.toLowerCase();
+        row.style.display = status.includes(filterValue) ? '' : 'none';
+    });
+});
+
+// Toggle employee status
+function toggleEmployeeStatus(employeeId, isActive) {
+    const action = isActive ? 'activate' : 'deactivate';
+    if (!confirm(`Are you sure you want to ${action} this employee?`)) {
+        return;
+    }
+    
+    fetch(`/crm/employees/${employeeId}/toggle-status`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ is_active: isActive })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert(data.message);
+            location.reload();
+        } else {
+            alert('Error: ' + data.detail);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Error updating employee status: ' + error.message);
+    });
+}
+</script>
+{% endblock %}
