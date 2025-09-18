@@ -140,6 +140,12 @@ async def register_user(
         "otp_id": otp_record.otp_id
     })
 
+# OTP Verification Page
+@router.get("/verify-otp", response_class=HTMLResponse)
+async def verify_otp_page(request: Request):
+    """OTP verification page"""
+    return templates.TemplateResponse("community/verify_otp.html", {"request": request})
+
 # OTP Verification
 @router.post("/verify-otp", response_class=JSONResponse)
 async def verify_otp(
@@ -187,6 +193,45 @@ async def verify_otp(
         "success": True,
         "message": "Account created successfully",
         "user_id": user.user_id
+    })
+
+# Resend OTP
+@router.post("/resend-otp", response_class=JSONResponse)
+async def resend_otp(
+    request: Request,
+    otp_id: int = Form(...),
+    email: str = Form(None),
+    phone: str = Form(None),
+    username: str = Form(...),
+    full_name: str = Form(...),
+    db: Session = Depends(get_db)
+):
+    """Resend OTP for verification"""
+    # Get existing OTP record
+    otp_record = db.query(CommunityOTP).filter(CommunityOTP.otp_id == otp_id).first()
+    
+    if not otp_record:
+        raise HTTPException(status_code=400, detail="Invalid OTP request")
+    
+    # Generate new OTP
+    otp_code = generate_otp()
+    expires_at = datetime.utcnow() + timedelta(minutes=10)
+    
+    # Update OTP record
+    otp_record.otp_code = otp_code
+    otp_record.expires_at = expires_at
+    otp_record.is_verified = False
+    db.commit()
+    
+    # Send OTP
+    if email:
+        send_otp_email(email, otp_code)
+    if phone:
+        send_otp_sms(phone, otp_code)
+    
+    return JSONResponse({
+        "success": True,
+        "message": "New OTP sent successfully"
     })
 
 # User Login

@@ -142,6 +142,7 @@ def create_tables():
         # Import models to ensure they're registered
         from src.main_app.models import Base as MainBase
         from src.shared.crm_models import CRMBase
+        from src.community.models import Base as CommunityBase
         
         print("🔧 Creating main app database tables...")
         # Create main app tables
@@ -152,6 +153,11 @@ def create_tables():
         # Create CRM tables
         CRMBase.metadata.create_all(bind=crm_engine)
         print("✅ CRM database tables created")
+        
+        print("🔧 Creating Community database tables...")
+        # Create Community tables
+        CommunityBase.metadata.create_all(bind=main_engine)
+        print("✅ Community database tables created")
         
         return True
         
@@ -261,6 +267,86 @@ def populate_initial_data():
             print("✅ Default admin user created")
             print("📧 Admin Email: admin@advancecredit.com")
             print("🔑 Admin Password: admin123")
+        
+        # Initialize Community data
+        print("🔧 Initializing Community data...")
+        from src.community.models import CommunityCategory, CommunityCompany
+        
+        # Check if community categories exist
+        category_count = db.query(CommunityCategory).count()
+        if category_count == 0:
+            # Add default categories
+            categories_data = [
+                {
+                    "name": "Personal Loans",
+                    "slug": "personal-loans",
+                    "description": "Expert advice on personal loans, eligibility, and application process",
+                    "icon": "bi-credit-card",
+                    "is_active": True
+                },
+                {
+                    "name": "Business Loans", 
+                    "slug": "business-loans",
+                    "description": "Business financing, working capital, and loan options for entrepreneurs",
+                    "icon": "bi-building",
+                    "is_active": True
+                },
+                {
+                    "name": "Debt Consolidation",
+                    "slug": "debt-consolidation", 
+                    "description": "Consolidate multiple debts into one manageable payment",
+                    "icon": "bi-diagram-3",
+                    "is_active": True
+                },
+                {
+                    "name": "Credit Score",
+                    "slug": "credit-score",
+                    "description": "Improve your credit score and understand credit reports",
+                    "icon": "bi-graph-up",
+                    "is_active": True
+                },
+                {
+                    "name": "Home Loans",
+                    "slug": "home-loans",
+                    "description": "Home loan advice, EMI calculations, and property financing",
+                    "icon": "bi-house",
+                    "is_active": True
+                },
+                {
+                    "name": "Investment",
+                    "slug": "investment",
+                    "description": "Investment strategies, mutual funds, and financial planning",
+                    "icon": "bi-piggy-bank",
+                    "is_active": True
+                }
+            ]
+            
+            for cat_data in categories_data:
+                category = CommunityCategory(**cat_data)
+                db.add(category)
+            
+            db.commit()
+            print("✅ Community categories created")
+        
+        # Check if Advance Credit company exists
+        company_count = db.query(CommunityCompany).count()
+        if company_count == 0:
+            # Add Advance Credit as verified company
+            advance_credit = CommunityCompany(
+                company_name="Advance Credit Finance Advisory",
+                company_slug="advance-credit",
+                description="Leading financial advisory company specializing in debt consolidation and personal loans. We help individuals and businesses achieve financial freedom through expert guidance and personalized solutions.",
+                website_url="https://advancecred.com",
+                logo_url="/static/ac-logo-1.svg",
+                contact_email="info@advancecredit.com",
+                contact_phone="+91-XXXXXXXXXX",
+                is_verified=True,
+                is_active=True,
+                verification_badge="Verified Financial Advisor"
+            )
+            db.add(advance_credit)
+            db.commit()
+            print("✅ Advance Credit company page created")
         
         db.close()
         crm_db.close()

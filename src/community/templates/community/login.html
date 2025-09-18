@@ -1,0 +1,174 @@
+{% extends "community/base.html" %}
+
+{% block title %}Login to CreditCare - Access Expert Financial Advice{% endblock %}
+
+{% block content %}
+<!-- Login Section -->
+<section class="py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-6 col-md-8">
+                <div class="card shadow-lg border-0">
+                    <div class="card-body p-5">
+                        <div class="text-center mb-4">
+                            <h2 class="fw-bold text-primary mb-3">
+                                <i class="bi bi-shield-check me-2"></i>Welcome Back
+                            </h2>
+                            <p class="text-muted">Sign in to access expert financial advice</p>
+                        </div>
+                        
+                        <form id="loginForm" method="POST" action="/community/login">
+                            <div class="mb-3">
+                                <label for="email" class="form-label fw-semibold">Email Address</label>
+                                <input type="email" class="form-control" id="email" name="email">
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="phone" class="form-label fw-semibold">Phone Number</label>
+                                <input type="tel" class="form-control" id="phone" name="phone">
+                            </div>
+                            
+                            <div class="alert alert-info">
+                                <i class="bi bi-info-circle me-2"></i>
+                                <strong>Note:</strong> Please provide either email or phone number. We'll send you an OTP for secure login.
+                            </div>
+                            
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-primary btn-lg">
+                                    <i class="bi bi-box-arrow-in-right me-2"></i>Send Login OTP
+                                </button>
+                            </div>
+                        </form>
+                        
+                        <div class="text-center mt-4">
+                            <p class="text-muted">Don't have an account? 
+                                <a href="/community/register" class="text-primary fw-semibold">Join CreditCare</a>
+                            </p>
+                        </div>
+                        
+                        <div class="mt-4">
+                            <h6 class="fw-bold mb-3">Secure Login Benefits</h6>
+                            <div class="row">
+                                <div class="col-6 mb-3">
+                                    <div class="d-flex align-items-center">
+                                        <i class="bi bi-shield-lock text-success me-2"></i>
+                                        <small>OTP Verification</small>
+                                    </div>
+                                </div>
+                                <div class="col-6 mb-3">
+                                    <div class="d-flex align-items-center">
+                                        <i class="bi bi-clock text-primary me-2"></i>
+                                        <small>Quick Access</small>
+                                    </div>
+                                </div>
+                                <div class="col-6 mb-3">
+                                    <div class="d-flex align-items-center">
+                                        <i class="bi bi-person-check text-warning me-2"></i>
+                                        <small>Verified Account</small>
+                                    </div>
+                                </div>
+                                <div class="col-6 mb-3">
+                                    <div class="d-flex align-items-center">
+                                        <i class="bi bi-lock text-info me-2"></i>
+                                        <small>Secure Platform</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h3 class="h4 fw-bold text-center mb-5">Access Premium Financial Resources</h3>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="text-center">
+                    <div class="bg-primary rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+                        <i class="bi bi-chat-square-dots text-white fs-4"></i>
+                    </div>
+                    <h6 class="fw-bold">Ask Questions</h6>
+                    <p class="text-muted small">Get expert answers to your financial queries</p>
+                </div>
+            </div>
+            
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="text-center">
+                    <div class="bg-success rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+                        <i class="bi bi-file-earmark-text text-white fs-4"></i>
+                    </div>
+                    <h6 class="fw-bold">Read Articles</h6>
+                    <p class="text-muted small">Access expert-written financial guides</p>
+                </div>
+            </div>
+            
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="text-center">
+                    <div class="bg-warning rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+                        <i class="bi bi-people text-white fs-4"></i>
+                    </div>
+                    <h6 class="fw-bold">Connect</h6>
+                    <p class="text-muted small">Network with verified professionals</p>
+                </div>
+            </div>
+            
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="text-center">
+                    <div class="bg-info rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+                        <i class="bi bi-graph-up text-white fs-4"></i>
+                    </div>
+                    <h6 class="fw-bold">Grow</h6>
+                    <p class="text-muted small">Improve your financial knowledge</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.getElementById('loginForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const email = document.getElementById('email').value;
+    const phone = document.getElementById('phone').value;
+    
+    if (!email && !phone) {
+        alert('Please provide either email or phone number for login.');
+        return;
+    }
+    
+    const formData = new FormData(this);
+    
+    fetch('/community/login', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert('OTP sent successfully! Please check your email/phone.');
+            // Redirect to OTP verification page
+            window.location.href = '/community/verify-otp?otp_id=' + data.otp_id;
+        } else {
+            alert('Error: ' + data.detail);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('An error occurred. Please try again.');
+    });
+});
+</script>
+{% endblock %}
