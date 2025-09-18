@@ -523,3 +523,105 @@ async def search_posts(request: Request, q: str = "", db: Session = Depends(get_
         "query": q,
         "posts": posts
     })
+
+# Add Comment
+@router.post("/comment", response_class=JSONResponse)
+async def add_comment(
+    request: Request,
+    post_id: int = Form(...),
+    content: str = Form(...),
+    db: Session = Depends(get_db)
+):
+    """Add a comment to a post"""
+    user_id = request.session.get("community_user_id")
+    if not user_id:
+        raise HTTPException(status_code=401, detail="Not authenticated")
+    
+    user = db.query(CommunityUser).filter(CommunityUser.user_id == user_id).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    
+    post = db.query(CommunityPost).filter(CommunityPost.post_id == post_id).first()
+    if not post:
+        raise HTTPException(status_code=404, detail="Post not found")
+    
+    # Create comment
+    comment = CommunityComment(
+        post_id=post_id,
+        author_id=user_id,
+        content=content,
+        is_approved=True  # Auto-approve for now
+    )
+    db.add(comment)
+    db.commit()
+    
+    return JSONResponse({
+        "success": True,
+        "message": "Comment added successfully",
+        "comment_id": comment.comment_id
+    })
+
+# Delete Comment
+@router.post("/comment/{comment_id}/delete", response_class=JSONResponse)
+async def delete_comment(
+    request: Request,
+    comment_id: int,
+    db: Session = Depends(get_db)
+):
+    """Delete a comment"""
+    user_id = request.session.get("community_user_id")
+    if not user_id:
+        raise HTTPException(status_code=401, detail="Not authenticated")
+    
+    comment = db.query(CommunityComment).filter(
+        CommunityComment.comment_id == comment_id,
+        CommunityComment.author_id == user_id
+    ).first()
+    
+    if not comment:
+        raise HTTPException(status_code=404, detail="Comment not found")
+    
+    db.delete(comment)
+    db.commit()
+    
+    return JSONResponse({
+        "success": True,
+        "message": "Comment deleted successfully"
+    })
+
+# Follow Company
+@router.post("/company/{slug}/follow", response_class=JSONResponse)
+async def follow_company(
+    request: Request,
+    slug: str,
+    db: Session = Depends(get_db)
+):
+    """Follow/unfollow a company"""
+    user_id = request.session.get("community_user_id")
+    if not user_id:
+        raise HTTPException(status_code=401, detail="Not authenticated")
+    
+    company = db.query(CommunityCompany).filter(
+        CommunityCompany.company_slug == slug,
+        CommunityCompany.is_active == True
+    ).first()
+    
+    if not company:
+        raise HTTPException(status_code=404, detail="Company not found")
+    
+    # For now, just increment followers count
+    company.followers_count = (company.followers_count or 0) + 1
+    db.commit()
+    
+    return JSONResponse({
+        "success": True,
+        "message": "Company followed successfully",
+        "followers_count": company.followers_count
+    })
+
+# Logout
+@router.get("/logout", response_class=RedirectResponse)
+async def logout(request: Request):
+    """Logout user"""
+    request.session.clear()
+    return RedirectResponse("/community/", status_code=302)

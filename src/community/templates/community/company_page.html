@@ -1,0 +1,323 @@
+{% extends "community/base.html" %}
+
+{% block title %}{{ company.company_name }} - CreditCare Community{% endblock %}
+
+{% block content %}
+<!-- Company Header Section -->
+<section class="py-5 bg-primary text-white">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-8">
+                <div class="d-flex align-items-center mb-4">
+                    {% if company.logo_url %}
+                    <img src="{{ company.logo_url }}" alt="{{ company.company_name }}" 
+                         class="rounded me-4" style="width: 80px; height: 80px; object-fit: contain; background: white; padding: 10px;">
+                    {% endif %}
+                    <div>
+                        <h1 class="h2 fw-bold mb-2">{{ company.company_name }}</h1>
+                        {% if company.is_verified %}
+                        <div class="verified-badge mb-2">
+                            <i class="bi bi-shield-check me-1"></i>{{ company.verification_badge or "Verified Company" }}
+                        </div>
+                        {% endif %}
+                        {% if company.website_url %}
+                        <a href="{{ company.website_url }}" target="_blank" class="text-white text-decoration-none">
+                            <i class="bi bi-globe me-1"></i>Visit Website
+                        </a>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <p class="lead mb-4">{{ company.description }}</p>
+                
+                <div class="row">
+                    {% if company.contact_email %}
+                    <div class="col-md-6 mb-3">
+                        <div class="d-flex align-items-center">
+                            <i class="bi bi-envelope me-3 fs-5"></i>
+                            <div>
+                                <div class="fw-semibold">Email</div>
+                                <a href="mailto:{{ company.contact_email }}" class="text-white text-decoration-none">
+                                    {{ company.contact_email }}
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                    
+                    {% if company.contact_phone %}
+                    <div class="col-md-6 mb-3">
+                        <div class="d-flex align-items-center">
+                            <i class="bi bi-telephone me-3 fs-5"></i>
+                            <div>
+                                <div class="fw-semibold">Phone</div>
+                                <a href="tel:{{ company.contact_phone }}" class="text-white text-decoration-none">
+                                    {{ company.contact_phone }}
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <div class="col-lg-4 text-lg-end">
+                <div class="bg-white bg-opacity-10 rounded-3 p-4">
+                    <h5 class="fw-bold mb-3">Company Stats</h5>
+                    <div class="row text-center">
+                        <div class="col-6 mb-3">
+                            <div class="h4 fw-bold">{{ posts|length }}</div>
+                            <small>Posts</small>
+                        </div>
+                        <div class="col-6 mb-3">
+                            <div class="h4 fw-bold">{{ company.followers_count or 0 }}</div>
+                            <small>Followers</small>
+                        </div>
+                    </div>
+                    <button class="btn btn-warning btn-lg w-100">
+                        <i class="bi bi-person-plus me-2"></i>Follow Company
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Company Posts Section -->
+<section class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h3 class="h4 fw-bold">
+                        <i class="bi bi-file-earmark-text me-2"></i>Latest Posts by {{ company.company_name }}
+                    </h3>
+                    <div class="d-flex gap-2">
+                        <select class="form-select" style="width: auto;">
+                            <option>All Categories</option>
+                            <option>Personal Loans</option>
+                            <option>Business Loans</option>
+                            <option>Debt Consolidation</option>
+                        </select>
+                        <button class="btn btn-outline-primary">
+                            <i class="bi bi-funnel me-1"></i>Filter
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row">
+            {% if posts %}
+                {% for post in posts %}
+                <div class="col-lg-6 mb-4">
+                    <div class="card post-card h-100">
+                        {% if post.featured_image %}
+                        <img src="{{ post.featured_image }}" class="card-img-top" alt="{{ post.title }}" style="height: 200px; object-fit: cover;">
+                        {% endif %}
+                        <div class="card-body d-flex flex-column">
+                            <div class="mb-2">
+                                <span class="badge bg-primary">{{ post.category.name }}</span>
+                                <span class="text-muted small ms-2">{{ post.published_at.strftime('%d %b %Y') }}</span>
+                            </div>
+                            
+                            <h5 class="card-title fw-bold">
+                                <a href="/community/post/{{ post.slug }}" class="text-decoration-none text-dark">
+                                    {{ post.title }}
+                                </a>
+                            </h5>
+                            
+                            <p class="card-text text-muted flex-grow-1">{{ post.excerpt }}</p>
+                            
+                            <div class="d-flex justify-content-between align-items-center mt-auto">
+                                <div class="d-flex gap-3">
+                                    <button class="vote-btn" onclick="votePost({{ post.post_id }}, 'upvote')">
+                                        <i class="bi bi-arrow-up"></i>
+                                        <span id="upvotes-{{ post.post_id }}">{{ post.upvotes }}</span>
+                                    </button>
+                                    <button class="vote-btn" onclick="votePost({{ post.post_id }}, 'downvote')">
+                                        <i class="bi bi-arrow-down"></i>
+                                        <span id="downvotes-{{ post.post_id }}">{{ post.downvotes }}</span>
+                                    </button>
+                                    <span class="text-muted">
+                                        <i class="bi bi-eye me-1"></i>{{ post.view_count }}
+                                    </span>
+                                </div>
+                                <a href="/community/post/{{ post.slug }}" class="btn btn-outline-primary btn-sm">
+                                    Read More
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+            <div class="col-12">
+                <div class="text-center py-5">
+                    <i class="bi bi-file-earmark-text text-muted fs-1 mb-3"></i>
+                    <h5 class="text-muted">No posts yet</h5>
+                    <p class="text-muted">This company hasn't published any posts yet.</p>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+        
+        {% if posts|length > 10 %}
+        <div class="text-center mt-4">
+            <button class="btn btn-outline-primary">
+                <i class="bi bi-arrow-down me-2"></i>Load More Posts
+            </button>
+        </div>
+        {% endif %}
+    </div>
+</section>
+
+<!-- Company Information Section -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="card shadow-sm border-0">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="bi bi-info-circle me-2"></i>About {{ company.company_name }}
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <p>{{ company.description }}</p>
+                        
+                        {% if company.services %}
+                        <h6 class="fw-bold mt-4 mb-3">Services Offered</h6>
+                        <ul class="list-unstyled">
+                            {% for service in company.services %}
+                            <li class="mb-2">
+                                <i class="bi bi-check-circle text-success me-2"></i>{{ service }}
+                            </li>
+                            {% endfor %}
+                        </ul>
+                        {% endif %}
+                        
+                        {% if company.specializations %}
+                        <h6 class="fw-bold mt-4 mb-3">Specializations</h6>
+                        <div class="d-flex flex-wrap gap-2">
+                            {% for spec in company.specializations %}
+                            <span class="badge bg-primary">{{ spec }}</span>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-4">
+                <!-- Contact Card -->
+                <div class="card shadow-sm border-0 mb-4">
+                    <div class="card-header">
+                        <h6 class="mb-0">
+                            <i class="bi bi-telephone me-2"></i>Contact Information
+                        </h6>
+                    </div>
+                    <div class="card-body">
+                        {% if company.contact_email %}
+                        <div class="mb-3">
+                            <div class="fw-semibold">Email</div>
+                            <a href="mailto:{{ company.contact_email }}" class="text-decoration-none">
+                                {{ company.contact_email }}
+                            </a>
+                        </div>
+                        {% endif %}
+                        
+                        {% if company.contact_phone %}
+                        <div class="mb-3">
+                            <div class="fw-semibold">Phone</div>
+                            <a href="tel:{{ company.contact_phone }}" class="text-decoration-none">
+                                {{ company.contact_phone }}
+                            </a>
+                        </div>
+                        {% endif %}
+                        
+                        {% if company.website_url %}
+                        <div class="mb-3">
+                            <div class="fw-semibold">Website</div>
+                            <a href="{{ company.website_url }}" target="_blank" class="text-decoration-none">
+                                Visit Website <i class="bi bi-box-arrow-up-right ms-1"></i>
+                            </a>
+                        </div>
+                        {% endif %}
+                        
+                        <div class="d-grid gap-2 mt-4">
+                            <button class="btn btn-primary">
+                                <i class="bi bi-envelope me-2"></i>Send Message
+                            </button>
+                            <button class="btn btn-outline-primary">
+                                <i class="bi bi-person-plus me-2"></i>Follow Company
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Verification Badge -->
+                {% if company.is_verified %}
+                <div class="card shadow-sm border-0">
+                    <div class="card-body text-center">
+                        <div class="verified-badge mb-3">
+                            <i class="bi bi-shield-check me-2"></i>Verified Company
+                        </div>
+                        <p class="text-muted small mb-0">
+                            This company has been verified by CreditCare. 
+                            All information is accurate and up-to-date.
+                        </p>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Follow company functionality
+document.querySelectorAll('button:contains("Follow Company")').forEach(button => {
+    button.addEventListener('click', function() {
+        if (!{{ request.session.get("community_user_id")|default("null")|tojson }}) {
+            alert('Please sign in to follow companies.');
+            window.location.href = '/community/login';
+            return;
+        }
+        
+        // Implement follow functionality
+        fetch('/community/company/{{ company.company_slug }}/follow', {
+            method: 'POST'
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                this.innerHTML = '<i class="bi bi-person-check me-2"></i>Following';
+                this.classList.remove('btn-warning');
+                this.classList.add('btn-success');
+            } else {
+                alert('Error: ' + data.detail);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('An error occurred. Please try again.');
+        });
+    });
+});
+
+// Send message functionality
+document.querySelector('button:contains("Send Message")').addEventListener('click', function() {
+    if (!{{ request.session.get("community_user_id")|default("null")|tojson }}) {
+        alert('Please sign in to send messages.');
+        window.location.href = '/community/login';
+        return;
+    }
+    
+    // Open message modal or redirect to messaging
+    window.location.href = '/community/message/{{ company.company_slug }}';
+});
+</script>
+{% endblock %}

@@ -1,0 +1,314 @@
+{% extends "community/base.html" %}
+
+{% block title %}Search Results{% if query %} for "{{ query }}"{% endif %} - CreditCare Community{% endblock %}
+
+{% block content %}
+<!-- Search Header Section -->
+<section class="py-5 bg-primary text-white">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="text-center">
+                    <h1 class="h2 fw-bold mb-4">
+                        <i class="bi bi-search me-2"></i>Search CreditCare
+                    </h1>
+                    <p class="lead mb-4">Find expert advice, posts, and answers to your financial questions</p>
+                    
+                    <!-- Search Form -->
+                    <form method="GET" action="/community/search" class="d-flex gap-3">
+                        <div class="flex-grow-1">
+                            <input type="search" class="form-control form-control-lg" name="q" 
+                                   value="{{ query }}" placeholder="Search for posts, topics, or questions...">
+                        </div>
+                        <button type="submit" class="btn btn-warning btn-lg px-4">
+                            <i class="bi bi-search me-2"></i>Search
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Search Results Section -->
+<section class="py-5">
+    <div class="container">
+        {% if query %}
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h3 class="h4 fw-bold">
+                        Search Results for "{{ query }}"
+                        <span class="badge bg-primary ms-2">{{ posts|length }} results</span>
+                    </h3>
+                    
+                    <div class="d-flex gap-2">
+                        <select class="form-select" style="width: auto;">
+                            <option>All Categories</option>
+                            <option>Personal Loans</option>
+                            <option>Business Loans</option>
+                            <option>Debt Consolidation</option>
+                            <option>Credit Score</option>
+                            <option>Home Loans</option>
+                            <option>Investment</option>
+                        </select>
+                        <select class="form-select" style="width: auto;">
+                            <option>Most Relevant</option>
+                            <option>Newest First</option>
+                            <option>Most Popular</option>
+                            <option>Most Upvoted</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row">
+            {% if posts %}
+                {% for post in posts %}
+                <div class="col-lg-6 mb-4">
+                    <div class="card post-card h-100">
+                        {% if post.featured_image %}
+                        <img src="{{ post.featured_image }}" class="card-img-top" alt="{{ post.title }}" style="height: 200px; object-fit: cover;">
+                        {% endif %}
+                        <div class="card-body d-flex flex-column">
+                            <div class="mb-2">
+                                <span class="badge bg-primary">{{ post.category.name }}</span>
+                                {% if post.company %}
+                                <span class="company-badge ms-2">
+                                    <i class="bi bi-building me-1"></i>{{ post.company.company_name }}
+                                </span>
+                                {% endif %}
+                            </div>
+                            
+                            <h5 class="card-title fw-bold">
+                                <a href="/community/post/{{ post.slug }}" class="text-decoration-none text-dark">
+                                    {{ post.title }}
+                                </a>
+                            </h5>
+                            
+                            <p class="card-text text-muted flex-grow-1">{{ post.excerpt }}</p>
+                            
+                            <div class="d-flex justify-content-between align-items-center mt-auto">
+                                <div class="d-flex align-items-center">
+                                    <img src="https://via.placeholder.com/32x32" class="rounded-circle me-2" alt="Author" width="32" height="32">
+                                    <div>
+                                        <div class="fw-semibold small">{{ post.author.full_name }}</div>
+                                        <div class="text-muted small">{{ post.published_at.strftime('%d %b %Y') }}</div>
+                                    </div>
+                                </div>
+                                <div class="d-flex gap-2">
+                                    <button class="vote-btn" onclick="votePost({{ post.post_id }}, 'upvote')">
+                                        <i class="bi bi-arrow-up"></i>
+                                        <span id="upvotes-{{ post.post_id }}">{{ post.upvotes }}</span>
+                                    </button>
+                                    <button class="vote-btn" onclick="votePost({{ post.post_id }}, 'downvote')">
+                                        <i class="bi bi-arrow-down"></i>
+                                        <span id="downvotes-{{ post.post_id }}">{{ post.downvotes }}</span>
+                                    </button>
+                                    <span class="text-muted">
+                                        <i class="bi bi-eye me-1"></i>{{ post.view_count }}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+            <div class="col-12">
+                <div class="text-center py-5">
+                    <i class="bi bi-search text-muted fs-1 mb-3"></i>
+                    <h5 class="text-muted">No results found</h5>
+                    <p class="text-muted">Try different keywords or browse our categories below.</p>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+        
+        {% if posts|length > 10 %}
+        <div class="text-center mt-4">
+            <button class="btn btn-outline-primary">
+                <i class="bi bi-arrow-down me-2"></i>Load More Results
+            </button>
+        </div>
+        {% endif %}
+        
+        {% else %}
+        <!-- No Search Query - Show Categories and Popular Topics -->
+        <div class="row">
+            <div class="col-12">
+                <h3 class="h4 fw-bold text-center mb-5">Browse by Category</h3>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="card category-card h-100 text-center">
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <i class="bi bi-credit-card text-primary" style="font-size: 2.5rem;"></i>
+                        </div>
+                        <h5 class="card-title fw-bold">Personal Loans</h5>
+                        <p class="card-text text-muted">Expert advice on personal loans, eligibility, and application process</p>
+                        <a href="/community/search?q=personal+loan" class="btn btn-outline-primary">
+                            Browse Posts
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="card category-card h-100 text-center">
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <i class="bi bi-building text-success" style="font-size: 2.5rem;"></i>
+                        </div>
+                        <h5 class="card-title fw-bold">Business Loans</h5>
+                        <p class="card-text text-muted">Business financing, working capital, and loan options for entrepreneurs</p>
+                        <a href="/community/search?q=business+loan" class="btn btn-outline-success">
+                            Browse Posts
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="card category-card h-100 text-center">
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <i class="bi bi-diagram-3 text-warning" style="font-size: 2.5rem;"></i>
+                        </div>
+                        <h5 class="card-title fw-bold">Debt Consolidation</h5>
+                        <p class="card-text text-muted">Consolidate multiple debts into one manageable payment</p>
+                        <a href="/community/search?q=debt+consolidation" class="btn btn-outline-warning">
+                            Browse Posts
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="card category-card h-100 text-center">
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <i class="bi bi-graph-up text-info" style="font-size: 2.5rem;"></i>
+                        </div>
+                        <h5 class="card-title fw-bold">Credit Score</h5>
+                        <p class="card-text text-muted">Improve your credit score and understand credit reports</p>
+                        <a href="/community/search?q=credit+score" class="btn btn-outline-info">
+                            Browse Posts
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Popular Topics -->
+        <div class="row mt-5">
+            <div class="col-12">
+                <h3 class="h4 fw-bold text-center mb-5">Popular Topics</h3>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-12">
+                <div class="text-center">
+                    <div class="d-flex flex-wrap gap-2 justify-content-center">
+                        <a href="/community/search?q=home+loan" class="btn btn-outline-primary">Home Loans</a>
+                        <a href="/community/search?q=car+loan" class="btn btn-outline-primary">Car Loans</a>
+                        <a href="/community/search?q=investment" class="btn btn-outline-primary">Investment</a>
+                        <a href="/community/search?q=mutual+funds" class="btn btn-outline-primary">Mutual Funds</a>
+                        <a href="/community/search?q=insurance" class="btn btn-outline-primary">Insurance</a>
+                        <a href="/community/search?q=tax+saving" class="btn btn-outline-primary">Tax Saving</a>
+                        <a href="/community/search?q=retirement+planning" class="btn btn-outline-primary">Retirement Planning</a>
+                        <a href="/community/search?q=financial+planning" class="btn btn-outline-primary">Financial Planning</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</section>
+
+<!-- Search Tips Section -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h3 class="h4 fw-bold text-center mb-5">Search Tips</h3>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="text-center">
+                    <div class="bg-primary rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+                        <i class="bi bi-lightbulb text-white fs-4"></i>
+                    </div>
+                    <h6 class="fw-bold">Use Keywords</h6>
+                    <p class="text-muted small">Search for specific terms like "personal loan", "credit score", or "debt consolidation"</p>
+                </div>
+            </div>
+            
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="text-center">
+                    <div class="bg-success rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+                        <i class="bi bi-question-circle text-white fs-4"></i>
+                    </div>
+                    <h6 class="fw-bold">Ask Questions</h6>
+                    <p class="text-muted small">Search for questions like "How to improve credit score?" or "What is debt consolidation?"</p>
+                </div>
+            </div>
+            
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="text-center">
+                    <div class="bg-warning rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+                        <i class="bi bi-tags text-white fs-4"></i>
+                    </div>
+                    <h6 class="fw-bold">Browse Categories</h6>
+                    <p class="text-muted small">Explore posts by category to find relevant content for your needs</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Auto-focus search input
+document.addEventListener('DOMContentLoaded', function() {
+    const searchInput = document.querySelector('input[name="q"]');
+    if (searchInput) {
+        searchInput.focus();
+    }
+});
+
+// Search suggestions (basic implementation)
+document.querySelector('input[name="q"]').addEventListener('input', function() {
+    const query = this.value.toLowerCase();
+    const suggestions = [
+        'personal loan', 'business loan', 'debt consolidation', 'credit score',
+        'home loan', 'car loan', 'investment', 'mutual funds', 'insurance',
+        'tax saving', 'retirement planning', 'financial planning'
+    ];
+    
+    // Simple suggestion logic
+    if (query.length > 2) {
+        const matches = suggestions.filter(s => s.includes(query));
+        // Could implement dropdown suggestions here
+    }
+});
+
+// Filter functionality
+document.querySelectorAll('select').forEach(select => {
+    select.addEventListener('change', function() {
+        // Implement filtering logic
+        const url = new URL(window.location);
+        url.searchParams.set(this.name || 'filter', this.value);
+        window.location.href = url.toString();
+    });
+});
+</script>
+{% endblock %}
