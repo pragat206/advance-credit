@@ -28,6 +28,9 @@ from sqlalchemy.orm import sessionmaker
 from src.crm.routes import router as crm_router
 from src.crm.manual_leads import router as manual_leads_router
 
+# Include Community routes with /community prefix
+from src.community.routes import router as community_router
+
 # Production environment check
 ENVIRONMENT = os.getenv("ENVIRONMENT", "development")
 DEBUG = ENVIRONMENT == "development"
@@ -66,6 +69,7 @@ app.add_middleware(SessionMiddleware, secret_key=os.getenv("SECRET_KEY", "super-
 # Include routers
 app.include_router(crm_router, prefix="/crm")
 app.include_router(manual_leads_router, prefix="/crm")
+app.include_router(community_router, prefix="/community")
 
 # Mount static files
 app.mount("/static", StaticFiles(directory="src/main_app/static"), name="static")
@@ -73,6 +77,9 @@ app.mount("/crm/static", StaticFiles(directory="src/crm/static"), name="crm_stat
 
 # Templates
 templates = Jinja2Templates(directory="src/main_app/templates")
+
+# Community templates (accessible from community routes)
+community_templates = Jinja2Templates(directory="src/community/templates")
 
 # Production security middleware
 if ENVIRONMENT == "production":
