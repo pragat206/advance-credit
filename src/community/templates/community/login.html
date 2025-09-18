@@ -19,18 +19,10 @@
                         
                         <form id="loginForm" method="POST" action="/community/login">
                             <div class="mb-3">
-                                <label for="email" class="form-label fw-semibold">Email Address</label>
-                                <input type="email" class="form-control" id="email" name="email">
-                            </div>
-                            
-                            <div class="mb-3">
-                                <label for="phone" class="form-label fw-semibold">Phone Number</label>
-                                <input type="tel" class="form-control" id="phone" name="phone">
-                            </div>
-                            
-                            <div class="alert alert-info">
-                                <i class="bi bi-info-circle me-2"></i>
-                                <strong>Note:</strong> Please provide either email or phone number. We'll send you an OTP for secure login.
+                                <label for="email_or_phone" class="form-label fw-semibold">Email or Phone Number</label>
+                                <input type="text" class="form-control" id="email_or_phone" name="email_or_phone" 
+                                       placeholder="Enter your email address or phone number" required>
+                                <div class="form-text">We'll send you an OTP for secure login</div>
                             </div>
                             
                             <div class="d-grid">
@@ -141,15 +133,21 @@
 document.getElementById('loginForm').addEventListener('submit', function(e) {
     e.preventDefault();
     
-    const email = document.getElementById('email').value;
-    const phone = document.getElementById('phone').value;
+    const emailOrPhone = document.getElementById('email_or_phone').value.trim();
     
-    if (!email && !phone) {
-        alert('Please provide either email or phone number for login.');
+    if (!emailOrPhone) {
+        alert('Please enter your email or phone number.');
         return;
     }
     
-    const formData = new FormData(this);
+    // Show loading state
+    const submitBtn = this.querySelector('button[type="submit"]');
+    const originalText = submitBtn.innerHTML;
+    submitBtn.innerHTML = '<i class="bi bi-hourglass-split me-2"></i>Sending OTP...';
+    submitBtn.disabled = true;
+    
+    const formData = new FormData();
+    formData.append('email_or_phone', emailOrPhone);
     
     fetch('/community/login', {
         method: 'POST',
@@ -160,14 +158,19 @@ document.getElementById('loginForm').addEventListener('submit', function(e) {
         if (data.success) {
             alert('OTP sent successfully! Please check your email/phone.');
             // Redirect to OTP verification page
-            window.location.href = '/community/verify-otp?otp_id=' + data.otp_id;
+            window.location.href = '/community/verify-otp?otp_id=' + data.otp_id + '&email_or_phone=' + encodeURIComponent(emailOrPhone);
         } else {
-            alert('Error: ' + data.detail);
+            alert('Error: ' + (data.detail || data.message || 'Unknown error'));
         }
     })
     .catch(error => {
         console.error('Error:', error);
         alert('An error occurred. Please try again.');
+    })
+    .finally(() => {
+        // Restore button state
+        submitBtn.innerHTML = originalText;
+        submitBtn.disabled = false;
     });
 });
 </script>

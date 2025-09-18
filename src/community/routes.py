@@ -154,11 +154,12 @@ async def verify_otp(
     otp_code: str = Form(...),
     email: str = Form(None),
     phone: str = Form(None),
-    username: str = Form(...),
-    full_name: str = Form(...),
+    email_or_phone: str = Form(None),
+    username: str = Form(None),
+    full_name: str = Form(None),
     db: Session = Depends(get_db)
 ):
-    """Verify OTP and create user account"""
+    """Verify OTP and create user account or login"""
     # Get OTP record
     otp_record = db.query(CommunityOTP).filter(
         CommunityOTP.otp_id == otp_id,
@@ -174,16 +175,35 @@ async def verify_otp(
     otp_record.is_verified = True
     db.commit()
     
-    # Create user account
-    user = CommunityUser(
-        email=email,
-        phone=phone,
-        username=username,
-        full_name=full_name,
-        is_verified=True
-    )
-    db.add(user)
-    db.commit()
+    # If username and full_name are provided, this is registration
+    if username and full_name:
+        # Create new user account
+        user = CommunityUser(
+            email=email or otp_record.email,
+            phone=phone or otp_record.phone,
+            username=username,
+            full_name=full_name,
+            is_verified=True
+        )
+        db.add(user)
+        db.commit()
+        
+        message = "Account created successfully"
+    else:
+        # This is login - find existing user
+        user_email = email or otp_record.email
+        user_phone = phone or otp_record.phone
+        
+        user = None
+        if user_email:
+            user = db.query(CommunityUser).filter(CommunityUser.email == user_email).first()
+        if user_phone and not user:
+            user = db.query(CommunityUser).filter(CommunityUser.phone == user_phone).first()
+        
+        if not user:
+            raise HTTPException(status_code=400, detail="User not found")
+        
+        message = "Login successful"
     
     # Set session
     request.session["community_user_id"] = user.user_id
@@ -191,7 +211,7 @@ async def verify_otp(
     
     return JSONResponse({
         "success": True,
-        "message": "Account created successfully",
+        "message": message,
         "user_id": user.user_id
     })
 
@@ -202,8 +222,9 @@ async def resend_otp(
     otp_id: int = Form(...),
     email: str = Form(None),
     phone: str = Form(None),
-    username: str = Form(...),
-    full_name: str = Form(...),
+    email_or_phone: str = Form(None),
+    username: str = Form(None),
+    full_name: str = Form(None),
     db: Session = Depends(get_db)
 ):
     """Resend OTP for verification"""
@@ -223,11 +244,14 @@ async def resend_otp(
     otp_record.is_verified = False
     db.commit()
     
-    # Send OTP
-    if email:
-        send_otp_email(email, otp_code)
-    if phone:
-        send_otp_sms(phone, otp_code)
+    # Send OTP - use existing email/phone from OTP record or new values
+    send_email = email or otp_record.email
+    send_phone = phone or otp_record.phone
+    
+    if send_email:
+        send_otp_email(send_email, otp_code)
+    if send_phone:
+        send_otp_sms(send_phone, otp_code)
     
     return JSONResponse({
         "success": True,
@@ -243,14 +267,21 @@ async def login_page(request: Request):
 @router.post("/login", response_class=JSONResponse)
 async def login_user(
     request: Request,
-    email: str = Form(None),
-    phone: str = Form(None),
-    password: str = Form(...),  # For now, we'll use OTP-based auth
+    email_or_phone: str = Form(...),
     db: Session = Depends(get_db)
 ):
     """Login user (OTP-based authentication)"""
-    if not email and not phone:
-        raise HTTPException(status_code=400, detail="Either email or phone is required")
+    if not email_or_phone:
+        raise HTTPException(status_code=400, detail="Email or phone number is required")
+    
+    # Determine if input is email or phone
+    email = None
+    phone = None
+    
+    if "@" in email_or_phone:
+        email = email_or_phone
+    else:
+        phone = email_or_phone
     
     # Find user
     user = None
@@ -260,7 +291,7 @@ async def login_user(
         user = db.query(CommunityUser).filter(CommunityUser.phone == phone).first()
     
     if not user:
-        raise HTTPException(status_code=400, detail="User not found")
+        raise HTTPException(status_code=400, detail="User not found. Please register first.")
     
     # Generate OTP for login
     otp_code = generate_otp()

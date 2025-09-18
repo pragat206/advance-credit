@@ -22,6 +22,7 @@
                             <input type="hidden" id="otp_id" name="otp_id" value="{{ request.query_params.get('otp_id', '') }}">
                             <input type="hidden" id="email" name="email" value="{{ request.query_params.get('email', '') }}">
                             <input type="hidden" id="phone" name="phone" value="{{ request.query_params.get('phone', '') }}">
+                            <input type="hidden" id="email_or_phone" name="email_or_phone" value="{{ request.query_params.get('email_or_phone', '') }}">
                             <input type="hidden" id="username" name="username" value="{{ request.query_params.get('username', '') }}">
                             <input type="hidden" id="full_name" name="full_name" value="{{ request.query_params.get('full_name', '') }}">
                             
@@ -134,6 +135,7 @@ function resendOTP() {
     const otpId = document.getElementById('otp_id').value;
     const email = document.getElementById('email').value;
     const phone = document.getElementById('phone').value;
+    const emailOrPhone = document.getElementById('email_or_phone').value;
     const username = document.getElementById('username').value;
     const fullName = document.getElementById('full_name').value;
     
@@ -149,19 +151,24 @@ function resendOTP() {
     btn.disabled = true;
     
     // Make request to resend OTP
+    const formData = new FormData();
+    formData.append('otp_id', otpId);
+    if (email) formData.append('email', email);
+    if (phone) formData.append('phone', phone);
+    if (emailOrPhone) formData.append('email_or_phone', emailOrPhone);
+    if (username) formData.append('username', username);
+    if (fullName) formData.append('full_name', fullName);
+    
     fetch('/community/resend-otp', {
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: `otp_id=${otpId}&email=${email}&phone=${phone}&username=${username}&full_name=${fullName}`
+        body: formData
     })
     .then(response => response.json())
     .then(data => {
         if (data.success) {
             alert('New OTP sent successfully!');
         } else {
-            alert('Error: ' + data.detail);
+            alert('Error: ' + (data.detail || data.message || 'Unknown error'));
         }
     })
     .catch(error => {
