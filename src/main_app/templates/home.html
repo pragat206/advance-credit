@@ -2510,54 +2510,6 @@
                         </a>
                     </div>
                     
-                    {% if recent_posts %}
-                    <div class="mt-5">
-                        <h4 class="text-center mb-4">Recent Posts</h4>
-                        <div class="row g-4 justify-content-center">
-                            {% for post in recent_posts[:3] %}
-                            <div class="col-lg-4 col-md-6">
-                                <div class="flip-card-container">
-                                    <div class="flip-card">
-                                        <!-- Front of the card -->
-                                        <div class="flip-card-front">
-                                            <div class="card-content">
-                                                {% if post.featured_image %}
-                                                <div class="card-image">
-                                                    <img src="{{ post.featured_image }}" alt="{{ post.title }}">
-                                                </div>
-                                                {% else %}
-                                                <div class="card-image placeholder">
-                                                    <i class="bi bi-image"></i>
-                                                </div>
-                                                {% endif %}
-                                                <div class="card-info">
-                                                    <h5>{{ post.title }}</h5>
-                                                    <p class="date">{{ post.created_at.strftime('%B %d, %Y') }}</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        
-                                        <!-- Back of the card -->
-                                        <div class="flip-card-back">
-                                            <div class="card-content">
-                                                <h5>{{ post.title }}</h5>
-                                                <p class="summary">
-                                                    {{ post.summary[:120] if post.summary else post.content[:120]|striptags }}{% if (post.summary and post.summary|length > 120) or (not post.summary and post.content|length > 120) %}...{% endif %}
-                                                </p>
-                                                <div class="card-actions">
-                                                    <a href="/blog/post/{{ post.slug }}" class="btn btn-primary">
-                                                        Read More <i class="bi bi-arrow-right ms-1"></i>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            {% endfor %}
-                        </div>
-                    </div>
-                    {% endif %}
                 </div>
             </div>
             <div class="col-lg-6">
@@ -2592,6 +2544,68 @@
         </div>
     </div>
 </section>
+
+<!-- Recent Posts Section -->
+{% if recent_posts %}
+<section class="py-5" style="background: #ffffff;">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="section-title">Recent Posts</h2>
+            <p class="section-subtitle">Stay updated with our latest financial insights and expert guidance</p>
+        </div>
+        
+        <div class="row g-4 justify-content-center">
+            {% for post in recent_posts[:3] %}
+            <div class="col-lg-4 col-md-6">
+                <div class="flip-card-container">
+                    <div class="flip-card">
+                        <!-- Front of the card -->
+                        <div class="flip-card-front">
+                            <div class="card-content">
+                                {% if post.featured_image %}
+                                <div class="card-image">
+                                    <img src="{{ post.featured_image }}" alt="{{ post.title }}">
+                                </div>
+                                {% else %}
+                                <div class="card-image placeholder">
+                                    <i class="bi bi-image"></i>
+                                </div>
+                                {% endif %}
+                                <div class="card-info">
+                                    <h5>{{ post.title }}</h5>
+                                    <p class="date">{{ post.created_at.strftime('%B %d, %Y') }}</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Back of the card -->
+                        <div class="flip-card-back">
+                            <div class="card-content">
+                                <h5>{{ post.title }}</h5>
+                                <p class="summary">
+                                    {{ post.summary[:120] if post.summary else post.content[:120]|striptags }}{% if (post.summary and post.summary|length > 120) or (not post.summary and post.content|length > 120) %}...{% endif %}
+                                </p>
+                                <div class="card-actions">
+                                    <a href="/blog/post/{{ post.slug }}" class="btn btn-primary">
+                                        Read More <i class="bi bi-arrow-right ms-1"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        
+        <div class="text-center mt-5">
+            <a href="/blog/" class="btn btn-primary btn-lg">
+                <i class="bi bi-journal-text me-2"></i>View All Posts
+            </a>
+        </div>
+    </div>
+</section>
+{% endif %}
 
 <!-- Trusted Partners -->
 <section class="py-5">
