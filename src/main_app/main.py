@@ -9,6 +9,10 @@ from pathlib import Path
 import smtplib
 from email.message import EmailMessage
 import os
+from dotenv import load_dotenv
+
+# Load environment variables
+load_dotenv()
 # Scraper imports removed - using static data instead
 import time
 from starlette.middleware.sessions import SessionMiddleware

@@ -7,11 +7,25 @@ from dotenv import load_dotenv
 # Load environment variables
 load_dotenv()
 
+# Get environment variables
+cloud_name = os.getenv('CLOUDINARY_CLOUD_NAME')
+api_key = os.getenv('CLOUDINARY_API_KEY')
+api_secret = os.getenv('CLOUDINARY_API_SECRET')
+
+# Debug: Print environment variables (remove in production)
+print(f"Cloudinary Config - Cloud Name: {cloud_name}")
+print(f"Cloudinary Config - API Key: {api_key[:10] if api_key else None}...")
+print(f"Cloudinary Config - API Secret: {api_secret[:10] if api_secret else None}...")
+
+# Validate environment variables
+if not all([cloud_name, api_key, api_secret]):
+    raise ValueError("Missing Cloudinary environment variables. Please check your .env file.")
+
 # Cloudinary configuration
 cloudinary.config(
-    cloud_name=os.getenv('CLOUDINARY_CLOUD_NAME'),
-    api_key=os.getenv('CLOUDINARY_API_KEY'),
-    api_secret=os.getenv('CLOUDINARY_API_SECRET'),
+    cloud_name=cloud_name,
+    api_key=api_key,
+    api_secret=api_secret,
     secure=True
 )
 
