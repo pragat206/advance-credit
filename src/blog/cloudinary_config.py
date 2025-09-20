@@ -19,7 +19,12 @@ print(f"Cloudinary Config - API Secret: {api_secret[:10] if api_secret else None
 
 # Validate environment variables
 if not all([cloud_name, api_key, api_secret]):
-    raise ValueError("Missing Cloudinary environment variables. Please check your .env file.")
+    print("⚠️  Warning: Missing Cloudinary environment variables. Image uploads will be disabled.")
+    print("   To enable image uploads, set CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, and CLOUDINARY_API_SECRET")
+    # Set default values to prevent errors
+    cloud_name = "dummy"
+    api_key = "dummy"
+    api_secret = "dummy"
 
 # Cloudinary configuration
 cloudinary.config(
@@ -40,6 +45,15 @@ def upload_image(file, folder="blog_images"):
     Returns:
         dict: Contains 'url' and 'public_id' of the uploaded image
     """
+    # Check if Cloudinary is properly configured
+    if cloud_name == "dummy" or api_key == "dummy" or api_secret == "dummy":
+        return {
+            'url': None,
+            'public_id': None,
+            'success': False,
+            'error': 'Cloudinary not configured. Please set environment variables.'
+        }
+    
     try:
         # Upload the image
         result = cloudinary.uploader.upload(
