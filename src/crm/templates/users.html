@@ -64,6 +64,12 @@
     </div>
     {% endif %}
     
+    {% if request.query_params.get('success') == 'password_reset' %}
+    <div class="alert alert-success alert-modern mb-4">
+        <i class="bi bi-check-circle me-2"></i>Password has been reset successfully!
+    </div>
+    {% endif %}
+    
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
             <h1 class="page-title">Team Members</h1>
@@ -132,6 +138,9 @@
                         <div class="btn-group" role="group">
                             <a href="/crm/users/{{ user.user_id }}/edit" class="btn btn-sm btn-warning-modern btn-modern" title="Edit">
                                 <i class="bi bi-pencil"></i>
+                            </a>
+                            <a href="/crm/users/{{ user.user_id }}/reset-password" class="btn btn-sm btn-info-modern btn-modern" title="Reset Password">
+                                <i class="bi bi-key"></i>
                             </a>
                             <button class="btn btn-sm btn-danger-modern btn-modern" 
                                     onclick="confirmDelete('{{ user.user_id }}', '{{ user.name }}')" 

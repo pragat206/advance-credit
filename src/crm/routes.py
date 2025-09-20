@@ -735,6 +735,59 @@ def user_new_post(request: Request, name: str = Form(...), email: str = Form(...
     db.commit()
     return RedirectResponse("/crm/users", status_code=status.HTTP_302_FOUND)
 
+@router.get("/users/{user_id}/reset-password", response_class=HTMLResponse)
+def user_reset_password_get(request: Request, user_id: int, db: Session = Depends(get_db)):
+    # Manual authentication check
+    current_user_id = request.session.get("user_id")
+    if not current_user_id:
+        return RedirectResponse("/crm/unauthorized", status_code=status.HTTP_302_FOUND)
+    
+    current_user = db.query(User).filter(User.user_id == current_user_id).first()
+    if not current_user or current_user.role != "admin":
+        return RedirectResponse("/crm/unauthorized", status_code=status.HTTP_302_FOUND)
+    
+    # Get the user to reset password for
+    target_user = db.query(User).filter(User.user_id == user_id).first()
+    if not target_user:
+        return RedirectResponse("/crm/users?error=user_not_found", status_code=status.HTTP_302_FOUND)
+    
+    return templates.TemplateResponse("user_reset_password.html", {
+        "request": request, 
+        "target_user": target_user,
+        "error": None
+    })
+
+@router.post("/users/{user_id}/reset-password", response_class=HTMLResponse)
+def user_reset_password_post(request: Request, user_id: int, new_password: str = Form(...), db: Session = Depends(get_db)):
+    # Manual authentication check
+    current_user_id = request.session.get("user_id")
+    if not current_user_id:
+        return RedirectResponse("/crm/unauthorized", status_code=status.HTTP_302_FOUND)
+    
+    current_user = db.query(User).filter(User.user_id == current_user_id).first()
+    if not current_user or current_user.role != "admin":
+        return RedirectResponse("/crm/unauthorized", status_code=status.HTTP_302_FOUND)
+    
+    # Get the user to reset password for
+    target_user = db.query(User).filter(User.user_id == user_id).first()
+    if not target_user:
+        return RedirectResponse("/crm/users?error=user_not_found", status_code=status.HTTP_302_FOUND)
+    
+    # Validate password
+    if len(new_password) < 6:
+        return templates.TemplateResponse("user_reset_password.html", {
+            "request": request, 
+            "target_user": target_user,
+            "error": "Password must be at least 6 characters long."
+        })
+    
+    # Update password
+    hashed = bcrypt.hashpw(new_password.encode(), bcrypt.gensalt()).decode()
+    target_user.password_hash = hashed
+    db.commit()
+    
+    return RedirectResponse("/crm/users?success=password_reset", status_code=status.HTTP_302_FOUND)
+
 @router.get("/users/{user_id}/edit", response_class=HTMLResponse)
 def user_edit_get(request: Request, user_id: int, db: Session = Depends(get_db)):
     # Manual authentication check
