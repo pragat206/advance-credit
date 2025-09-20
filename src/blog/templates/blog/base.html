@@ -45,6 +45,14 @@
             color: var(--primary-color) !important;
         }
 
+        .navbar-brand img {
+            transition: opacity 0.3s ease;
+        }
+
+        .navbar-brand img:hover {
+            opacity: 0.8;
+        }
+
         .nav-link {
             color: var(--text-secondary) !important;
             font-weight: 500;
@@ -180,8 +188,9 @@
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg">
         <div class="container">
-            <a class="navbar-brand" href="/blog/">
-                <i class="bi bi-journal-text me-2"></i>CreditCare Blog
+            <a class="navbar-brand d-flex align-items-center" href="/blog/">
+                <img src="/blog/static/creditcare-logo.png" alt="CreditCare Logo" style="height: 40px; width: auto; margin-right: 12px;">
+                <span>CreditCare Blog</span>
             </a>
             
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -210,10 +219,12 @@
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-md-6">
-                    <p class="mb-0 text-muted">
-                        <i class="bi bi-journal-text me-1"></i>
-                        CreditCare Blog - Financial Insights & Expert Guidance
-                    </p>
+                    <div class="d-flex align-items-center">
+                        <img src="/blog/static/creditcare-logo.png" alt="CreditCare Logo" style="height: 24px; width: auto; margin-right: 8px;">
+                        <p class="mb-0 text-muted">
+                            CreditCare Blog - Financial Insights & Expert Guidance
+                        </p>
+                    </div>
                 </div>
                 <div class="col-md-6 text-md-end">
                     <div class="d-flex gap-3 justify-content-md-end justify-content-center">
