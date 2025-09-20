@@ -37,6 +37,8 @@
             background: var(--white);
             border-bottom: 1px solid var(--border-color);
             box-shadow: var(--shadow-sm);
+            min-height: 80px;
+            padding: 0.75rem 0;
         }
 
         .navbar-brand {
@@ -51,6 +53,26 @@
 
         .navbar-brand img:hover {
             opacity: 0.8;
+        }
+
+        /* Responsive logo sizing */
+        @media (max-width: 768px) {
+            .navbar-brand img {
+                height: 50px !important;
+                max-width: 150px !important;
+            }
+            
+            .navbar {
+                min-height: 70px;
+                padding: 0.5rem 0;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .navbar-brand img {
+                height: 45px !important;
+                max-width: 120px !important;
+            }
         }
 
         .nav-link {
@@ -189,7 +211,7 @@
     <nav class="navbar navbar-expand-lg">
         <div class="container">
             <a class="navbar-brand d-flex align-items-center" href="/blog/">
-                <img src="/blog/static/creditcare-logo.png" alt="CreditCare Logo" style="height: 40px; width: auto;">
+                <img src="/blog/static/creditcare-logo.png" alt="CreditCare Logo" style="height: 60px; width: auto; max-width: 200px;">
             </a>
             
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
