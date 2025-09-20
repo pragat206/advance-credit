@@ -17,5 +17,8 @@ psycopg2-binary>=2.9.9
 # Environment
 python-dotenv==1.0.0
 
+# Image storage
+cloudinary==1.44.1
+
 # Production server
 gunicorn==21.2.0 

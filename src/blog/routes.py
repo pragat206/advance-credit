@@ -11,6 +11,7 @@ import hashlib
 
 from src.main_app.database import get_db
 from src.blog.models import BlogPost
+from src.blog.cloudinary_config import upload_image, delete_image
 
 # Templates
 templates = Jinja2Templates(directory="src/blog/templates")
@@ -140,17 +141,18 @@ async def create_post(
         slug = f"{base_slug}-{counter}"
         counter += 1
     
-    # Handle file upload
+    # Handle file upload with Cloudinary
     featured_image_url = None
     if featured_image:
-        # Save featured image
-        filename = f"{uuid.uuid4()}_{featured_image.filename}"
-        file_path = f"src/blog/static/uploads/{filename}"
-        os.makedirs(os.path.dirname(file_path), exist_ok=True)
-        with open(file_path, "wb") as buffer:
-            content_data = await featured_image.read()
-            buffer.write(content_data)
-        featured_image_url = f"/blog/static/uploads/{filename}"
+        # Upload to Cloudinary
+        upload_result = upload_image(featured_image.file, folder="blog_images")
+        if upload_result['success']:
+            featured_image_url = upload_result['url']
+        else:
+            return JSONResponse({
+                "success": False,
+                "message": f"Failed to upload image: {upload_result.get('error', 'Unknown error')}"
+            }, status_code=400)
     
     # Create post
     post = BlogPost(
@@ -208,14 +210,15 @@ async def edit_post(
     
     # Handle file upload if new image provided
     if featured_image:
-        # Save featured image
-        filename = f"{uuid.uuid4()}_{featured_image.filename}"
-        file_path = f"src/blog/static/uploads/{filename}"
-        os.makedirs(os.path.dirname(file_path), exist_ok=True)
-        with open(file_path, "wb") as buffer:
-            content_data = await featured_image.read()
-            buffer.write(content_data)
-        post.featured_image = f"/blog/static/uploads/{filename}"
+        # Upload to Cloudinary
+        upload_result = upload_image(featured_image.file, folder="blog_images")
+        if upload_result['success']:
+            post.featured_image = upload_result['url']
+        else:
+            return JSONResponse({
+                "success": False,
+                "message": f"Failed to upload image: {upload_result.get('error', 'Unknown error')}"
+            }, status_code=400)
     
     # Update slug if title changed
     new_slug = create_slug(title)
