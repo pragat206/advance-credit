@@ -12,10 +12,11 @@ cloud_name = os.getenv('CLOUDINARY_CLOUD_NAME')
 api_key = os.getenv('CLOUDINARY_API_KEY')
 api_secret = os.getenv('CLOUDINARY_API_SECRET')
 
-# Debug: Print environment variables (remove in production)
-print(f"Cloudinary Config - Cloud Name: {cloud_name}")
-print(f"Cloudinary Config - API Key: {api_key[:10] if api_key else None}...")
-print(f"Cloudinary Config - API Secret: {api_secret[:10] if api_secret else None}...")
+# Debug: Print environment variables (only in development)
+if os.getenv('DEBUG') == 'True':
+    print(f"Cloudinary Config - Cloud Name: {cloud_name}")
+    print(f"Cloudinary Config - API Key: {api_key[:10] if api_key else None}...")
+    print(f"Cloudinary Config - API Secret: {api_secret[:10] if api_secret else None}...")
 
 # Validate environment variables
 if not all([cloud_name, api_key, api_secret]):
@@ -25,6 +26,8 @@ if not all([cloud_name, api_key, api_secret]):
     cloud_name = "dummy"
     api_key = "dummy"
     api_secret = "dummy"
+else:
+    print("✅ Cloudinary configured successfully! Image uploads enabled.")
 
 # Cloudinary configuration
 cloudinary.config(
