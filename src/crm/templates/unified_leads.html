@@ -105,7 +105,6 @@
                             <th style="width: 100px;">Source</th>
                             <th style="width: 120px;">Status</th>
                             <th style="width: 120px;">Assignee</th>
-                            <th style="width: 100px;">Priority</th>
                             <th style="width: 100px;">Created</th>
                             <th style="width: 100px;">Actions</th>
                         </tr>
@@ -150,17 +149,6 @@
                             <td>
                                 {% if lead.assignment and lead.assignment.employee %}
                                     <span class="text-primary">{{ lead.assignment.employee.user.name }}</span>
-                                {% else %}
-                                    <span class="text-muted">-</span>
-                                {% endif %}
-                            </td>
-                            <td>
-                                {% if lead.assignment %}
-                                    {% if lead.assignment.is_doable %}
-                                        <span class="badge bg-success">Doable</span>
-                                    {% else %}
-                                        <span class="badge bg-danger">Not Doable</span>
-                                    {% endif %}
                                 {% else %}
                                     <span class="text-muted">-</span>
                                 {% endif %}

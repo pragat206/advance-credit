@@ -1,0 +1,191 @@
+{% extends 'base.html' %}
+
+{% block title %}Edit Employee{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <!-- Page Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="page-title">Edit Employee</h1>
+            <p class="page-subtitle">Update employee information for {{ employee.user.name }}</p>
+        </div>
+        <a href="/crm/employees" class="btn btn-modern btn-secondary-modern">
+            <i class="bi bi-arrow-left me-2"></i>Back to Employees
+        </a>
+    </div>
+
+    <!-- Edit Employee Form -->
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="glass-card">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="bi bi-person-gear me-2"></i>
+                        Employee Information
+                    </h5>
+                </div>
+                <div class="card-body">
+                    {% if error %}
+                    <div class="alert alert-danger alert-modern">
+                        <i class="bi bi-exclamation-triangle me-2"></i>
+                        {{ error }}
+                    </div>
+                    {% endif %}
+                    
+                    <form method="POST">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Employee Name</label>
+                                <input type="text" class="form-control form-control-modern" value="{{ employee.user.name }}" readonly>
+                                <small class="text-muted">Employee name cannot be changed here</small>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Employee Code</label>
+                                <input type="text" class="form-control form-control-modern" value="{{ employee.employee_code }}" readonly>
+                                <small class="text-muted">Employee code cannot be changed</small>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Designation *</label>
+                                <input type="text" class="form-control form-control-modern" name="designation" value="{{ employee.designation }}" placeholder="e.g., Senior Manager" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Department *</label>
+                                <select class="form-select form-control-modern" name="department" required>
+                                    <option value="">Select Department</option>
+                                    <option value="Operations" {% if employee.department == 'Operations' %}selected{% endif %}>Operations</option>
+                                    <option value="Sales" {% if employee.department == 'Sales' %}selected{% endif %}>Sales</option>
+                                    <option value="Digital" {% if employee.department == 'Digital' %}selected{% endif %}>Digital</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Team</label>
+                                <select class="form-select form-control-modern" name="team_id">
+                                    <option value="">No Team</option>
+                                    {% for team in teams %}
+                                    <option value="{{ team.team_id }}" {% if employee.team_id == team.team_id %}selected{% endif %}>
+                                        {{ team.name }}
+                                    </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Joining Date</label>
+                                <input type="date" class="form-control form-control-modern" value="{{ employee.joining_date.strftime('%Y-%m-%d') if employee.joining_date else '' }}" readonly>
+                                <small class="text-muted">Joining date cannot be changed</small>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Basic Salary *</label>
+                                <input type="number" class="form-control form-control-modern" name="salary" value="{{ employee.salary }}" placeholder="45000" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Commission Rate (%) *</label>
+                                <input type="number" step="0.1" class="form-control form-control-modern" name="commission_rate" value="{{ employee.commission_rate }}" placeholder="5.0" required>
+                            </div>
+                        </div>
+                        
+                        <div class="d-flex justify-content-end gap-2">
+                            <a href="/crm/employees" class="btn btn-modern btn-secondary-modern">
+                                <i class="bi bi-x me-2"></i>Cancel
+                            </a>
+                            <button type="submit" class="btn btn-modern btn-primary-modern">
+                                <i class="bi bi-check me-2"></i>Update Employee
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-4">
+            <div class="glass-card">
+                <div class="card-header">
+                    <h6 class="mb-0">
+                        <i class="bi bi-info-circle me-2"></i>
+                        Employee Details
+                    </h6>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <h6 class="fw-bold">Current Information:</h6>
+                        <ul class="list-unstyled">
+                            <li class="mb-2">
+                                <i class="bi bi-person text-primary me-2"></i>
+                                <strong>Name:</strong> {{ employee.user.name }}
+                            </li>
+                            <li class="mb-2">
+                                <i class="bi bi-envelope text-primary me-2"></i>
+                                <strong>Email:</strong> {{ employee.user.email }}
+                            </li>
+                            <li class="mb-2">
+                                <i class="bi bi-telephone text-primary me-2"></i>
+                                <strong>Phone:</strong> {{ employee.user.phone }}
+                            </li>
+                            <li class="mb-2">
+                                <i class="bi bi-briefcase text-primary me-2"></i>
+                                <strong>Current Designation:</strong> {{ employee.designation }}
+                            </li>
+                            <li class="mb-2">
+                                <i class="bi bi-building text-primary me-2"></i>
+                                <strong>Current Department:</strong> {{ employee.department }}
+                            </li>
+                            <li class="mb-2">
+                                <i class="bi bi-people text-primary me-2"></i>
+                                <strong>Current Team:</strong> 
+                                {% if employee.team %}
+                                    {{ employee.team.name }}
+                                {% else %}
+                                    No Team Assigned
+                                {% endif %}
+                            </li>
+                            <li class="mb-2">
+                                <i class="bi bi-calendar text-primary me-2"></i>
+                                <strong>Joining Date:</strong> {{ employee.joining_date.strftime('%B %d, %Y') if employee.joining_date else 'Not set' }}
+                            </li>
+                            <li class="mb-2">
+                                <i class="bi bi-currency-rupee text-primary me-2"></i>
+                                <strong>Current Salary:</strong> ₹{{ "{:,.0f}".format(employee.salary) }}
+                            </li>
+                            <li class="mb-2">
+                                <i class="bi bi-percent text-primary me-2"></i>
+                                <strong>Commission Rate:</strong> {{ employee.commission_rate }}%
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="glass-card mt-4">
+                <div class="card-header">
+                    <h6 class="mb-0">
+                        <i class="bi bi-lightning me-2"></i>
+                        Quick Actions
+                    </h6>
+                </div>
+                <div class="card-body">
+                    <div class="d-grid gap-2">
+                        <a href="/crm/employees/{{ employee.employee_id }}/reset-password" class="btn btn-modern btn-warning-modern">
+                            <i class="bi bi-key me-2"></i>Reset Password
+                        </a>
+                        <a href="/crm/employees/{{ employee.employee_id }}" class="btn btn-modern btn-info-modern">
+                            <i class="bi bi-eye me-2"></i>View Profile
+                        </a>
+                        <a href="/crm/employees/{{ employee.employee_id }}/billing" class="btn btn-modern btn-success-modern">
+                            <i class="bi bi-cash me-2"></i>View Billing
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
