@@ -7,6 +7,7 @@ from typing import Optional, List
 import os
 import uuid
 import re
+import hashlib
 
 from src.main_app.database import get_db
 from src.blog.models import BlogPost
@@ -16,12 +17,29 @@ templates = Jinja2Templates(directory="src/blog/templates")
 
 router = APIRouter()
 
+# Admin credentials
+ADMIN_EMAIL = "admin@advancecred.com"
+ADMIN_PASSWORD = "Admin@2025"
+
 # Utility functions
 def create_slug(text):
     """Create URL-friendly slug from text"""
     slug = re.sub(r'[^\w\s-]', '', text.lower())
     slug = re.sub(r'[-\s]+', '-', slug)
     return slug.strip('-')
+
+def hash_password(password: str) -> str:
+    """Hash password using SHA-256"""
+    return hashlib.sha256(password.encode()).hexdigest()
+
+def verify_admin(email: str, password: str) -> bool:
+    """Verify admin credentials"""
+    return email == ADMIN_EMAIL and password == ADMIN_PASSWORD
+
+def require_admin_auth(request: Request):
+    """Check if user is authenticated as admin"""
+    if not request.session.get("blog_admin_logged_in"):
+        raise HTTPException(status_code=401, detail="Admin authentication required")
 
 # Blog Homepage - Display all posts as cards
 @router.get("/", response_class=HTMLResponse)
@@ -50,10 +68,43 @@ async def view_post(request: Request, slug: str, db: Session = Depends(get_db)):
         "post": post
     })
 
+# Admin Login
+@router.get("/admin/login", response_class=HTMLResponse)
+async def admin_login_page(request: Request):
+    """Admin login page"""
+    return templates.TemplateResponse("blog/admin_login.html", {
+        "request": request
+    })
+
+@router.post("/admin/login", response_class=JSONResponse)
+async def admin_login(
+    request: Request,
+    email: str = Form(...),
+    password: str = Form(...)
+):
+    """Admin login authentication"""
+    if verify_admin(email, password):
+        request.session["blog_admin_logged_in"] = True
+        request.session["blog_admin_email"] = email
+        return JSONResponse({
+            "success": True,
+            "message": "Login successful",
+            "redirect": "/blog/admin"
+        })
+    else:
+        raise HTTPException(status_code=401, detail="Invalid credentials")
+
+@router.get("/admin/logout", response_class=RedirectResponse)
+async def admin_logout(request: Request):
+    """Admin logout"""
+    request.session.clear()
+    return RedirectResponse("/blog/admin/login", status_code=302)
+
 # Admin Panel - List all posts
 @router.get("/admin", response_class=HTMLResponse)
 async def admin_panel(request: Request, db: Session = Depends(get_db)):
     """Admin panel to manage blog posts"""
+    require_admin_auth(request)
     posts = db.query(BlogPost).order_by(desc(BlogPost.created_at)).all()
     return templates.TemplateResponse("blog/admin.html", {
         "request": request,
@@ -64,6 +115,7 @@ async def admin_panel(request: Request, db: Session = Depends(get_db)):
 @router.get("/admin/create", response_class=HTMLResponse)
 async def create_post_page(request: Request):
     """Create new post page"""
+    require_admin_auth(request)
     return templates.TemplateResponse("blog/create_post.html", {
         "request": request
     })
@@ -78,6 +130,7 @@ async def create_post(
     db: Session = Depends(get_db)
 ):
     """Create a new blog post"""
+    require_admin_auth(request)
     
     # Create slug
     slug = create_slug(title)
@@ -122,6 +175,7 @@ async def create_post(
 @router.get("/admin/edit/{post_id}", response_class=HTMLResponse)
 async def edit_post_page(request: Request, post_id: int, db: Session = Depends(get_db)):
     """Edit post page"""
+    require_admin_auth(request)
     post = db.query(BlogPost).filter(BlogPost.id == post_id).first()
     if not post:
         raise HTTPException(status_code=404, detail="Post not found")
@@ -142,6 +196,7 @@ async def edit_post(
     db: Session = Depends(get_db)
 ):
     """Edit a blog post"""
+    require_admin_auth(request)
     post = db.query(BlogPost).filter(BlogPost.id == post_id).first()
     if not post:
         raise HTTPException(status_code=404, detail="Post not found")
@@ -189,6 +244,7 @@ async def delete_post(
     db: Session = Depends(get_db)
 ):
     """Delete a blog post"""
+    require_admin_auth(request)
     post = db.query(BlogPost).filter(BlogPost.id == post_id).first()
     if not post:
         raise HTTPException(status_code=404, detail="Post not found")
@@ -215,6 +271,7 @@ async def toggle_post_status(
     db: Session = Depends(get_db)
 ):
     """Toggle post published status"""
+    require_admin_auth(request)
     post = db.query(BlogPost).filter(BlogPost.id == post_id).first()
     if not post:
         raise HTTPException(status_code=404, detail="Post not found")
