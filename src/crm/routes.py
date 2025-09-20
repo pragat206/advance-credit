@@ -115,37 +115,7 @@ def get_next_statuses(current_status: str) -> list:
 def unauthorized(request: Request):
     return templates.TemplateResponse("unauthorized.html", {"request": request})
 
-@router.get("/register", response_class=HTMLResponse)
-def register_get(request: Request):
-    return templates.TemplateResponse("register.html", {"request": request, "error": None})
-
-@router.post("/register", response_class=HTMLResponse)
-def register_post(request: Request, name: str = Form(...), email: str = Form(...), phone: str = Form(...), password: str = Form(...), db: Session = Depends(get_db)):
-    existing = db.query(User).filter(User.email == email).first()
-    if existing:
-        return templates.TemplateResponse("register.html", {"request": request, "error": "Email already registered."})
-    
-    hashed = bcrypt.hashpw(password.encode(), bcrypt.gensalt()).decode()
-    user = User(name=name, email=email, phone=phone, password_hash=hashed, role="employee")
-    db.add(user)
-    db.flush()  # Get the user_id
-    
-    # Create employee record for the registered user
-    from datetime import date
-    employee_code = f"EMP{user.user_id:04d}"
-    employee = Employee(
-        user_id=user.user_id,
-        employee_code=employee_code,
-        designation="Employee",
-        department="General",
-        joining_date=date.today(),
-        salary=0.0,
-        commission_rate=0.0
-    )
-    db.add(employee)
-    db.commit()
-    
-    return RedirectResponse("/crm/login", status_code=status.HTTP_302_FOUND)
+# Registration routes removed - Only admins can create users through the admin panel
 
 @router.get("/login", response_class=HTMLResponse)
 def login_get(request: Request):
@@ -744,8 +714,24 @@ def user_new_post(request: Request, name: str = Form(...), email: str = Form(...
         return templates.TemplateResponse("user_new.html", {"request": request, "error": "Email already registered."})
     
     hashed = bcrypt.hashpw(password.encode(), bcrypt.gensalt()).decode()
-    user = User(name=name, email=email, phone=phone, password_hash=hashed, role=role)
-    db.add(user)
+    new_user = User(name=name, email=email, phone=phone, password_hash=hashed, role=role)
+    db.add(new_user)
+    db.flush()  # Get the user_id
+    
+    # Create employee record for the new user
+    from datetime import date
+    employee_code = f"EMP{new_user.user_id:04d}"
+    employee = Employee(
+        user_id=new_user.user_id,
+        employee_code=employee_code,
+        designation="Employee" if role == "employee" else role.title(),
+        department="General",
+        joining_date=date.today(),
+        salary=0.0,
+        commission_rate=0.0,
+        is_active=True
+    )
+    db.add(employee)
     db.commit()
     return RedirectResponse("/crm/users", status_code=status.HTTP_302_FOUND)
 
