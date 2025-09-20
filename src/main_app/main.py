@@ -16,6 +16,7 @@ from starlette.middleware.sessions import SessionMiddleware
 from src.main_app.database import get_db, SessionLocal
 from src.main_app.models import FAQ, Partner, Product, BankLoan
 from sqlalchemy.orm import Session
+from sqlalchemy import desc
 
 # CRM Integration imports
 import sys
@@ -944,8 +945,17 @@ async def health_check():
     }
 
 @app.get("/")
-async def home(request: Request):
-    return templates.TemplateResponse("home.html", {"request": request})
+async def home(request: Request, db: Session = Depends(get_db)):
+    # Fetch recent blog posts
+    from src.blog.models import BlogPost
+    recent_posts = db.query(BlogPost).filter(
+        BlogPost.is_published == True
+    ).order_by(desc(BlogPost.created_at)).limit(3).all()
+    
+    return templates.TemplateResponse("home.html", {
+        "request": request,
+        "recent_posts": recent_posts
+    })
 
 @app.get("/crm")
 async def crm_redirect():

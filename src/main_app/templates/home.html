@@ -2365,12 +2365,42 @@
                     
                     <div class="d-flex gap-3">
                         <a href="/blog/" class="btn btn-primary btn-lg">
-                            <i class="bi bi-journal-text me-2"></i>Read Blogs
+                            <i class="bi bi-journal-text me-2"></i>Read All Blogs
                         </a>
                         <a href="/blog/" class="btn btn-outline-primary btn-lg">
                             <i class="bi bi-envelope me-2"></i>Subscribe Newsletter
                         </a>
                     </div>
+                    
+                    {% if recent_posts %}
+                    <div class="mt-4">
+                        <h5 class="mb-3">Recent Posts</h5>
+                        <div class="row g-3">
+                            {% for post in recent_posts %}
+                            <div class="col-md-4">
+                                <div class="recent-post-card p-3" style="background: white; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); height: 100%;">
+                                    {% if post.featured_image %}
+                                    <img src="{{ post.featured_image }}" alt="{{ post.title }}" 
+                                         style="width: 100%; height: 120px; object-fit: cover; border-radius: 8px; margin-bottom: 12px;">
+                                    {% else %}
+                                    <div style="width: 100%; height: 120px; background: #f8f9fa; border-radius: 8px; margin-bottom: 12px; display: flex; align-items: center; justify-content: center;">
+                                        <i class="bi bi-image text-muted" style="font-size: 2rem;"></i>
+                                    </div>
+                                    {% endif %}
+                                    <h6 class="mb-2" style="font-size: 0.9rem; line-height: 1.3;">{{ post.title }}</h6>
+                                    <p class="text-muted mb-2" style="font-size: 0.8rem;">
+                                        {{ post.summary[:80] if post.summary else post.content[:80]|striptags }}{% if (post.summary and post.summary|length > 80) or (not post.summary and post.content|length > 80) %}...{% endif %}
+                                    </p>
+                                    <small class="text-muted d-block mb-2">{{ post.created_at.strftime('%B %d, %Y') }}</small>
+                                    <a href="/blog/post/{{ post.slug }}" class="btn btn-sm btn-outline-primary">
+                                        Read More <i class="bi bi-arrow-right ms-1"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endif %}
                 </div>
             </div>
             <div class="col-lg-6">
