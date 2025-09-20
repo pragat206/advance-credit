@@ -1,5 +1,5 @@
 from fastapi import FastAPI, Request, Form, Query, Depends, HTTPException, status
-from fastapi.responses import HTMLResponse, RedirectResponse, JSONResponse
+from fastapi.responses import HTMLResponse, RedirectResponse, JSONResponse, FileResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from fastapi import status
@@ -80,6 +80,15 @@ app.include_router(blog_router, prefix="/blog")
 app.mount("/static", StaticFiles(directory="src/main_app/static"), name="static")
 app.mount("/crm/static", StaticFiles(directory="src/crm/static"), name="crm_static")
 app.mount("/blog/static", StaticFiles(directory="src/blog/static"), name="blog_static")
+
+# SEO Routes
+@app.get("/sitemap.xml", response_class=FileResponse)
+async def sitemap():
+    return FileResponse("static/sitemap.xml", media_type="application/xml")
+
+@app.get("/robots.txt", response_class=FileResponse)
+async def robots():
+    return FileResponse("static/robots.txt", media_type="text/plain")
 
 # Templates
 templates = Jinja2Templates(directory="src/main_app/templates")
