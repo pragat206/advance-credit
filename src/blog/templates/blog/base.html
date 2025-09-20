@@ -49,6 +49,12 @@
 
         .navbar-brand img {
             transition: opacity 0.3s ease;
+            height: 80px !important;
+            width: auto !important;
+            max-width: 400px !important;
+            min-width: 200px !important;
+            object-fit: contain;
+            display: block;
         }
 
         .navbar-brand img:hover {
@@ -59,7 +65,8 @@
         @media (max-width: 768px) {
             .navbar-brand img {
                 height: 70px !important;
-                max-width: 250px !important;
+                max-width: 350px !important;
+                min-width: 180px !important;
             }
             
             .navbar {
@@ -71,7 +78,8 @@
         @media (max-width: 576px) {
             .navbar-brand img {
                 height: 60px !important;
-                max-width: 200px !important;
+                max-width: 300px !important;
+                min-width: 150px !important;
             }
             
             .navbar {
