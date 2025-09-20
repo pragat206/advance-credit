@@ -1308,6 +1308,144 @@
             max-width: 100vw;
             overflow-x: hidden;
         }
+
+        /* Flippable Cards Styles */
+        .flip-card-container {
+            perspective: 1000px;
+            height: 300px;
+            margin-bottom: 2rem;
+        }
+
+        .flip-card {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+            cursor: pointer;
+        }
+
+        .flip-card-container:hover .flip-card {
+            transform: rotateY(180deg);
+        }
+
+        .flip-card-front, .flip-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border: 2px solid #e2e8f0;
+            background: white;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            border-radius: 0; /* Sharp edges - no border radius */
+        }
+
+        .flip-card-back {
+            transform: rotateY(180deg);
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            color: white;
+        }
+
+        .card-content {
+            padding: 1.5rem;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .card-image {
+            width: 100%;
+            height: 150px;
+            overflow: hidden;
+            margin-bottom: 1rem;
+            border-radius: 0; /* Sharp edges */
+        }
+
+        .card-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .card-image.placeholder {
+            background: #f8fafc;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #64748b;
+        }
+
+        .card-image.placeholder i {
+            font-size: 3rem;
+        }
+
+        .card-info h5 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #1e293b;
+            line-height: 1.3;
+        }
+
+        .card-info .date {
+            color: #64748b;
+            font-size: 0.9rem;
+            margin: 0;
+        }
+
+        .flip-card-back h5 {
+            color: white;
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .flip-card-back .summary {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 0.9rem;
+            line-height: 1.5;
+            margin-bottom: 1.5rem;
+            flex-grow: 1;
+        }
+
+        .card-actions {
+            margin-top: auto;
+        }
+
+        .card-actions .btn {
+            border-radius: 0; /* Sharp edges for button */
+            font-weight: 500;
+            padding: 0.5rem 1.5rem;
+        }
+
+        .flip-card-back .btn {
+            background: white;
+            color: #1e3a8a;
+            border: 2px solid white;
+        }
+
+        .flip-card-back .btn:hover {
+            background: transparent;
+            color: white;
+            border-color: white;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .flip-card-container {
+                height: 280px;
+            }
+            
+            .card-content {
+                padding: 1rem;
+            }
+            
+            .card-image {
+                height: 120px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -2373,28 +2511,47 @@
                     </div>
                     
                     {% if recent_posts %}
-                    <div class="mt-4">
-                        <h5 class="mb-3">Recent Posts</h5>
-                        <div class="row g-3">
-                            {% for post in recent_posts %}
-                            <div class="col-md-4">
-                                <div class="recent-post-card p-3" style="background: white; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); height: 100%;">
-                                    {% if post.featured_image %}
-                                    <img src="{{ post.featured_image }}" alt="{{ post.title }}" 
-                                         style="width: 100%; height: 120px; object-fit: cover; border-radius: 8px; margin-bottom: 12px;">
-                                    {% else %}
-                                    <div style="width: 100%; height: 120px; background: #f8f9fa; border-radius: 8px; margin-bottom: 12px; display: flex; align-items: center; justify-content: center;">
-                                        <i class="bi bi-image text-muted" style="font-size: 2rem;"></i>
+                    <div class="mt-5">
+                        <h4 class="text-center mb-4">Recent Posts</h4>
+                        <div class="row g-4 justify-content-center">
+                            {% for post in recent_posts[:3] %}
+                            <div class="col-lg-4 col-md-6">
+                                <div class="flip-card-container">
+                                    <div class="flip-card">
+                                        <!-- Front of the card -->
+                                        <div class="flip-card-front">
+                                            <div class="card-content">
+                                                {% if post.featured_image %}
+                                                <div class="card-image">
+                                                    <img src="{{ post.featured_image }}" alt="{{ post.title }}">
+                                                </div>
+                                                {% else %}
+                                                <div class="card-image placeholder">
+                                                    <i class="bi bi-image"></i>
+                                                </div>
+                                                {% endif %}
+                                                <div class="card-info">
+                                                    <h5>{{ post.title }}</h5>
+                                                    <p class="date">{{ post.created_at.strftime('%B %d, %Y') }}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Back of the card -->
+                                        <div class="flip-card-back">
+                                            <div class="card-content">
+                                                <h5>{{ post.title }}</h5>
+                                                <p class="summary">
+                                                    {{ post.summary[:120] if post.summary else post.content[:120]|striptags }}{% if (post.summary and post.summary|length > 120) or (not post.summary and post.content|length > 120) %}...{% endif %}
+                                                </p>
+                                                <div class="card-actions">
+                                                    <a href="/blog/post/{{ post.slug }}" class="btn btn-primary">
+                                                        Read More <i class="bi bi-arrow-right ms-1"></i>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-                                    {% endif %}
-                                    <h6 class="mb-2" style="font-size: 0.9rem; line-height: 1.3;">{{ post.title }}</h6>
-                                    <p class="text-muted mb-2" style="font-size: 0.8rem;">
-                                        {{ post.summary[:80] if post.summary else post.content[:80]|striptags }}{% if (post.summary and post.summary|length > 80) or (not post.summary and post.content|length > 80) %}...{% endif %}
-                                    </p>
-                                    <small class="text-muted d-block mb-2">{{ post.created_at.strftime('%B %d, %Y') }}</small>
-                                    <a href="/blog/post/{{ post.slug }}" class="btn btn-sm btn-outline-primary">
-                                        Read More <i class="bi bi-arrow-right ms-1"></i>
-                                    </a>
                                 </div>
                             </div>
                             {% endfor %}
