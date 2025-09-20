@@ -1,0 +1,60 @@
+{% extends "blog/base.html" %}
+
+{% block title %}{{ post.title }} - CreditCare Blog{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8 mx-auto">
+            <!-- Back Button -->
+            <div class="mb-4">
+                <a href="/blog/" class="btn btn-outline-secondary">
+                    <i class="bi bi-arrow-left me-1"></i>Back to Blog
+                </a>
+            </div>
+
+            <!-- Post Header -->
+            <article class="card">
+                {% if post.featured_image %}
+                <img src="{{ post.featured_image }}" class="card-img-top" alt="{{ post.title }}" style="height: 300px; object-fit: cover;">
+                {% endif %}
+                
+                <div class="card-body">
+                    <h1 class="card-title">{{ post.title }}</h1>
+                    
+                    <div class="post-meta mb-4">
+                        <small class="text-muted">
+                            <i class="bi bi-calendar me-1"></i>
+                            Published on {{ post.created_at.strftime('%B %d, %Y') }}
+                            {% if post.updated_at and post.updated_at != post.created_at %}
+                            <span class="ms-3">
+                                <i class="bi bi-pencil me-1"></i>
+                                Updated on {{ post.updated_at.strftime('%B %d, %Y') }}
+                            </span>
+                            {% endif %}
+                        </small>
+                    </div>
+
+                    {% if post.summary %}
+                    <div class="alert alert-info">
+                        <strong>Summary:</strong> {{ post.summary }}
+                    </div>
+                    {% endif %}
+
+                    <!-- Post Content -->
+                    <div class="post-content">
+                        {{ post.content|safe }}
+                    </div>
+                </div>
+            </article>
+
+            <!-- Navigation -->
+            <div class="mt-4">
+                <a href="/blog/" class="btn btn-primary">
+                    <i class="bi bi-arrow-left me-1"></i>Back to All Posts
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

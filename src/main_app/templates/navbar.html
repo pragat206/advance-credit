@@ -31,10 +31,8 @@
         <li class="nav-item">
           <a class="nav-link {% if request.url.path == '/about' %}active{% endif %}" href="/about">About Us</a>
         </li>
-        <li class="nav-item ms-2">
-          <a class="btn btn-warning btn-sm px-3 py-2 fw-bold" href="/community/" style="border-radius: 25px; text-decoration: none;">
-            <i class="bi bi-shield-check me-1"></i>CreditCare Community
-          </a>
+        <li class="nav-item">
+          <a class="nav-link {% if request.url.path.startswith('/blog') %}active{% endif %}" href="/blog/">Blog</a>
         </li>
 
       </ul>
